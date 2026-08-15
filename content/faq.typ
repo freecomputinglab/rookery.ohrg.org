@@ -5,7 +5,7 @@
 
 #set document(title: "FAQ")
 
-#todo(title: [Are ideas just evergreen notes?])[
+#todo(title: [What other tools is rookery like?])[
   // todo
 ]
 
