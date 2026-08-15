@@ -27,7 +27,7 @@ edits to the package land here on the next rebuild with no publish step.
 
 Two families, split by what a thing is rather than where it sits. **Berkeley
 Mono** is site furniture and identifiers — the wordmark, the nav, and a note's
-`[note:etal]` id — marking the parts of the page that are machinery rather
+`[idea:etal]` id — marking the parts of the page that are machinery rather
 than writing. Nav entries and ids share one size, being the same kind of small
 mono label. **Inter** is everything that is writing: every heading, and a
 note's own title, which is its name.
@@ -35,7 +35,7 @@ note's own title, which is its name.
 Small-caps belongs to Inter only — in a monospace face the browser synthesises
 them, scaling capitals down to the wrong weight for the rest of the face, so
 Berkeley Mono is set upper outright where uppercase is wanted. An id is set
-neither way: `[note:etal]` is meant to be copied verbatim into `#view("...")`,
+neither way: `[idea:etal]` is meant to be copied verbatim into `#view("...")`,
 and a reader retyping what an uppercased id appeared to say would get it
 wrong.
 

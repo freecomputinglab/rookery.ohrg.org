@@ -11,10 +11,10 @@
 // the top of a file.
 #import "@rheo/rookery:0.1.0": rookery
 
-// Ids on this site read `note:<name>` rather than the default `idea:<name>`,
-// and the theme replaces rookery's default light-blue/purple pair with an
-// amber one. Both are ONE document-wide value: every vertebra has to ask for
-// the same thing, which is another reason to set them in one file.
+// Ids on this site use rookery's default `idea:<name>` prefix, so no
+// `prefix:` argument is passed below. The theme replaces rookery's default
+// light-blue/purple pair with an amber one — ONE document-wide value: every
+// vertebra has to ask for the same thing, which is why it is set in one file.
 #let THEME = (
   link-color: "rgba(230, 140, 0, 0.16)",
   fold-color: "rgba(255, 190, 40, 0.07)",
@@ -27,9 +27,10 @@
 // `handle` is rheo's own name for a vertebra — the same string a page passes
 // as `current-page`, and the label `#link` resolves against.
 #let site-pages = (
-  (handle: "index", title: "Home"),
-  (handle: "guide:intro", title: "Transclusion"),
-  (handle: "about", title: "About"),
+  // (handle: "index", title: "Home"),
+  (handle: "concepts", title: "Concepts"),
+  (handle: "install", title: "Install"),
+  (handle: "faq", title: "FAQ"),
 )
 
 // The header nav. Every page link goes through `link(label(<handle>))` rather
@@ -48,19 +49,24 @@
     // On the landing page the wordmark IS the active nav entry, so it keeps
     // the accent rather than only taking it on hover.
     #let wordmark-class = if current-page == "index" { "wordmark active" } else { "wordmark" }
-    #html.elem("span", attrs: (class: wordmark-class),
-      link(label("index"))[rookery])
+    #html.elem("span", attrs: (class: wordmark-class), link(label("index"))[rookery])
     #html.elem("nav", attrs: (class: "site-nav", aria-label: "Site sections"))[
-      #html.elem("ul", attrs: (:), site-pages.map(p => {
-        let cls = if p.handle == current-page { "active" } else { "" }
-        html.elem("li", attrs: (class: cls), link(label(p.handle), p.title))
-      }).join())
+      #html.elem(
+        "ul",
+        attrs: (:),
+        site-pages
+          .map(p => {
+            let cls = if p.handle == current-page { "active" } else { "" }
+            html.elem("li", attrs: (class: cls), link(label(p.handle), p.title))
+          })
+          .join(),
+      )
     ]
   ]
 ]
 
 #let template(current-page: none, doc) = {
-  show: rookery.with(prefix: "note", theme: THEME)
+  show: rookery.with(theme: THEME)
 
   context if target() == "html" {
     site-header(current-page)

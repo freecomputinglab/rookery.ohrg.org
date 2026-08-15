@@ -1,8 +1,8 @@
 #import "template.typ": template
 
-#show: template.with(current-page: "about")
+#show: template.with(current-page: "faq")
 
-#set document(title: "About")
+#set document(title: "FAQ")
 
 = About
 
