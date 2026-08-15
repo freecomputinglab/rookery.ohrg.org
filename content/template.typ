@@ -65,9 +65,13 @@
   ]
 ]
 
-#let template(current-page: none, doc) = {
-  show: rookery.with(theme: THEME)
-
+// The chrome alone, with no `#show: rookery` in it. Split out from `template`
+// below because BOTH a vertebra and a minted note page need it, and only a
+// vertebra needs the package configured: a minted page is spliced in after
+// every vertebra has already set the prefix, theme and window depth, so
+// re-applying `rookery` there would append a second round of identical state
+// updates for no gain.
+#let chrome(current-page: none, doc) = {
   context if target() == "html" {
     site-header(current-page)
   } else {
@@ -76,5 +80,30 @@
     // which is the landing page's job (see index.typ).
   }
 
+  doc
+}
+
+// The template for the standalone page rookery mints per idea, handed to the
+// package by `template` below and called by its `.marrow.typ` once per note.
+// `id` is the note's full id, so the nav entry for `idea:rookery` is simply
+// not one of `site-pages` and nothing is marked active — a note page belongs
+// to no section, which is the honest answer.
+//
+// A NAMED top-level binding, deliberately: the package stores this on a
+// document-wide state, and an inline closure written inside `template` would
+// be a different value in every vertebra that applies it. `note` (the note's
+// registry record: title, dates, origin, outbound links) goes unused here,
+// but a site wanting a richer idea-page header has it without querying.
+//
+// Defined before `template` and applying `chrome` rather than `template` —
+// the two would otherwise have to reference each other.
+#let idea-page(id: none, note: (:), doc) = {
+  show: chrome.with(current-page: id)
+  doc
+}
+
+#let template(current-page: none, doc) = {
+  show: rookery.with(theme: THEME, idea-page-template: idea-page)
+  show: chrome.with(current-page: current-page)
   doc
 }

@@ -1,10 +1,15 @@
 #import "template.typ": template
+#import "@rheo/rookery:0.1.0": idea, ideas-outline, todo
 
 #show: template.with(current-page: "faq")
 
 #set document(title: "FAQ")
 
-= About
+#todo(title: [Are ideas just evergreen notes?])[
+  // todo
+]
 
-This site documents #link("https://github.com/lachlankermode/rheo-packages")[`@rheo/rookery`],
-and is built with #link("https://rheo.ohrg.org/")[Rheo].
+#todo(title: [Do I need to use Rheo to use rookery?])[
+
+
+]

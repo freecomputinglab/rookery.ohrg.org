@@ -87,7 +87,32 @@
    element, so every selector here reaches through to `a` — see the note in
    template.typ about why the hrefs cannot be written by hand.
    ============================================ */
-.site-header {}
+/* Sticky, so the nav is reachable from anywhere in a long page — and these
+   pages are long: an idea's own standalone page carries its whole body plus a
+   footer, and `concepts` is one page of everything.
+
+   It needs an opaque `background-color` of its own to sit on: `body`'s
+   background paints the canvas, not this box, so without one the text
+   scrolling underneath would read straight through the bar.
+
+   `padding-top` is what keeps the wordmark off the viewport edge once the bar
+   is stuck at `top: 0` — unstuck, it simply adds to `body`'s own top padding.
+
+   The rule under it is the SAME colour as the left rule on an idea and on a
+   window, so the site's one horizontal hairline and its many vertical ones
+   read as one system. `--hover-fill` is the site-level name for that colour
+   (see `:root`); the package injects the identical value as
+   `--idea-link-color` on its own elements, and the two are kept in step by
+   hand because a package's inline custom properties cannot reach the nav. */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--hover-fill);
+  padding-top: 0.6rem;
+  margin-bottom: 1.5rem;
+}
 
 .site-header-inner {
   display: flex;
@@ -103,7 +128,6 @@
    upper outright gets the real glyphs at their designed proportions. */
 .wordmark a {
   font-family: var(--mono-font);
-  font-weight: 700;
   font-size: 1rem;
   letter-spacing: -0.02em;
   text-transform: uppercase;
@@ -181,6 +205,14 @@
 /* ============================================
    Base Layout
    ============================================ */
+/* Every navigational affordance on this site lands on a fragment — an idea's
+   `[idea:etal]` permalink, an outline row, a backlink, the Context link — and
+   a sticky header would otherwise cover whatever each of them jumped to.
+   Clears the bar plus a little air. */
+html {
+  scroll-padding-top: 4rem;
+}
+
 body {
   background-color: var(--background-color);
   color: var(--text-color);

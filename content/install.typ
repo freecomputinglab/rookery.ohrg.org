@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.1.0": idea, ideas-outline
+#import "@rheo/rookery:0.1.0": idea, ideas-outline, todo
 
 #show: template.with(current-page: "install")
 #set document(
@@ -9,9 +9,9 @@
 
 #ideas-outline()
 
-#idea("installing", title: [Installing rookery])[
+#todo("installing", title: [Installing rookery])[
 ]
 
-#idea("configuring", title: [Configuring rookery])[
+#todo("configuring", title: [Configuring rookery])[
 
 ]
