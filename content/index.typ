@@ -2,17 +2,20 @@
 #import "@rheo/rookery:0.1.0": idea, note, todo, view
 
 #show: template.with(current-page: "index")
+#set document(
+  title: "Rookery under Rheo",
+  date: datetime(year: 2026, month: 8, day: 15),
+)
 
-// Every note inherits this date, so a view's summary carries a muted date —
-// the only metadata a summary shows.
-#set document(date: datetime(year: 2026, month: 8, day: 15))
+#context if target() == "html" {
+  html.elem("div", attrs: (class: "hero"))[
+    #image("img/rookery-banner.png", alt: "Rookery")
+  ]
+} else {
+  image("img/rookery-banner.png", alt: "Rookery")
+}
 
-#context if target() == "html" [
-  - #link(<guide:intro>)[Transclusion and references]
-  - #link(<about>)[About]
-]
-
-= Rookery under Rheo
+= Rookery
 
 Atomic, interlinked, transcludable notes for Typst, Zettelkasten-style. This
 site is built with #link("https://rheo.ohrg.org/")[Rheo] and documents
@@ -30,14 +33,24 @@ just a labelled heading.
 ]
 
 #idea("tagged", labels: ("draft", "review"))[
-  A note with multiple labels, to exercise the `labels` mechanism.
+  A note with multiple labels, to exercise the `labels` mechanism. Labels are
+  tags, not a taxonomy — see @note:rookery for what this is all for.
 ]
 
-#idea[An auto-id note — read its generated id off the permalink beside it.]
+#idea[
+  An auto-id note — read its generated id off the permalink beside it. It
+  points at #link(label("note:rookery"))[the first note] the plain way, with
+  `#link(label(...))`.
+]
 
 #note("n1", title: [A note])[Sugar over `labels: ("note",)`.]
 
-#todo("t1", labels: ("draft",))[Sugar over `labels: ("todo", "draft")`.]
+#todo("t1", labels: ("draft",))[
+  Sugar over `labels: ("todo", "draft")`. Transcluding a note counts as
+  pointing at it too, so this one shows up in @note:multi's backlinks:
+
+  #view("multi", limit: 1, folded: true)
+]
 
 #idea("multi", title: [Multi-block])[
   First paragraph of a multi-block note, for exercising `#view`'s `limit:`.

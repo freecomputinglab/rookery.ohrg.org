@@ -2,9 +2,7 @@
 
 #show: template.with(current-page: "about")
 
-#context if target() == "html" [
-  - #link(<index>)[Home]
-]
+#set document(title: "About")
 
 = About
 

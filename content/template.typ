@@ -21,17 +21,54 @@
   date-color: rgb("#a08a5a"),
 )
 
+// ============================================================
+// The spine, as data. One entry per page, in reading order.
+// ============================================================
+// `handle` is rheo's own name for a vertebra — the same string a page passes
+// as `current-page`, and the label `#link` resolves against.
+#let site-pages = (
+  (handle: "index", title: "Home"),
+  (handle: "guide:intro", title: "Transclusion"),
+  (handle: "about", title: "About"),
+)
+
+// The header nav. Every page link goes through `link(label(<handle>))` rather
+// than a hand-written `href`, because rheo rewrites exactly that form into a
+// DEPTH-RELATIVE url: `guide/intro.html` is one level down, so its links come
+// out `../index.html` while the same nav on the home page emits `index.html`.
+// Writing `./index.html` by hand — as a flat site can — would 404 from the
+// nested vertebra.
+//
+// The wordmark and each entry are wrapped in an element carrying the class,
+// with Typst's `link` inside it, since only Typst can compute those hrefs. So
+// the CSS hooks are `.wordmark a` and `.site-nav a`, not the anchors
+// themselves.
+#let site-header(current-page) = html.elem("header", attrs: (class: "site-header"))[
+  #html.elem("div", attrs: (class: "site-header-inner"))[
+    // On the landing page the wordmark IS the active nav entry, so it keeps
+    // the accent rather than only taking it on hover.
+    #let wordmark-class = if current-page == "index" { "wordmark active" } else { "wordmark" }
+    #html.elem("span", attrs: (class: wordmark-class),
+      link(label("index"))[rookery])
+    #html.elem("nav", attrs: (class: "site-nav", aria-label: "Site sections"))[
+      #html.elem("ul", attrs: (:), site-pages.map(p => {
+        let cls = if p.handle == current-page { "active" } else { "" }
+        html.elem("li", attrs: (class: cls), link(label(p.handle), p.title))
+      }).join())
+    ]
+  ]
+]
+
 #let template(current-page: none, doc) = {
   show: rookery.with(prefix: "note", theme: THEME)
 
   context if target() == "html" {
-    html.elem("div", attrs: (class: "header"))[
-      #image("img/header.svg")
-    ]
-    html.elem("hr")
-  } else if target() == "paged" {
-    image("img/header.svg")
-  } else {}
+    site-header(current-page)
+  } else {
+    // PDF/EPUB: no nav — there is nowhere to navigate to in a single
+    // document. The banner stands in for the header, on the first page only,
+    // which is the landing page's job (see index.typ).
+  }
 
   doc
 }

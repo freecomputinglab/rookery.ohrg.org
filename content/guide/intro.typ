@@ -2,19 +2,24 @@
 // href rookery computes here has to come out as `../notes/<slug>.html` rather
 // than `notes/<slug>.html`. That is what this page exercises.
 #import "../template.typ": template
-#import "@rheo/rookery:0.1.0": view
+#import "@rheo/rookery:0.1.0": idea, view
 
 #show: template.with(current-page: "guide:intro")
 
-#context if target() == "html" [
-  - #link(<index>)[Home]
-]
+#set document(title: "Transclusion and references")
 
 = Transclusion and references
 
-Everything below refers to notes written on the #link(<index>)[home page].
-Nothing here declares a note of its own — ids are flat, so a note is reachable
-from anywhere in the spine by name alone, with no handle or filename prefix.
+Most of what follows refers to notes written on the #link(<index>)[home page].
+Ids are flat, so a note is reachable from anywhere in the spine by name alone,
+with no handle or filename prefix — and a note can be written anywhere too:
+
+#idea("nested", title: [A note written here])[
+  This one lives in `guide/intro.typ` rather than on the home page. Open its
+  page from the permalink and the footer says so, linking back to this spot
+  rather than to the top of the file. It also points at @note:rookery, so it
+  appears in that note's backlinks — from a different page than the rest.
+]
 
 == References
 

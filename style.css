@@ -1,12 +1,44 @@
-.header {
-  max-height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+/* Inter, for note titles. `@import` has to be the FIRST rule in the file —
+   before the `@font-face` blocks below — or browsers drop it. Fetched rather
+   than self-hosted, matching rheo.ohrg.org and ohrg.org; Berkeley Mono is
+   self-hosted below because it is licensed and not on any CDN. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ============================================
+   Berkeley Mono
+
+   Four faces, following cftw.ohrg.org. The urls are relative to this
+   stylesheet, which rheo emits at `build/html/style.css` — so the files have
+   to end up at `build/html/fonts/`. rheo copies no static directories (its
+   only asset key is `css_stylesheet`), so the Justfile does that copy after
+   compiling; see the note there.
+   ============================================ */
+@font-face {
+  font-family: 'Berkeley Mono';
+  src: url('./fonts/BerkeleyMono-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
 }
 
-.header img {
-  max-height: 40px;
+@font-face {
+  font-family: 'Berkeley Mono';
+  src: url('./fonts/BerkeleyMono-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Berkeley Mono';
+  src: url('./fonts/BerkeleyMono-Oblique.ttf') format('truetype');
+  font-weight: 400;
+  font-style: oblique;
+}
+
+@font-face {
+  font-family: 'Berkeley Mono';
+  src: url('./fonts/BerkeleyMono-Bold-Oblique.ttf') format('truetype');
+  font-weight: 700;
+  font-style: oblique;
 }
 
 /* ============================================
@@ -18,6 +50,134 @@
   --link-color: #1a1a1a;
   --blockquote-border: #e6e6e6;
   --blockquote-text: #606060;
+  --muted: #6b6b6b;
+  --accent: #b4791a;
+  --rule: #e6e6e6;
+  /* Two families, split by what a thing IS rather than by where it sits.
+     Declared once each because both are wanted in places that share no
+     selector, and repeating a stack is how the nav came to be left out of one.
+
+     Berkeley Mono is for site furniture and identifiers — the wordmark, the
+     nav, and a note's `[note:etal]` id. It marks the parts of the page that
+     are machinery rather than writing.
+
+     Inter is for everything that is writing: every heading, and a note's own
+     title, which is its name. */
+  --mono-font: 'Berkeley Mono', monospace;
+  --heading-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  /* Nav entries and note ids are the same kind of thing — small mono labels —
+     so they are the same size, declared once. In `rem`, not `em`: an id sits
+     inside headings of several sizes and inside a `#view` summary the footer
+     has already scaled down, and only a root-relative unit comes out the same
+     in all of them. */
+  --label-size: 0.85rem;
+  /* The hover fill a note id takes, so the nav can take the same one. The
+     package injects this value as `--idea-link-color` on its OWN elements,
+     from `THEME.link-color` in content/template.typ — but the nav has no
+     `.idea-*` ancestor to inherit it from, so it is written once more here.
+     Keep the two in step. */
+  --hover-fill: rgba(230, 140, 0, 0.16);
+}
+
+/* ============================================
+   Header / nav
+
+   Rendered by `site-header` in content/template.typ, which marks the current
+   page `.active`. The anchors are Typst's, wrapped in the class-carrying
+   element, so every selector here reaches through to `a` — see the note in
+   template.typ about why the hrefs cannot be written by hand.
+   ============================================ */
+.site-header {
+  border-bottom: 1px solid var(--rule);
+}
+
+.site-header-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem 1.5rem;
+  padding-bottom: 0.6rem;
+}
+
+/* Uppercase, not small-caps. Berkeley Mono is a monospace face: small-caps in
+   it are synthesised by the browser, which scales the capitals down and leaves
+   them sitting at the wrong weight for the rest of the face. Setting the text
+   upper outright gets the real glyphs at their designed proportions. */
+.wordmark a {
+  font-family: var(--mono-font);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+.wordmark.active a,
+.wordmark a:hover {
+  color: var(--accent);
+}
+
+/* Pushed to the far end of the bar, and allowed to wrap under the wordmark on
+   a narrow screen rather than being hidden behind a toggle — three entries fit
+   on one line at any width worth designing for. */
+.site-nav {
+  margin-left: auto;
+}
+
+.site-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem 1rem;
+}
+
+.site-nav li {
+  margin: 0;
+}
+
+/* Padding and radius on the link itself, not on `:hover` — a padding that
+   appeared only on hover would shift the whole bar every time the pointer
+   crossed an entry. Only the background changes. Same 2px/3px the package
+   gives a note id, so the two fills are the same shape as well as the same
+   colour. */
+.site-nav a {
+  font-family: var(--mono-font);
+  font-size: var(--label-size);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  padding: 0 2px;
+  border-radius: 3px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.site-nav a:hover {
+  background-color: var(--hover-fill);
+  color: var(--text-color);
+}
+
+.site-nav li.active a {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* ============================================
+   Landing page banner
+   ============================================ */
+.hero {
+  margin: 0 0 1.5rem;
+}
+
+/* The image element already gets `max-width: 100%` from the Media rules below;
+   this makes it fill the measure rather than sit at its intrinsic size, and
+   drops the block margin those rules add, since `.hero` owns the spacing. */
+.hero img {
+  width: 100%;
+  border-radius: 3px;
+  margin: 0;
 }
 
 /* ============================================
@@ -37,11 +197,41 @@ body {
 /* ============================================
    Typography
    ============================================ */
-h1, h2, h3, h4, h5, h6 {
+/* Every heading, and always small-caps. `.idea-view-title` comes with them: a
+   note's title in `#idea`'s heading and the same title in a `#view`'s summary
+   are the same heading, and the summary's is a span only because a fold
+   control cannot contain an `<h2>`. */
+h1, h2, h3, h4, h5, h6,
+.idea-view-title {
   color: var(--text-color);
+  font-family: var(--heading-font);
+  font-variant: small-caps;
   font-weight: normal;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
+}
+
+/* The id, in the family the site keeps for machinery, at the size the nav uses
+   — the two are the same kind of small mono label and now match exactly.
+
+   It names font AND size itself rather than inheriting either: in `#idea`'s
+   heading it would otherwise take the heading's Inter at heading size, and in
+   a `#view`'s summary — no heading at all — the body's sans at the footer's
+   reduced size. Three contexts, one appearance.
+
+   Left as written, neither small-caps nor uppercased: `[note:rookery]` is an
+   identifier to be copied verbatim into `#view("...")`, and a reader who
+   retyped what an uppercased id appeared to say would get it wrong. */
+.idea-label {
+  font-family: var(--mono-font);
+  font-size: var(--label-size);
+  font-variant: normal;
+}
+
+/* A span, not a block: the summary lays its parts out on one line and these
+   margins would break that. */
+.idea-view-title {
+  margin: 0;
 }
 
 /* ============================================
