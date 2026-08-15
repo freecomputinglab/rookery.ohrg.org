@@ -1,0 +1,17 @@
+version = "0.5.1"
+content_dir = "content"
+
+# `template.typ` is a library, not a page — every other `.typ` under
+# `content/` is a vertebra, so without this it would compile to its own
+# `template.html`. The global `[spine]` table applies to every format.
+[spine]
+exclude = ["template.typ"]
+
+[[html.assets]]
+css_stylesheet = "./style.css"
+
+[pdf.spine]
+title = "Rookery"
+
+[epub.spine]
+title = "Rookery"
