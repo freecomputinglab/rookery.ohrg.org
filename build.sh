@@ -50,7 +50,7 @@ if [ -n "${FONTS_GITHUB_TOKEN}" ]; then
     curl -fsSL \
       -H "Authorization: Bearer ${FONTS_GITHUB_TOKEN}" \
       -H "Accept: application/vnd.github.raw+json" \
-      "https://api.github.com/repos/digitaltheorylab/fonts/contents/${font}" \
+      "https://api.github.com/repos/breezykermo/fonts/contents/${font}" \
       -o "fonts/${font}"
     echo "Downloaded: ${font}"
   done

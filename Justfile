@@ -18,8 +18,8 @@ default:
 # Headers fall back to the generic `monospace` until it has run.
 #
 # The TTFs are licensed and therefore gitignored: CI pulls them from the
-# private digitaltheorylab/fonts repo with FONTS_GITHUB_TOKEN, and a fresh
-# clone needs them dropped into `fonts/` by hand before this recipe works.
+# private breezykermo/fonts repo with FONTS_GITHUB_TOKEN, and a fresh clone
+# needs them dropped into `fonts/` by hand before this recipe works.
 fonts:
     mkdir -p build/html/fonts
     cp fonts/*.ttf build/html/fonts/
