@@ -102,8 +102,26 @@
   doc
 }
 
+// One bibliography for the whole rookery, alongside the theme and for the same
+// reason: it is a document-wide value, so every vertebra has to ask for the
+// same thing and this is the one file that asks.
+//
+// `bytes(read(...))` rather than a path. Typst resolves a path against the file
+// the call appears in, and rookery's own `#bibliography` call lives inside the
+// package — a path would be looked for next to the package's `lib.typ`. Reading
+// here resolves against THIS file, which is where `references.bib` sits.
+//
+// No `style:`: rookery defaults to an author-date style, because citation
+// numbering in Typst is document-wide and cannot be reset.
+#let BIBLIOGRAPHY = arguments(bytes(read("references.bib")))
+
 #let template(current-page: none, doc) = {
-  show: rookery.with(theme: THEME, idea-page-template: idea-page, window-depth: 0)
+  show: rookery.with(
+    theme: THEME,
+    idea-page-template: idea-page,
+    window-depth: 0,
+    bibliography: BIBLIOGRAPHY,
+  )
   show: chrome.with(current-page: current-page)
   doc
 }

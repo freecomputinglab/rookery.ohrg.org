@@ -45,5 +45,4 @@
 
 This site is written with rookery, and built with Rheo.#footnote[Which makes it the worked example for everything described here: every window, backlink and standalone page on this site is the package doing its own job. This footnote sits outside any idea, so it behaves as Typst's own does --- numbered across the page, and collected at the bottom of it, rather than in an idea's Footnotes block.]
 
-
-
+Its prose owes a debt to Pourciau's account of the digital ocean @pourciauDigitalOcean2022, cited here outside any idea --- so it collects in this page's own References block rather than in an idea's.

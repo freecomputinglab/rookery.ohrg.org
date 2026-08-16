@@ -70,6 +70,31 @@
     Leaving it out used to be silent --- the body went to the bottom of the page instead --- so it is now a build error telling you what to add.
     A footnote written outside any idea is untouched by that, and still behaves exactly as Typst's does.
   ]
+
+  #idea("citations", title: [Citations])[
+    Citations work the way footnotes do, and for the same reason: an idea that cites something carries its own References block, so the work you cited travels with the idea rather than staying behind on the page you first wrote it on.
+
+    One bibliography serves the whole rookery, configured once where you @idea:configuring[configure rookery]:
+
+    ```typ
+    #show: rookery.with(bibliography: arguments(
+      bytes(read("references.bib")),
+      style: "chicago-author-date",
+    ))
+    ```
+
+    Note the `bytes(read(...))` rather than a path.
+    Typst resolves a path relative to the file the call appears in, and rookery's own `#bibliography` call lives inside the package --- a path would be looked for next to the package rather than next to you.
+    Reading the file yourself resolves it against your own file, and both BibTeX and Hayagriva work.
+
+    Then cite as you always would, and the idea collects what it cited.
+    This one cites Pourciau on the digital ocean @pourciauDigitalOcean2022, and that reference appears below rather than at the foot of the page.
+
+    Leave `style` unset and rookery picks an author-date style.
+    Citation numbering in Typst is document-wide and nothing can reset it, so under a numeric style the third idea on a page reads `[3]`, and an idea's standalone page can show its only reference as `[7]`.
+    Author-date has no numbers, so the question does not arise.
+    A numeric style is still honoured if you ask for one.
+  ]
 ]
 
 #idea("referencing-ideas", title: [Referencing ideas])[
@@ -167,6 +192,10 @@
     An idea's @idea:footnotes[footnotes] travel with it into a window, numbered from 1 again and listed in the window's own block --- open this one and compare it with the same idea further up the page:
 
     #window(<footnotes>, folded: true)
+
+    So do its @idea:citations[citations]: a window carries its own References block, resolving inside the window rather than pointing back at the idea's own page.
+
+    #window(<citations>, folded: true)
 
     #idea("window-depth", title: [Controlling window depth])[
       Windows on ideas that are parents in the idea hierarchy can infinitely recurse.
