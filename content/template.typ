@@ -103,7 +103,7 @@
 }
 
 #let template(current-page: none, doc) = {
-  show: rookery.with(theme: THEME, idea-page-template: idea-page, window-depth: 1)
+  show: rookery.with(theme: THEME, idea-page-template: idea-page, window-depth: 0)
   show: chrome.with(current-page: current-page)
   doc
 }
