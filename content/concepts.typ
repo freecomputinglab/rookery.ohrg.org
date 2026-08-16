@@ -165,15 +165,15 @@
 
     By default, this window will be unfolded, showing the full content of the idea.
     If we want it to instead be folded, we can configure it with arguments.
-    We can also pass #link("https://typst.app/docs/reference/foundations/array/")[an array] of ideas to window on multiple ideas, and limit
+    We can also pass #link("https://typst.app/docs/reference/foundations/array/")[an array] of ideas to window on multiple ideas:
 
     ```typ
     #window(
       (<first-idea>, <second-idea>, <third-idea>),
       // only show the idea's name and id
       folded: true,
-      // limit the number of ideas shown
-      limit: 1,
+      // limit the number of lines shown in the window
+      limit: 12,
       // include the document date
       show-date: true,
     )
