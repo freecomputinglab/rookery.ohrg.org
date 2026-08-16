@@ -215,6 +215,13 @@
   --rookery-search-hover: var(--hover-fill);
   --rookery-search-id-color: var(--muted);
   --rookery-search-width: 12rem;
+  /* The input stays narrow enough to sit in the header; the dropdown is free
+     to be wider, and has to be — a title and its id share a line. Measured
+     against the longest pair this site actually has ("Do I need to use Rheo
+     to use rookery?" beside `idea:using-typst`), which is what it takes for
+     every result here to sit on one line. The package keeps it inside the
+     viewport on a narrow screen, so this is a ceiling, not a promise. */
+  --rookery-search-max-width: 32em;
   --rookery-search-max-height: 24em;
 }
 
@@ -240,10 +247,16 @@
   font-family: var(--mono-font);
 }
 
-/* The dropdown hangs below a sticky header, so it has to clear the rest of the
-   page. `.site-header` is `z-index: 10`; this sits above it. */
+/* The bar is the last thing in the header, hard against the right margin, so
+   the dropdown grows LEFTWARD from that edge — the package anchors it left by
+   default, which here would push it off the side of the page. Everything else
+   about its width is the package's: it sizes to its widest row so a title and
+   its id sit on one line, floored at the input's width and capped below.
+
+   The width cap itself is set with the rest of the properties above. */
 .rookery-search-results {
-  z-index: 20;
+  left: auto;
+  right: 0;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
@@ -434,5 +447,23 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
   body {
     padding: 12px;
     font-size: 0.9em;
+  }
+
+  /* The search goes full-width on its own line. Capping the dropdown's WIDTH
+     is not enough at this size: it hangs from the right-hand edge of an input
+     that is itself only a few centimetres from the right margin, so a dropdown
+     wide enough to hold a title and an id runs off the LEFT of the screen —
+     a position problem, which no `max-width` can solve.
+
+     Letting the bar span the header fixes it at the root: the input's own
+     edges become the header's, so the dropdown (never narrower than the input,
+     never wider than the viewport) lands inside the screen by construction. */
+  .rookery-search {
+    display: block;
+    width: 100%;
+  }
+
+  .rookery-search-input {
+    width: 100%;
   }
 }
