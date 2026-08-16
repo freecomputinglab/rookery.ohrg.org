@@ -257,3 +257,54 @@
 
   #ideas-outline(title: none, rookery-wide: true)
 ]
+
+#idea("searching", title: [Searching ideas])[
+  An outline lists your rookery. Searching it is a separate package,
+  `@rheo/rookery-search`, and it is worth knowing that it comes in three layers,
+  because only the top one needs Rheo.
+
+  `#ideas()` is the bottom layer, and it lives in rookery itself: every idea in
+  the rookery as plain data — its id, its title, its dates, and a link to its
+  page. Everything else is built on it, and so can anything you want to write.
+
+  `#search-ideas("query")` ranks that corpus and hands back the matches, still as
+  data. It is ordinary Typst, so it runs under plain `typst compile` with no Rheo
+  and no JavaScript at all:
+
+  ```typ
+  #import "@rheo/rookery-search:0.1.0": search-ideas
+  #context {
+    for e in search-ideas("window") [ - #link(e.href, e.text) ]
+  }
+  ```
+
+  That is a search rendered at compile time — a static list of matches, which is
+  a perfectly good answer for a printed target, or for a site that would rather
+  not ship a script.
+
+  `#search-bar()` is the top layer, and the one in the header of this page. It
+  puts the corpus on the page as JSON, adds an input, and wires the two together
+  in the browser. This is the layer that needs Rheo: its results link to the
+  standalone pages Rheo mints, and its behaviour comes from a script Rheo
+  injects. Without Rheo it emits nothing, rather than a search box that could
+  never work.
+
+  ```typ
+  #import "@rheo/rookery-search:0.1.0": search-bar
+  #search-bar(placeholder: "Search ideas", limit: 12)
+  ```
+
+  Matching runs over an idea's id _and_ its title, never its body, and it is a
+  subsequence match — so `wnd` finds @idea:windows. A `-` or `_` reads as a
+  space, which is why `window-depth` is findable as "window depth" too.
+
+  If the bar is not the interface you want, you are not stuck with it. Iterate
+  `#search-ideas` in Typst and render whatever you like, or rank in the browser
+  with the same rule the bar uses, exposed there as `RheoRookerySearch.score`.
+  What you should not do is write a second ranking rule of your own: the package
+  keeps its Typst and JavaScript copies pinned to each other by a test, and a
+  third copy would drift from both.
+
+  This site is written with rookery, so this idea is in that index like any
+  other — the search box above will find it.
+]

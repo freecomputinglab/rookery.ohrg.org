@@ -10,6 +10,12 @@
 // that body — including the `doc` returned at the end — exactly as it does at
 // the top of a file.
 #import "@rheo/rookery:0.1.0": rookery
+// Search ships as its own package. Both imports have to be written HERE, in the
+// site's own file: rheo scans only a project's own `.typ` files for package
+// imports, so a package reached transitively through another one contributes
+// nothing — no stylesheet, no script, and (for rookery) no minted note pages at
+// all, which would leave the search index with nothing to link to.
+#import "@rheo/rookery-search:0.1.0": search-bar
 
 // Ids on this site use rookery's default `idea:<name>` prefix, so no
 // `prefix:` argument is passed below. The theme replaces rookery's default
@@ -62,6 +68,16 @@
           .join(),
       )
     ]
+    // After the nav, so `.site-nav`'s `margin-left: auto` pushes both to the
+    // far end of the bar and the search sits last. It goes inside
+    // `.site-header-inner` rather than after the header, because it belongs to
+    // the same flex row as the wordmark and the nav — the bar is phrasing
+    // content and can sit anywhere text can, which is what makes that possible.
+    //
+    // `limit: 12` rather than the package's default 8: this site is around
+    // twenty-five notes, so twelve is a real slice of the rookery rather than a
+    // truncation, and still short enough to read without scrolling.
+    #search-bar(placeholder: "Search ideas", limit: 12)
   ]
 ]
 

@@ -187,6 +187,67 @@
 }
 
 /* ============================================
+   Search
+
+   The bar itself comes from `@rheo/rookery-search`, placed in the header by
+   `site-header` in content/template.typ. Nothing here reimplements it: the
+   matching, the dropdown and the keyboard handling all ship with the package,
+   and this site only dresses them.
+
+   Almost all of it is done by setting the package's `--rookery-search-*`
+   properties from this site's own, which is the route to prefer — a property
+   is a value the package asked for, where a rule is a value it did not. Only
+   the two things it has no property for (the label typography, and the title
+   line) are written as rules.
+
+   Those rules DO win, even though the package's stylesheet is linked after this
+   one: it wraps everything in `@layer rookery-search`, and unlayered CSS beats
+   layered CSS whatever the order or specificity. So if an override here ever
+   stops taking, the layer is the thing to check — never reach for `!important`.
+   ============================================ */
+.rookery-search {
+  --rookery-search-fg: var(--text-color);
+  --rookery-search-bg: var(--background-color);
+  --rookery-search-border: var(--rule);
+  --rookery-search-radius: 3px;
+  /* The same fill the nav entries and note ids take, so a highlighted result
+     reads as the same gesture as a hovered nav entry. */
+  --rookery-search-hover: var(--hover-fill);
+  --rookery-search-id-color: var(--muted);
+  --rookery-search-width: 12rem;
+  --rookery-search-max-height: 24em;
+}
+
+/* Mono and small, like the nav beside it: the search box is site furniture,
+   not writing, and the two sit in the same row. */
+.rookery-search-input {
+  font-family: var(--mono-font);
+  font-size: var(--label-size);
+}
+
+.rookery-search-input::placeholder {
+  color: var(--muted);
+}
+
+/* A result is a note's name, so it takes Inter like every other note title,
+   with the id beside it in mono — the same division of labour the rest of the
+   site uses. */
+.rookery-search-title {
+  font-family: var(--heading-font);
+}
+
+.rookery-search-id {
+  font-family: var(--mono-font);
+}
+
+/* The dropdown hangs below a sticky header, so it has to clear the rest of the
+   page. `.site-header` is `z-index: 10`; this sits above it. */
+.rookery-search-results {
+  z-index: 20;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
    Landing page banner
    ============================================ */
 .hero {
