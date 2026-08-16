@@ -51,30 +51,30 @@
   ```
 
   #idea("footnotes", title: [Footnotes])[
-    A footnote belongs to the idea you wrote it in, not to the page that happens to be showing it.
-    Import `footnote` from rookery alongside `idea`, and write it as you always would:
+    A footnote belongs to the idea in which you write it in, just as @idea:citations[citations] do.
+    So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function:
 
     ```typ
     #import "@rheo/rookery:0.1.0": idea, footnote
-    #idea("etal")[A claim#footnote[The evidence.] worth qualifying.]
+    #idea("etal")[
+      A claim#footnote[The evidence.] worth qualifying.
+    ]
     ```
 
-    Numbering runs per idea, so two ideas on one page may each carry a footnote 1.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
-    That is the point rather than a collision: a reader meets a note in the context of one idea, and a number counting the whole page would be counting something they cannot see.
+    Footnote numbering is idea-local.
+    This means that there may be two footnotes labelled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
 
-    The bodies collect in a Footnotes block at the end of the idea, and that block follows the idea everywhere it goes --- this page, any @idea:windows[window] on it, and its own standalone page.#footnote[Each of those gets its own copy, with its own anchors. A footnote reference is a same-page link, so a window on another page needs its target on that page.]
-    On a standalone page it sits between the body and the Context and Backlinks footer.
+    Footnote listings occur at the end of each idea.#footnote[Ideas will show footnotes everywhere their content appears: in their hatching context, their standalone page, and their @idea:windows[windows].A footnote reference is a same-page link, so a window on another page needs its target on that page.]
+    On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
 
-    You must _import_ `footnote` for any of this to happen.
-    Typst imports are per-file, so every page that writes a footnote needs it in its own import line.
-    Leaving it out used to be silent --- the body went to the bottom of the page instead --- so it is now a build error telling you what to add.
-    A footnote written outside any idea is untouched by that, and still behaves exactly as Typst's does.
+    A footnote written outside an idea's context proxies the #link("https://typst.app/docs/reference/model/footnote/")[native Typst function] so that it behaves normally.
   ]
 
   #idea("citations", title: [Citations])[
-    Citations work the way footnotes do, and for the same reason: an idea that cites something carries its own References block, so the work you cited travels with the idea rather than staying behind on the page you first wrote it on.
+    A citation belongs to the idea in which you write it, just as @idea:footnotes[footnotes] do.
+    Bibliographies, like footnotes, are produced at the end of an idea.
 
-    One bibliography serves the whole rookery, configured once where you @idea:configuring[configure rookery]:
+    In contrast to footnotes, however, _all citations in a rookery draw from a global bibliography_ that is @idea:configuring[configured once] like so:
 
     ```typ
     #show: rookery.with(bibliography: arguments(
@@ -83,17 +83,13 @@
     ))
     ```
 
-    Note the `bytes(read(...))` rather than a path.
-    Typst resolves a path relative to the file the call appears in, and rookery's own `#bibliography` call lives inside the package --- a path would be looked for next to the package rather than next to you.
-    Reading the file yourself resolves it against your own file, and both BibTeX and Hayagriva work.
+    You must use `bytes(read(...))` rather than a path to pass a reference file, but rookery bibliographies otherwise work the same as #link("https://typst.app/docs/reference/model/bibliography/")[Typst bibliographies].
 
-    Then cite as you always would, and the idea collects what it cited.
-    This one cites Pourciau on the digital ocean @pourciauDigitalOcean2022, and that reference appears below rather than at the foot of the page.
+    Once a rookery is configured with a bibliography, you can cite as you naturally would in Typst @maedje2022typst.
 
-    Leave `style` unset and rookery picks an author-date style.
-    Citation numbering in Typst is document-wide and nothing can reset it, so under a numeric style the third idea on a page reads `[3]`, and an idea's standalone page can show its only reference as `[7]`.
-    Author-date has no numbers, so the question does not arise.
-    A numeric style is still honoured if you ask for one.
+    Citation numbering is rookery-wide, which means that numeric styles will not be scoped to each idea.
+    (An idea with one citation may show it as `[7]`, for example, if it is the 7#super[th] citation in the rookery.)
+    For this reason we recommend using #link("https://typst.app/docs/reference/model/bibliography/#parameters-style")[citation styles] that don't employ numbers such as `"author-date"`.
   ]
 ]
 

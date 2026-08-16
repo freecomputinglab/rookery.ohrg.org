@@ -21,7 +21,7 @@
   ```
 
   That's it!
-  You're now ready to build out a rookery.
+  You're now ready to hatch some ideas in a rookery.
 
 ]
 
