@@ -258,6 +258,17 @@
   font-family: var(--mono-font);
 }
 
+/* The package already asks for an undecorated row, but it asks from inside
+   `@layer rookery-search`, and this stylesheet's own `a { text-decoration:
+   underline }` is unlayered — unlayered beats layered whatever the order, so
+   the site is the only place that can take the underline back off. A result
+   should read as a note's title followed by its id, the way it reads inline,
+   and an underline under the whole row makes it read as a link to somewhere
+   else. */
+.rookery-search-row {
+  text-decoration: none;
+}
+
 /* The bar is the last thing in the header, hard against the right margin, so
    the dropdown grows LEFTWARD from that edge — the package anchors it left by
    default, which here would push it off the side of the page. Everything else
