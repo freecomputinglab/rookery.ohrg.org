@@ -9,7 +9,7 @@
 // It works because `show: f` inside a function body applies to the rest of
 // that body — including the `doc` returned at the end — exactly as it does at
 // the top of a file.
-#import "@rheo/rookery:0.1.0": rookery
+#import "@rheo/rookery:0.1.1": rookery
 // Search ships as its own package. Both imports have to be written HERE, in the
 // site's own file: rheo scans only a project's own `.typ` files for package
 // imports, so a package reached transitively through another one contributes

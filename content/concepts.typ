@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.1.0": footnote, idea, ideas-outline, note, todo, window
+#import "@rheo/rookery:0.1.1": footnote, idea, ideas-outline, note, todo, window
 
 #show: template.with(current-page: "concepts")
 #set document(
@@ -14,7 +14,7 @@
   The `#idea` function at its most basic takes the content of an idea.
 
   ```typ
-  #import "@rheo/rookery:0.1.0": idea
+  #import "@rheo/rookery:0.1.1": idea
   #idea[Hatch a new idea.]
   ```
 
@@ -45,7 +45,7 @@
   Rookery also provides syntactic sugar for ideas with common tags:
 
   ```typ
-  #import "@rheo/rookery:0.1.0": todo, note
+  #import "@rheo/rookery:0.1.1": todo, note
   #todo[A todo.] // #idea(..., tags: ("todo"))
   #note[A note.] // #idea(..., tags: ("note"))
   ```
@@ -55,7 +55,7 @@
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function:
 
     ```typ
-    #import "@rheo/rookery:0.1.0": idea, footnote
+    #import "@rheo/rookery:0.1.1": idea, footnote
     #idea("etal")[
       A claim#footnote[The evidence.] worth qualifying.
     ]
@@ -112,7 +112,7 @@
     The following three bullets all produce the same result: a hyperlink that reads 'My first idea' to the idea's standalone page.
 
     ```typ
-    #import "@rheo/rookery:0.1.0": hyperlink
+    #import "@rheo/rookery:0.1.1": hyperlink
     - @idea:first-idea
     - @idea:first-idea[My first idea]
     - #hyperlink(<first-idea>)[My first idea]
@@ -130,7 +130,7 @@
     If you want to redirect _all_ `@idea:x`-style references to anchors, `#hyperlink` is also `@idea:x`'s renderer, installed as a `show ref:` rule — `.with()` it instead of the default:
 
     ```typ
-    #import "@rheo/rookery:0.1.0": hyperlink
+    #import "@rheo/rookery:0.1.1": hyperlink
     #show ref: hyperlink.with(link-to: "anchor")
     - @idea:first-idea // will link to anchor
     ```
@@ -155,7 +155,7 @@
     You can produce a window on this idea like so:
 
     ```typ
-    #import "@rheo/rookery:0.1.0": window
+    #import "@rheo/rookery:0.1.1": window
     #window(<first-idea>)
     ```
 
@@ -227,7 +227,7 @@
   You can outline the ideas in a context like so:
 
   ```typ
-  #import "@rheo/rookery:0.1.0": ideas-outline
+  #import "@rheo/rookery:0.1.1": ideas-outline
   #ideas-outline()
   ```
 

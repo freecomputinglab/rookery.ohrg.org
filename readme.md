@@ -10,7 +10,7 @@ just watch   # live-rebuild and open
 just build   # one-shot HTML into build/
 ```
 
-`@rheo/rookery:0.1.0` resolves from the Typst package cache; on this machine
+`@rheo/rookery:0.1.1` resolves from the Typst package cache; on this machine
 the whole `rheo-packages` repo is symlinked in as the `rheo` namespace, so
 edits to the package land here on the next rebuild with no publish step.
 

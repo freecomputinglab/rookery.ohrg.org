@@ -1,7 +1,7 @@
 default:
     @echo "rookery.ohrg.org: 'just watch' to live-rebuild, 'just build' for a one-shot"
 
-# `@rheo/rookery:0.1.0` and `@rheo/rookery-search:0.1.0` are fetched from the
+# `@rheo/rookery:0.1.1` and `@rheo/rookery-search:0.1.0` are fetched from the
 # rheo-packages GitHub releases into the Typst package cache, by rheo itself —
 # nothing to install. To iterate on a package's source instead of the published
 # tarball, displace the cached copy with a symlink to the working tree:
