@@ -21,6 +21,10 @@
   When rookeries are compiled with #link("https://rheo.ohrg.org")[Rheo], every idea can be rendered as a webpage, a PDF, or an EPUB, at any time.
   This is true also for _collections_ of ideas, ranging from a set of associated notes to your entire rookery.
 
+  Get started building your own rookery today:
+
+  #window((<installing>), folded: false)
+
   #idea("idea", title: [An idea])[
     An idea in a @idea:rookery[rookery] is written in #link("https://typst.app/")[Typst].
     Every idea can be referenced by any other idea or page in the same rookery.
@@ -37,12 +41,7 @@
     #window("hatching-ideas", folded: true)
     #window("referencing-ideas", folded: true)
   ]
-
-  You can get started building your own rookery today:
-
-  #window((<installing>, <configuring>), folded: true)
 ]
 
-This site is written with rookery, and built with Rheo.#footnote[Which makes it the worked example for everything described here: every window, backlink and standalone page on this site is the package doing its own job. This footnote sits outside any idea, so it behaves as Typst's own does --- numbered across the page, and collected at the bottom of it, rather than in an idea's Footnotes block.]
-
-Its prose owes a debt to Pourciau's account of the digital ocean @pourciauDigitalOcean2022, cited here outside any idea --- so it collects in this page's own References block rather than in an idea's.
+This site is a rookery.
+Everything you see here exemplifies rookery features such as @idea:windows[windows], @idea:hyperlinks[hyperlinks], and @idea:outlining[outlining].
