@@ -1,2 +1,5 @@
 .beads/
 .abacus/
+build/
+.rheo-binary/
+fonts/*.ttf

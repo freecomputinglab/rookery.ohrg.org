@@ -1,4 +1,4 @@
-version = "0.5.1"
+version = "0.5.2"
 content_dir = "content"
 
 # `template.typ` is a library, not a page — every other `.typ` under
