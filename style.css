@@ -229,10 +229,11 @@
      to be wider, and has to be — a title and its id share a line. Measured
      against the longest pair this site actually has ("Do I need to use Rheo
      to use rookery?" beside `idea:using-typst`), which is what it takes for
-     every result here to sit on one line. It is the panel's width, not a cap:
-     it stays put whatever is matching. The package still shrinks it to fit a
-     narrow viewport. */
-  --rookery-search-results-width: 32em;
+     every result here to sit on one line. A ceiling rather than a width: the
+     panel hugs whatever is matching and only reaches this when the longest
+     pair is in play. The package shrinks it further to fit a narrow
+     viewport. */
+  --rookery-search-max-width: 32em;
   --rookery-search-max-height: 24em;
 }
 
