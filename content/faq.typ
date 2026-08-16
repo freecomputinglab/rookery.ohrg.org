@@ -30,7 +30,7 @@
     Though there is no inbuilt sense in which one idea can depend on or be blocked by another, you can create a stronger dependency system over tags, i.e. using a `blockedby:xxx` convention.
   ]
 
-  #idea(title: [What are other tools like rookery?])[
+  #idea(<other-tools>, title: [What are other tools like rookery?])[
     Rookery was #link(<idea:inspiration>)[inspired by a range of existing knowledge management tools].
     The open source system most similar to rookery---and which chiefly inspired it---is probably #link("https://www.forester-notes.org/30FM/index.xml")[forester], an #link("https://sr.ht/~jonsterling/forester/")[OCaml engine] that Jon Sterling develops to power #link("https://www.jonmsterling.com/")[his website].
     A non-exhaustive list of the differences between forester and rookery:
