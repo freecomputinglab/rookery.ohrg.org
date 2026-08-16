@@ -77,6 +77,12 @@
      `.idea-*` ancestor to inherit it from, so it is written once more here.
      Keep the two in step. */
   --hover-fill: rgba(230, 140, 0, 0.16);
+  /* What an OUTBOUND link's underline takes on hover, where an internal one
+     takes `--hover-fill` behind it. Read by rookery's own stylesheet for links
+     inside an idea, and by the `a[href^="http"]` rule below for the prose
+     outside one, so both halves of the site agree. The accent rather than the
+     fill: the fill is translucent, and a 2px line drawn in it barely shows. */
+  --idea-external-color: var(--accent);
 }
 
 /* ============================================
@@ -208,7 +214,11 @@
 .rookery-search {
   --rookery-search-fg: var(--text-color);
   --rookery-search-bg: var(--background-color);
-  --rookery-search-border: var(--rule);
+  /* The same line an idea draws down its left edge and an outline draws down
+     its rows — `--idea-border-color` falls through to the theme's link colour,
+     which is this. The bar sits in the header with no `.idea-*` ancestor to
+     inherit that from, so it is named here rather than left to the fallback. */
+  --rookery-search-border: var(--hover-fill);
   --rookery-search-radius: 3px;
   /* The same fill the nav entries and note ids take, so a highlighted result
      reads as the same gesture as a hovered nav entry. */
@@ -219,9 +229,10 @@
      to be wider, and has to be — a title and its id share a line. Measured
      against the longest pair this site actually has ("Do I need to use Rheo
      to use rookery?" beside `idea:using-typst`), which is what it takes for
-     every result here to sit on one line. The package keeps it inside the
-     viewport on a narrow screen, so this is a ceiling, not a promise. */
-  --rookery-search-max-width: 32em;
+     every result here to sit on one line. It is the panel's width, not a cap:
+     it stays put whatever is matching. The package still shrinks it to fit a
+     narrow viewport. */
+  --rookery-search-results-width: 32em;
   --rookery-search-max-height: 24em;
 }
 
@@ -357,8 +368,27 @@ a {
   text-decoration: underline;
 }
 
-a:hover {
+/* Two kinds of link, two weights of response. Staying inside the rookery is
+   the ordinary case and keeps the ordinary hover — the whole link dims, the
+   same gesture the nav and the note ids make. Leaving is the exceptional one,
+   and gets the quieter signal: the underline takes the accent and thickens,
+   the text itself untouched. The difference should be felt rather than read,
+   which is why it is a change of channel and not a louder version of the same
+   change.
+
+   `[href^="http"]` is the test, and it holds because rheo emits every
+   in-project link as a depth-relative path — nothing internal carries a
+   scheme. Inside an idea, rookery's own stylesheet draws the same distinction
+   with the same colours (see `--idea-external-color` below); these rules are
+   for the prose that sits outside one. */
+a:not([href^="http"]):hover {
   opacity: 0.7;
+}
+
+a[href^="http"]:hover {
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 0.15em;
 }
 
 /* ============================================
