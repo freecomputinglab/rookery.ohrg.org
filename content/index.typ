@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.1.0": idea, note, todo, window
+#import "@rheo/rookery:0.1.0": footnote, idea, note, todo, window
 
 #show: template.with(current-page: "index")
 #set document(
@@ -42,6 +42,8 @@
 
   #window((<installing>, <configuring>), folded: true)
 ]
+
+This site is written with rookery, and built with Rheo.#footnote[Which makes it the worked example for everything described here: every window, backlink and standalone page on this site is the package doing its own job. This footnote sits outside any idea, so it behaves as Typst's own does --- numbered across the page, and collected at the bottom of it, rather than in an idea's Footnotes block.]
 
 
 

@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.1.0": idea, ideas-outline, note, todo, window
+#import "@rheo/rookery:0.1.0": footnote, idea, ideas-outline, note, todo, window
 
 #show: template.with(current-page: "concepts")
 #set document(
@@ -49,6 +49,27 @@
   #todo[A todo.] // #idea(..., tags: ("todo"))
   #note[A note.] // #idea(..., tags: ("note"))
   ```
+
+  #idea("footnotes", title: [Footnotes])[
+    A footnote belongs to the idea you wrote it in, not to the page that happens to be showing it.
+    Import `footnote` from rookery alongside `idea`, and write it as you always would:
+
+    ```typ
+    #import "@rheo/rookery:0.1.0": idea, footnote
+    #idea("etal")[A claim#footnote[The evidence.] worth qualifying.]
+    ```
+
+    Numbering runs per idea, so two ideas on one page may each carry a footnote 1.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
+    That is the point rather than a collision: a reader meets a note in the context of one idea, and a number counting the whole page would be counting something they cannot see.
+
+    The bodies collect in a Footnotes block at the end of the idea, and that block follows the idea everywhere it goes --- this page, any @idea:windows[window] on it, and its own standalone page.#footnote[Each of those gets its own copy, with its own anchors. A footnote reference is a same-page link, so a window on another page needs its target on that page.]
+    On a standalone page it sits between the body and the Context and Backlinks footer.
+
+    You must _import_ `footnote` for any of this to happen.
+    Typst imports are per-file, so every page that writes a footnote needs it in its own import line.
+    Leaving it out used to be silent --- the body went to the bottom of the page instead --- so it is now a build error telling you what to add.
+    A footnote written outside any idea is untouched by that, and still behaves exactly as Typst's does.
+  ]
 ]
 
 #idea("referencing-ideas", title: [Referencing ideas])[
@@ -142,6 +163,10 @@
     #window((<rookery>, <idea>), folded: true, show-date: true)
 
     Adding a window to an idea will include the window's context in the idea's backlinks.
+
+    An idea's @idea:footnotes[footnotes] travel with it into a window, numbered from 1 again and listed in the window's own block --- open this one and compare it with the same idea further up the page:
+
+    #window(<footnotes>, folded: true)
 
     #idea("window-depth", title: [Controlling window depth])[
       Windows on ideas that are parents in the idea hierarchy can infinitely recurse.
