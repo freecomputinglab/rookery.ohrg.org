@@ -195,15 +195,15 @@
 /* ============================================
    Search
 
-   The bar itself comes from `@rheo/rookery-search`, placed in the header by
-   `site-header` in content/template.typ. Nothing here reimplements it: the
-   matching, the dropdown and the keyboard handling all ship with the package,
-   and this site only dresses them.
+   The trigger button and the modal come from `@rheo/rookery-search`, placed
+   in the header by `site-header` in content/template.typ. Nothing here
+   reimplements it: the matching, the two-pane layout and the keyboard
+   handling all ship with the package, and this site only dresses them.
 
    Almost all of it is done by setting the package's `--rookery-search-*`
    properties from this site's own, which is the route to prefer — a property
    is a value the package asked for, where a rule is a value it did not. Only
-   the two things it has no property for (the label typography, and the title
+   the things it has no property for (the label typography, and the title
    line) are written as rules.
 
    Those rules DO win, even though the package's stylesheet is linked after this
@@ -211,34 +211,42 @@
    layered CSS whatever the order or specificity. So if an override here ever
    stops taking, the layer is the thing to check — never reach for `!important`.
    ============================================ */
-.rookery-search {
+/* On `.site-header-inner`, not `.rookery-search-trigger`: the trigger button
+   and the `<dialog>` are SIBLINGS (`#search-modal` emits them one after the
+   other, not one wrapping the other, unlike the old `#search-bar`'s single
+   `.rookery-search` span), so a property has to sit on an ancestor common to
+   both. The dialog rendering in the top layer only changes paint order, not
+   the DOM tree custom properties inherit through — a shared ancestor still
+   reaches it. */
+.site-header-inner {
   --rookery-search-fg: var(--text-color);
   --rookery-search-bg: var(--background-color);
   /* The same line an idea draws down its left edge and an outline draws down
      its rows — `--idea-border-color` falls through to the theme's link colour,
-     which is this. The bar sits in the header with no `.idea-*` ancestor to
-     inherit that from, so it is named here rather than left to the fallback. */
+     which is this. The header has no `.idea-*` ancestor to inherit that from,
+     so it is named here rather than left to the fallback. */
   --rookery-search-border: var(--hover-fill);
   --rookery-search-radius: 3px;
-  /* The same fill the nav entries and note ids take, so a highlighted result
+  /* The same fill the nav entries and note ids take, so a selected result
      reads as the same gesture as a hovered nav entry. */
   --rookery-search-hover: var(--hover-fill);
   --rookery-search-id-color: var(--muted);
-  --rookery-search-width: 12rem;
-  /* The input stays narrow enough to sit in the header; the dropdown is free
-     to be wider, and has to be — a title and its id share a line. Measured
-     against the longest pair this site actually has ("Do I need to use Rheo
-     to use rookery?" beside `idea:using-typst`), which is what it takes for
-     every result here to sit on one line. A ceiling rather than a width: the
-     panel hugs whatever is matching and only reaches this when the longest
-     pair is in play. The package shrinks it further to fit a narrow
-     viewport. */
-  --rookery-search-max-width: 32em;
-  --rookery-search-max-height: 24em;
+  /* Neutral, not the theme's amber: a backdrop dims the WHOLE page behind
+     it, and an amber dim would tint every colour on the page including ones
+     the theme never touches. No modal width/height override — the package's
+     own defaults (`min(56rem, 100vw - 2rem)` / `min(32rem, 100vh - 8rem)`)
+     already fit this site with no measurement pointing to a better number,
+     unlike the old dropdown's width cap below, which WAS measured against
+     this site's own longest title/id pair. */
+  --rookery-search-backdrop: rgba(0, 0, 0, 0.4);
+  /* The same fill the hover/selection states use, so a highlighted term reads
+     as the same gesture as the rest of the theme's amber accent. */
+  --rookery-search-mark: var(--hover-fill);
 }
 
-/* Mono and small, like the nav beside it: the search box is site furniture,
-   not writing, and the two sit in the same row. */
+/* Mono and small, like the nav beside it: the search input is site furniture,
+   not writing, whether it is the trigger's own placeholder text or the
+   modal's. */
 .rookery-search-input {
   font-family: var(--mono-font);
   font-size: var(--label-size);
@@ -268,19 +276,6 @@
    else. */
 .rookery-search-row {
   text-decoration: none;
-}
-
-/* The bar is the last thing in the header, hard against the right margin, so
-   the dropdown grows LEFTWARD from that edge — the package anchors it left by
-   default, which here would push it off the side of the page. Everything else
-   about its width is the package's: it sizes to its widest row so a title and
-   its id sit on one line, floored at the input's width and capped below.
-
-   The width cap itself is set with the rest of the properties above. */
-.rookery-search-results {
-  left: auto;
-  right: 0;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 }
 
 /* ============================================
@@ -491,21 +486,11 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     font-size: 0.9em;
   }
 
-  /* The search goes full-width on its own line. Capping the dropdown's WIDTH
-     is not enough at this size: it hangs from the right-hand edge of an input
-     that is itself only a few centimetres from the right margin, so a dropdown
-     wide enough to hold a title and an id runs off the LEFT of the screen —
-     a position problem, which no `max-width` can solve.
-
-     Letting the bar span the header fixes it at the root: the input's own
-     edges become the header's, so the dropdown (never narrower than the input,
-     never wider than the viewport) lands inside the screen by construction. */
-  .rookery-search {
-    display: block;
-    width: 100%;
-  }
-
-  .rookery-search-input {
-    width: 100%;
-  }
+  /* No search rules here any more. The trigger button is already compact
+     (an icon and a `<kbd>` hint) and needs no narrow-viewport treatment of
+     its own, unlike the old dropdown, which had to be repositioned to avoid
+     running off the screen. The modal itself hides its preview pane and its
+     `<kbd>` hint below the PACKAGE's own breakpoint (40em ≈ 640px, at the
+     default root font size) — wider than this site's 600px, so it already
+     covers this range and the site should not duplicate it. */
 }
