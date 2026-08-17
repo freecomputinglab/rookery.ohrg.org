@@ -62,7 +62,7 @@
     ```
 
     Footnote numbering is idea-local.
-    This means that there may be two footnotes labelled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
+    This means that there may be two footnotes labeled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
 
     Footnote listings occur at the end of each idea.#footnote[Ideas will show footnotes everywhere their content appears: in their hatching context, their standalone page, and their @idea:windows[windows].A footnote reference is a same-page link, so a window on another page needs its target on that page.]
     On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
@@ -74,7 +74,7 @@
     A citation belongs to the idea in which you write it, just as @idea:footnotes[footnotes] do.
     Bibliographies, like footnotes, are produced at the end of an idea.
 
-    In contrast to footnotes, however, _all citations in a rookery draw from a global bibliography_ that is @idea:configuring[configured once] like so:
+    In contrast to footnotes, however, _all citations in a rookery draw from a global bibliography_ that is @idea:site-config[configured once] like so:
 
     ```typ
     #show: rookery.with(bibliography: arguments(
@@ -99,7 +99,7 @@
 
   IDs are normal #link("https://typst.app/docs/reference/foundations/label/")[Typst labels], meaning that compilation will fail if there is a duplicate.
   To ensure that rookery's labels don't easily clash with ones you create yourself, the prefix `idea:` is prepended to all of your idea IDs.
-  You can customize this prefix when you @idea:configuring[configure rookery].
+  You can customize this prefix when you @idea:site-config[configure rookery].
 
   #idea("hyperlinks", title: [Hyperlinks])[
     Hyperlinks are the lowest-touch way to reference an idea in rookery, and are implemented as regular #link("https://typst.app/docs/reference/model/ref/")[Typst references].
@@ -193,34 +193,24 @@
 
     #window(<citations>, folded: true)
 
-    #idea("window-depth", title: [Controlling window depth])[
-      Windows on ideas that are parents in the idea hierarchy can infinitely recurse.
-      By default they do not: a window written inside an idea you are windowing on collapses to its ID, so you always see one idea rather than a tree of them.
+    #idea("window-depth", title: [Window depth])[
+      Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
+      In order to prevent this, rookery has a notion of *window depth*, which is set to `1` by default.
 
-      Raise `depth` to unfurl those inner windows, one level per count:
+      When a window is called at a level of recursion greater than the window depth, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
+      It's best to think of window depth as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
 
-      ```typ
-      #window(<first-idea>, depth: 1)
-      ```
-
-      You can configure window depth rookery-wide like so:
-
+      You can set the window depth per window, or site-wide:
       ```typ
       #show: rookery.with(window-depth: 1)
       #window(<first-idea>)
-      #window(<second-idea>, depth: 0)
+      #window(<first-idea>, depth: 2)
       ```
 
-      The count is a budget, and it is what makes this safe to ask for.
-      An idea that windows on itself, or two that window on each other, would otherwise unfurl forever; with a budget they bottom out at the ID and stop.
-      Each level also re-renders the idea's body, so the work multiplies rather than adds --- keep the numbers small.
+      Here is a window on this selfsame idea.
+      Because this documentation uses the default depth of `1`, it only recurses as a window once, and then bottoms out as a link:
 
-      The count is relative to the surface you are looking at, and an idea's own minted page is such a surface rather than a transclusion of it: the windows an idea wrote in its own body always render there, and `window-depth` unfurls that many further levels inside them.
-
-      Here is a window on this idea's own parent, at the default depth.
-      Its own windows show only as ID links:
-
-      #window(<windows>, folded: true)
+      #window(<window-depth>, folded: true)
     ]
   ]
 ]
@@ -283,7 +273,7 @@
   `#search-bar()` is the top layer, and the one in the header of this page. It
   puts the corpus on the page as JSON, adds an input, and wires the two together
   in the browser. This is the layer that needs Rheo: its results link to the
-  standalone pages Rheo mints, and its behaviour comes from a script Rheo
+  standalone pages Rheo mints, and its behavior comes from a script Rheo
   injects. Without Rheo it emits nothing, rather than a search box that could
   never work.
 

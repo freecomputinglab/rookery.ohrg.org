@@ -25,130 +25,187 @@
 
 ]
 
-#idea("configuring", title: [Configuring rookery])[
+== Configuration
+
+#idea(<site-config>, title: [Site-wide configuration])[
   You can configure your rookery by calling a show rule after you import it.
 
+  ```typ
+  #import "@rheo/rookery:0.3.0": rookery
+  #show: rookery.with(
+    // IDs are now `note:etal` rather than `idea:etal`
+    prefix: "note",
+    // a window written inside a windowed idea unfurls one level
+    window-depth: 1,
+    // the accent every rookery link takes on hover
+    theme: (link-color: rgb("#e68c00")),
+  )
+  ```
 
-  #idea(<configure-block>)[
+  We suggest that you wrap this configuration in a template function that fronts every page:
+
+  ```typ
+  // template.typ
+  #import "@rheo/rookery:0.3.0": rookery
+  #let template(doc) = {
+    show: rookery.with(
+      theme: THEME,
+      idea-page-template: idea-page,
+      window-depth: 1,
+      bibliography: BIBLIOGRAPHY,
+    )
+    doc
+  }
+
+  // ...
+  // at the start of each file
+  #
+  #import "template.typ": template
+  #show: template
+  ```
+
+  #idea(<config-reference>, title: [Argument reference])[
+    #table(
+      columns: (auto, auto, 1fr),
+      table.header([Parameter], [Default], [What it sets]),
+
+      [`prefix`],
+      [`"idea"`],
+      [The namespace an idea's ID lives in; non-empty, no `:` (the separator is added for you). See @idea:referencing-ideas[referencing ideas].],
+
+      [`window-depth`],
+      [`0`],
+      [How many levels of transclusion are allowed before a @idea:windows[window] bottoms out as a link to the idea's own page. `0` allows none. See @idea:window-depth[controlling window depth].],
+
+      [`theme`],
+      [`(:)`],
+      [The five colors the package will style for you; each key is also a parameter in its own right, and the granular form wins. See @idea:theming[theming a rookery].],
+
+      [`idea-page-template`],
+      [`none`],
+      [Your own chrome for the standalone page rookery mints per idea. See @idea:idea-template[idea template].],
+
+      [`bibliography`],
+      [`none`],
+      [Typst's own `#bibliography` arguments, for the single bibliography a rookery's @idea:citations[citations] all draw from.],
+    )
+  ]
+
+  #idea(<theming>, title: [Theming a rookery])[
+    A rookery's look is five colors, which you hand it as the `theme:` dictionary:
+
     ```typ
     #import "@rheo/rookery:0.3.0": rookery
     #show: rookery.with(
-      // IDs are now `note:etal` rather than `idea:etal`
-      prefix: "note",
-      // a window written inside a windowed idea unfurls one level
-      window-depth: 1,
-      // the accent every rookery link takes on hover
-      theme: (link-color: rgb("#e68c00")),
+      theme: (
+        // the accent every rookery link takes on hover
+        link-color: rgb("#e68c00"),
+        // the quieter hover a foldable window gets
+        fold-color: "rgba(230, 140, 0, .05)",
+        // the left rule, where it should not follow `link-color`
+        border-color: rgb("#3d3d3d"),
+      ),
     )
     ```
 
-    We suggest that you wrap this configuration in a template function that fronts every page:
+    Each key can also be passed as a parameter directly to the `rookery` function, with will take precedence over the `theme` dictionary:
 
     ```typ
-    // template.typ
-    #import "@rheo/rookery:0.3.0": rookery
-    #let template(doc) = {
-      show: rookery.with(
-        theme: THEME,
-        idea-page-template: idea-page,
-        window-depth: 0,
-        bibliography: BIBLIOGRAPHY,
+    #show: rookery.with(
+      theme: MY-THEME,
+      link-color: rgb("#ffd166"),
+    )
+    ```
+
+    #idea(<theme-reference>, title: [Color reference])[
+      #table(
+        columns: (auto, auto, 1fr),
+        table.header([Color], [Default], [What it sets]),
+
+        [`link-color`],
+        [`rgba(128, 0, 255, .12)`],
+        [The hover background on any rookery link, and the fallback `border-color` takes when you leave it unset.],
+
+        [`fold-color`], [`rgba(0, 100, 255, .05)`], [The hover background on a foldable @idea:windows[window] block.],
+
+        [`id-color`], [`gray`], [The `[idea:etal]` ID's own text.],
+
+        [`date-color`], [`gray`], [An idea's or a window's date, where it is @idea:hatching-ideas[shown].],
+
+        [`border-color`],
+        [`link-color`],
+        [The left rule that an idea, a window and an @idea:outlining[outline] all carry.],
       )
-      doc
-    }
+    ]
 
-    // ...
-    // at the start of each file
-    #
-    #import "template.typ": template
-    #show: template
-    ```
+    #idea(<class-reference>, title: [Class reference])[
+
+      You can also style more granularly with your own CSS using the classes below.
+      A trailing `*` below stands for a family whose members are named in the description.
+
+      #table(
+        columns: (auto, 1fr),
+        table.header([Class], [What it is]),
+
+        [`.idea-box`],
+        [An idea's own block where it was written, carrying the left rule and the padding every rookery block nested inside it measures from.],
+
+        [`.idea-head`, `.idea-tab`], [The heading group, and the short top rule the ID straddles at the card's corner.],
+
+        [`.idea`, `.idea-title`],
+        [The idea's heading element---which carries the anchor an `@idea:etal` fragment resolves to---and the title text inside it.],
+
+        [`.idea-label`, `.idea-date`],
+        [The `[idea:etal]` permalink and the date beside it, in a heading, a window summary or prose, wherever either is @idea:hatching-ideas[shown].],
+
+        [`.idea-tag-<tag>`],
+        [One extra class per tag the idea carries, on each of the three elements that name it: its heading, its box and its outline row.],
+
+        [`.idea-ref`], [An `@idea:other` reference in prose. See @idea:referencing-ideas[referencing ideas].],
+
+        [`.idea-window`],
+        [A @idea:windows[transclusion], wearing the same rule and indent as `.idea-box`; the second class `.idea-window-plain` opts a bare `#idea-body` out of that box.],
+
+        [`.idea-window-*`],
+        [The fold: `-details` the `<details>`, `-summary` the row you click, `-title` and `-date` the two things in that row, `-body` what folds away under it.],
+
+        [`.idea-outline*`],
+        [A page's @idea:outlining[outline]: `.idea-outline` the list at each level of nesting, `-title` its "Contents" label, `-row` one row per idea.],
+
+        [`.idea-footnote*`],
+        [An idea's own @idea:footnotes[footnotes], carried on every surface it appears on: `.idea-footnotes` the block, `-title` its label, `.idea-footnote-list` and `.idea-footnote` its entries.],
+
+        [`.idea-fn-*`], [`-ref` the superscript mark in prose, `-backlink` the way back up to it from the entry.],
+
+        [`.idea-references`, `.idea-page-refs`],
+        [The bibliography an idea's @idea:citations[citations] draw from, and the page's own for citations written outside any idea.],
+
+        [`.idea-footer*`],
+        [On an @idea:idea-template[idea page]: `.idea-footer` the ruled-off apparatus under the note, `-title` the label on each of its sections.],
+
+        [`.idea-context`, `.idea-backlinks`],
+        [That footer's two sections: where the note was written, and the notes pointing at it.],
+
+        [`.idea-page-list`, `.idea-page-row`],
+        [A list of pages in either section, and one row in it---a page cannot fold, so it wears a window's shape without being one.],
+      )
+    ]
   ]
 
-  == Values
-
-  #table(
-    columns: (auto, auto, 1fr),
-    table.header([Parameter], [Default], [What it sets]),
-
-    [`prefix`],
-    [`"idea"`],
-    [The namespace an idea's ID lives in; non-empty, no `:` (the separator is added for you). See @idea:referencing-ideas[referencing ideas].],
-
-    [`window-depth`],
-    [`0`],
-    [How far a @idea:windows[window] written inside a windowed idea unfurls before it collapses to an ID. See @idea:window-depth[controlling window depth].],
-
-    [`theme`],
-    [`(:)`],
-    [The five colours the package will style for you; each key is also a parameter in its own right, and the granular form wins. See @idea:theming[theming a rookery].],
-
-    [`idea-page-template`],
-    [`none`],
-    [Your own chrome for the standalone page rookery mints per idea. See @idea:idea-pages[chrome for minted pages].],
-
-    [`bibliography`],
-    [`none`],
-    [Typst's own `#bibliography` arguments, for the single bibliography a rookery's @idea:citations[citations] all draw from.],
-  )
-
-  #idea("theming", title: [Theming a rookery])[
-    - `link-color` --- the hover background on any rookery link, defaulting to `rgba(128, 0, 255, .12)`.
-    - `fold-color` --- the hover background on a foldable @idea:windows[window] block, defaulting to `rgba(0, 100, 255, .05)`.
-    - `id-color` --- the `[idea:etal]` ID's own text, defaulting to `gray`.
-    - `date-color` --- an idea's or a window's date, where it is @idea:hatching-ideas[shown], also `gray`.
-    - `border-color` --- the left rule that an idea, a window and an @idea:outlining[outline] all carry, falling back to `link-color`.
-
-    The first two are the look, and the contrast between them is the point.
-    Both are hover _backgrounds_, so they compare like with like: the lighter blue belongs to the fold, a block that only opens and closes, and the stronger purple to every link, which actually goes somewhere.
-    (This site replaces that pair with an amber one, which is the only reason anything here looks the way it does rather than the way the package ships.)
-
-    Values are Typst colours, or raw CSS strings where you want something Typst's colour type cannot express---`"rgba(0, 100, 255, .1)"`, `"var(--accent)"`, `"transparent"`.
-    A misspelled key is a build error naming the five valid ones, rather than a colour that silently does nothing.
-
-    Each key is also a parameter in its own right, and the granular form wins over `theme:`, so the two compose:
+  #idea(<idea-template>, title: [Idea page template])[
+    Each @idea:idea[idea] in your rookery gets its own page.
+    By default, it shows the idea's title and ID, its body, and the context and backlinks footer.
+    You can set a template for it---to add a site header and footer, for example---like so:
 
     ```typ
-    #show: rookery.with(theme: MY-THEME, link-color: rgb("#ffd166"))
-    ```
-
-    That reads as 'my theme, but that one colour'.
-    Precedence runs least specific first: the stylesheet's own default, then `theme:`, then the granular argument.
-    Anything left unset at every level stays the stylesheet's default, and nothing is emitted for it at all.
-
-    Underneath, each colour is a CSS custom property that rookery writes inline onto the elements that root a rookery subtree---an idea's box, a window, a minted page's heading---and lets inherit down to the ID and the date from there.
-    The default lives inside the `var()` call, so an unconfigured rookery, and any reader whose browser does not understand custom properties, still gets the look above.
-    The package emits no `<style>` element and wraps your document in nothing, which is exactly why there is no `:root` for it to hang a variable on.
-
-    The theme is where the package's styling stops, not where yours does.
-    Setting those same five properties in your own stylesheet works identically, and past them the CSS classes are the contract: `.idea`, `.idea-box`, `.idea-title`, `.idea-label`, `.idea-date`, `.idea-tag-<tag>`, `.idea-ref`, `.idea-window` and its parts, `.idea-outline`, and on a standalone page `.idea-footer`, `.idea-context` and `.idea-backlinks`.#footnote[The properties are documented at the top of the package's `src/rookery.css`, including a couple the theme deliberately does not expose---the ID's font size, and the underline colour an outbound link inside an idea takes on.]
-  ]
-
-  #idea("idea-pages", title: [Chrome for minted pages])[
-    The standalone page rookery mints for each @idea:idea[idea] is a separate document, spliced in at the root of the bundle and outside every page of your own, so it inherits nothing from the show rules your project applies to those.
-    Left alone it is bare: the idea's title and ID, its body, and the context and backlinks footer, with no site header and no nav.
-    `idea-page-template` is how you hand one over.
-
-    ```typ
-    // One named, top-level function...
-    #let idea-page(id: none, note: (:), doc) = {
+    #let idea-page-template(id: none, note: (:), doc) = {
       show: chrome.with(current-page: id)
       doc
     }
 
-    // ...registered once, in the template every page applies.
-    #show: rookery.with(idea-page-template: idea-page)
+    #show: rookery.with(
+      idea-page-template: idea-page-template,
+    )
     ```
-
-    It is called once per idea and wraps the whole minted page---heading, body and footer---so it sees exactly what a page's own show rule would.
-    `id` is the idea's full ID, the same string `#window` and `@idea:etal` name it by, and so the natural answer to the question of which page you are on.
-    `note` is the idea's registry record---its `title`, its `minted` and `updated` dates, the `origin` handle of the page it was hatched in, and its outbound `links`---so a richer header needs no query of your own.
-
-    Two things to get right.
-    Make it a named top-level binding rather than a closure written inline in the template that registers it: the package holds it on a document-wide state, and a fresh closure per page puts a different value on that state's timeline for each one, where a named binding is one value however many pages reference it.
-    And apply your _chrome_ from it rather than your whole page template, splitting that chrome out of the template if you have not already---otherwise the two have to reference each other.
-    A minted page has no need to re-apply `#show: rookery`, since every page of your own has already published the prefix, the theme and the rest by the time one is minted.
-
-    Every `[idea:...]` ID on this site is a link to one of these pages, and they carry this site's header because it hands rookery an `idea-page-template` of exactly the shape above.
   ]
 ]
