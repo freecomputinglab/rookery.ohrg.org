@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.2.0": footnote, idea, ideas-outline
+#import "@rheo/rookery:0.3.0": footnote, idea, ideas-outline
 
 #show: template.with(current-page: "install")
 #set document(
@@ -16,7 +16,7 @@
   Once you have `rheo` on your path, you can use rookery in your Rheo project by importing it and hatching an idea:
 
   ```typ
-  #import "@rheo/rookery:0.2.0": idea
+  #import "@rheo/rookery:0.3.0": idea
   #idea[I want to hatch ideas with rookery.]
   ```
 
@@ -31,7 +31,7 @@
 
   #idea(<configure-block>)[
     ```typ
-    #import "@rheo/rookery:0.2.0": rookery
+    #import "@rheo/rookery:0.3.0": rookery
     #show: rookery.with(
       // IDs are now `note:etal` rather than `idea:etal`
       prefix: "note",
@@ -46,7 +46,7 @@
 
     ```typ
     // template.typ
-    #import "@rheo/rookery:0.2.0": rookery
+    #import "@rheo/rookery:0.3.0": rookery
     #let template(doc) = {
       show: rookery.with(
         theme: THEME,

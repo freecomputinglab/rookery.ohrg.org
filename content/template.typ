@@ -9,13 +9,13 @@
 // It works because `show: f` inside a function body applies to the rest of
 // that body — including the `doc` returned at the end — exactly as it does at
 // the top of a file.
-#import "@rheo/rookery:0.2.0": rookery
+#import "@rheo/rookery:0.3.0": rookery
 // Search ships as its own package. Both imports have to be written HERE, in the
 // site's own file: rheo scans only a project's own `.typ` files for package
 // imports, so a package reached transitively through another one contributes
 // nothing — no stylesheet, no script, and (for rookery) no minted note pages at
 // all, which would leave the search index with nothing to link to.
-#import "@rheo/rookery-search:0.2.0": search-modal
+#import "@rheo/rookery-search:0.3.0": search-modal
 
 // Ids on this site use rookery's default `idea:<name>` prefix, so no
 // `prefix:` argument is passed below. The theme replaces rookery's default

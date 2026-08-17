@@ -353,9 +353,9 @@ h1, h2, h3, h4, h5, h6 {
 /* The id, in the family the site keeps for machinery, at the size the nav uses
    — the two are the same kind of small mono label and now match exactly.
 
-   It names font AND size itself rather than inheriting either: in `#idea`'s
-   heading it would otherwise take the heading's Inter at heading size, and in
-   a `#window`'s summary — no heading at all — the body's sans at the footer's
+   It names font AND size itself rather than inheriting either: on the tab above
+   `#idea`'s heading it would otherwise take that context's Inter, and in a
+   `#window`'s summary — no heading at all — the body's sans at the footer's
    reduced size. Three contexts, one appearance.
 
    Left as written, neither small-caps nor uppercased: `[idea:rookery]` is an
