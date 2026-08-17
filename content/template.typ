@@ -9,13 +9,13 @@
 // It works because `show: f` inside a function body applies to the rest of
 // that body — including the `doc` returned at the end — exactly as it does at
 // the top of a file.
-#import "@rheo/rookery:0.1.1": rookery
+#import "@rheo/rookery:0.1.2": rookery
 // Search ships as its own package. Both imports have to be written HERE, in the
 // site's own file: rheo scans only a project's own `.typ` files for package
 // imports, so a package reached transitively through another one contributes
 // nothing — no stylesheet, no script, and (for rookery) no minted note pages at
 // all, which would leave the search index with nothing to link to.
-#import "@rheo/rookery-search:0.1.0": search-bar
+#import "@rheo/rookery-search:0.2.0": search-modal
 
 // Ids on this site use rookery's default `idea:<name>` prefix, so no
 // `prefix:` argument is passed below. The theme replaces rookery's default
@@ -69,15 +69,17 @@
       )
     ]
     // After the nav, so `.site-nav`'s `margin-left: auto` pushes both to the
-    // far end of the bar and the search sits last. It goes inside
+    // far end of the bar and the trigger sits last. It goes inside
     // `.site-header-inner` rather than after the header, because it belongs to
-    // the same flex row as the wordmark and the nav — the bar is phrasing
-    // content and can sit anywhere text can, which is what makes that possible.
+    // the same flex row as the wordmark and the nav — the trigger button is
+    // phrasing content and can sit anywhere text can, which is what makes that
+    // possible.
     //
-    // `limit: 12` rather than the package's default 8: this site is around
-    // twenty-five notes, so twelve is a real slice of the rookery rather than a
-    // truncation, and still short enough to read without scrolling.
-    #search-bar(placeholder: "Search ideas", limit: 12)
+    // No `limit:` override: the package's own default (30) was sized for a
+    // full-height modal list, not a dropdown under an input, so there is no
+    // "real slice vs. truncation, short enough to read without scrolling"
+    // tradeoff left to make here the way there was for `#search-bar`.
+    #search-modal(placeholder: "Search ideas")
   ]
 ]
 
