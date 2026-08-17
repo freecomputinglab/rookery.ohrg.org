@@ -26,49 +26,73 @@
 ]
 
 #idea("configuring", title: [Configuring rookery])[
-  Nothing in a rookery needs configuring before it will compile.
-  There is no `ctx:` parameter to thread through your calls and no options file to fill in first, and a project that never configures anything gets the default prefix, the default theme, and every feature on this site.
-  Configuration is one optional show rule, and it is the only place anything about the package can be changed.
+  You can configure your rookery by calling a show rule after you import it.
 
-  ```typ
-  #import "@rheo/rookery:0.2.0": rookery
-  #show: rookery.with(
-    // IDs are now `note:etal` rather than `idea:etal`
-    prefix: "note",
-    // a window written inside a windowed idea unfurls one level
-    window-depth: 1,
-    // the accent every rookery link takes on hover
-    theme: (link-color: rgb("#e68c00")),
+
+  #idea(<configure-block>)[
+    ```typ
+    #import "@rheo/rookery:0.2.0": rookery
+    #show: rookery.with(
+      // IDs are now `note:etal` rather than `idea:etal`
+      prefix: "note",
+      // a window written inside a windowed idea unfurls one level
+      window-depth: 1,
+      // the accent every rookery link takes on hover
+      theme: (link-color: rgb("#e68c00")),
+    )
+    ```
+
+    We suggest that you wrap this configuration in a template function that fronts every page:
+
+    ```typ
+    // template.typ
+    #import "@rheo/rookery:0.2.0": rookery
+    #let template(doc) = {
+      show: rookery.with(
+        theme: THEME,
+        idea-page-template: idea-page,
+        window-depth: 0,
+        bibliography: BIBLIOGRAPHY,
+      )
+      doc
+    }
+
+    // ...
+    // at the start of each file
+    #
+    #import "template.typ": template
+    #show: template
+    ```
+  ]
+
+  == Values
+
+  #table(
+    columns: (auto, auto, 1fr),
+    table.header([Parameter], [Default], [What it sets]),
+
+    [`prefix`],
+    [`"idea"`],
+    [The namespace an idea's ID lives in; non-empty, no `:` (the separator is added for you). See @idea:referencing-ideas[referencing ideas].],
+
+    [`window-depth`],
+    [`0`],
+    [How far a @idea:windows[window] written inside a windowed idea unfurls before it collapses to an ID. See @idea:window-depth[controlling window depth].],
+
+    [`theme`],
+    [`(:)`],
+    [The five colours the package will style for you; each key is also a parameter in its own right, and the granular form wins. See @idea:theming[theming a rookery].],
+
+    [`idea-page-template`],
+    [`none`],
+    [Your own chrome for the standalone page rookery mints per idea. See @idea:idea-pages[chrome for minted pages].],
+
+    [`bibliography`],
+    [`none`],
+    [Typst's own `#bibliography` arguments, for the single bibliography a rookery's @idea:citations[citations] all draw from.],
   )
-  ```
-
-  Applying `rookery` publishes five values that hold for the whole document:
-
-  - `prefix` (`"idea"`) --- the namespace an idea's ID lives in, which must be a non-empty string with no `:` in it, since the separator between prefix and name is added for you. See @idea:referencing-ideas[referencing ideas].
-  - `window-depth` (`0`) --- how far a @idea:windows[window] written inside a windowed idea unfurls before it collapses to an ID. See @idea:window-depth[controlling window depth].
-  - `theme` (`(:)`) --- the five colours the package will style for you. See @idea:theming[theming a rookery].
-  - `idea-page-template` (`none`) --- your own chrome for the standalone page rookery mints per idea. See @idea:idea-pages[chrome for minted pages].
-  - `bibliography` (`none`) --- Typst's own `#bibliography` arguments, for the single bibliography a rookery's @idea:citations[citations] all draw from.
-
-  It also installs two show rules.
-  The first renders `@idea:etal` as the idea it names rather than as the bare figure number Typst would otherwise give it; the second lets rookery's `#footnote` behave exactly like Typst's own when it is written outside any idea, rather than silently rendering nothing.
-  Pass `refs: false` to keep everything else and skip the first of them, or `ref-target: "anchor"` to keep it but have every `@idea:etal` in the document link to the idea's @idea:hyperlinks[anchor in context] rather than to its standalone page.
-
-  Beyond that, `rookery` sets no styles and wraps your document in nothing.
-  On a document with no ideas in it, it is a no-op.#footnote[One exception, and it is load-bearing rather than cosmetic: a page that cites something outside every idea gets a `References` block after its content, because a citation that no bibliography claims fails the build.]
-
-  Each of those five is one value for the whole document rather than one per page, and that is worth understanding before you reach for any of them.
-  A Rheo project compiles its whole #link("https://rheo.ohrg.org/spines")[spine] as a single Typst document, but Typst imports are per-file, so there is no way for one page to install the show rule on behalf of the others.
-  Two pages asking for different prefixes therefore do not get one each; they get whichever the spine happens to end on.
-  A page that leaves the show rule out loses the reference rule, so its own `@idea:etal` renders a figure number---but it does not lose the prefix, which is what keeps a `#window` written across that boundary resolving rather than panicking on an ID nothing registered.
-
-  The way to meet that requirement once is to wrap it in a site template that every page applies, which is what this site does.
-  #link("https://github.com/breezykermo/rookery.ohrg.org/blob/main/content/template.typ")[`content/template.typ`] holds the `#show: rookery` call, the theme, the bibliography and the header nav together, and a page opens with `#show: template.with(current-page: "install")` to get all of them at once.
-  It works because `show: f` inside a function body applies to the rest of that body, including the `doc` it returns, exactly as it does at the top of a file.
 
   #idea("theming", title: [Theming a rookery])[
-    Five colours, which are the whole of what the package will style for you:
-
     - `link-color` --- the hover background on any rookery link, defaulting to `rgba(128, 0, 255, .12)`.
     - `fold-color` --- the hover background on a foldable @idea:windows[window] block, defaulting to `rgba(0, 100, 255, .05)`.
     - `id-color` --- the `[idea:etal]` ID's own text, defaulting to `gray`.

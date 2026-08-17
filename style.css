@@ -409,6 +409,56 @@ ul, ol {
 li {}
 
 /* ============================================
+   Tables
+   ============================================ */
+/* Typst's html export writes a bare `<table>` — a `#table`'s own column widths,
+   insets and strokes do not survive it — so the whole look of a table on this
+   site is here rather than in the content.
+
+   Horizontal rules only, and none down the sides: these tables enumerate a
+   package's parameters, so a row is a name and a sentence about it, and a full
+   grid would box each sentence rather than separate the rows. */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.25em 0;
+  font-size: 0.95em;
+  line-height: 1.25;
+}
+
+th, td {
+  padding: 0.4em 0.6em;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+
+/* Column labels are section labels, not content — same small-caps treatment the
+   prose headings get, in the muted colour, since the row below is the substance. */
+th {
+  color: var(--muted);
+  font-family: var(--heading-font);
+  font-variant: small-caps;
+  font-weight: normal;
+}
+
+/* A row's first cell names the parameter or the rule. It stays on one line and
+   the description column absorbs the wrapping. */
+tbody td:first-child {
+  white-space: nowrap;
+}
+
+/* Flush with the surrounding prose at both edges: the table has no side rules,
+   so the leading inset would read as an indent. */
+th:first-child, td:first-child {
+  padding-left: 0;
+}
+
+th:last-child, td:last-child {
+  padding-right: 0;
+}
+
+/* ============================================
    Media
    ============================================ */
 img, video {

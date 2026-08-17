@@ -90,6 +90,23 @@
 // re-applying `rookery` there would append a second round of identical state
 // updates for no gain.
 #let chrome(current-page: none, doc) = {
+  // Typst's default table is a full 1pt grid, which boxes each cell of what is
+  // really a name and a sentence about it. Horizontal rules only, matching what
+  // style.css does for the HTML target — where none of this survives the export
+  // and the CSS has to say it again.
+  //
+  // Set here rather than per page: a minted note page applies `chrome` too, and
+  // a table inside an idea is re-rendered on it.
+  set table(
+    stroke: (x: none, y: 0.5pt + rgb("#e6e6e6")),
+    inset: (x: 0.5em, y: 0.45em),
+    align: left + top,
+  )
+  // The header row, which the PDF would otherwise render as one more data row.
+  // HTML gets `<th>` from `table.header` and its label styling from the CSS, so
+  // it is left alone there.
+  show table.cell.where(y: 0): it => context if target() == "html" { it } else { smallcaps(it) }
+
   context if target() == "html" {
     site-header(current-page)
   } else {
