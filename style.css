@@ -123,7 +123,7 @@
 .site-header-inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
   gap: 0.6rem 1.5rem;
   padding-bottom: 0.6rem;
 }
@@ -164,6 +164,10 @@
 
 .site-nav li {
   margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 }
 
 /* Padding and radius on the link itself, not on `:hover` — a padding that

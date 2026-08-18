@@ -7,11 +7,25 @@
   date-color: rgb("#a08a5a"),
 )
 
-#let site-pages = (
-  (handle: "concepts", title: "Concepts"),
-  (handle: "install", title: "Install"),
-  (handle: "faq", title: "FAQ"),
-)
+// The topbar's pages. The ORDER is hand-kept — concepts before install before
+// FAQ is a reading order, not an alphabetical accident, and `spine-flat` sorts
+// vertebrae by filename (concepts, faq, index, install), which would put FAQ
+// second. The TITLE is not: it is read from `rheo-context()`'s `spine-flat` by
+// handle, so it can never drift from each page's own `#set document(title:)`.
+//
+// `sys.inputs.rheo-context`, not a local `rheo-context()` call: rheo prepends
+// that binding only into the real vertebra source files it compiles, and this
+// file is excluded from the spine (see rheo.toml) precisely so it never
+// becomes one. `sys.inputs.rheo-context` is the same format-global dict that
+// per-file binding is spread from, so reading it directly here reaches the
+// same `spine-flat` every vertebra sees, whether or not this file is one
+// itself.
+#let _site-page-order = ("concepts", "install", "faq")
+
+#let site-pages = {
+  let spine-flat = sys.inputs.at("rheo-context", default: (spine-flat: ())).spine-flat
+  _site-page-order.map(handle => spine-flat.find(v => v.handle == handle))
+}
 
 #let site-header(current-page) = html.elem("header", attrs: (class: "site-header"))[
   #html.elem("div", attrs: (class: "site-header-inner"))[

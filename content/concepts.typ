@@ -1,6 +1,8 @@
 #import "template.typ": template
 #import "@rheo/rookery:0.3.0": footnote, idea, ideas-outline, note, todo, window
 
+#let concept(tags: (), ..args) = idea(tags: (("concept",) + tags), ..args)
+
 #show: template.with(current-page: "concepts")
 #set document(
   title: "Concepts",
@@ -9,7 +11,7 @@
 
 #ideas-outline()
 
-#idea("hatching-ideas", title: [Hatching ideas])[
+#concept("hatching-ideas", title: [Hatching ideas])[
   Ideas are designed so that you can always hatch new ones without ceremony.
   The `#idea` function at its most basic takes the content of an idea.
 
@@ -23,7 +25,7 @@
   You can also give it tags to associate it with other ideas.
 
   ```typ
-  #idea(
+  #concept(
     // if not specified, the ID will be auto-generated
     <incremental-thought>,
     // Link text when referenced
@@ -50,7 +52,7 @@
   #note[A note.] // #idea(..., tags: ("note"))
   ```
 
-  #idea("footnotes", title: [Footnotes])[
+  #concept("footnotes", title: [Footnotes])[
     A footnote belongs to the idea in which you write it in, just as @idea:citations[citations] do.
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function:
 
@@ -64,13 +66,13 @@
     Footnote numbering is idea-local.
     This means that there may be two footnotes labeled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
 
-    Footnote listings occur at the end of each idea.#footnote[Ideas will show footnotes everywhere their content appears: in their hatching context, their standalone page, and their @idea:windows[windows].A footnote reference is a same-page link, so a window on another page needs its target on that page.]
+    Footnote listings occur at the end of each idea.#footnote[Ideas will show footnotes everywhere their content appears: in their hatching context, their standalone page, and their @idea:windows[windows].]
     On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
 
     A footnote written outside an idea's context proxies the #link("https://typst.app/docs/reference/model/footnote/")[native Typst function] so that it behaves normally.
   ]
 
-  #idea("citations", title: [Citations])[
+  #concept("citations", title: [Citations])[
     A citation belongs to the idea in which you write it, just as @idea:footnotes[footnotes] do.
     Bibliographies, like footnotes, are produced at the end of an idea.
 
@@ -93,7 +95,7 @@
   ]
 ]
 
-#idea("referencing-ideas", title: [Referencing ideas])[
+#concept("referencing-ideas", title: [Referencing ideas])[
   You can reference an existing idea by creating either a *hyperlink* or a *window*.
   Both kinds of references using the idea's *ID*, which is unique in a global namespace.
 
@@ -101,7 +103,7 @@
   To ensure that rookery's labels don't easily clash with ones you create yourself, the prefix `idea:` is prepended to all of your idea IDs.
   You can customize this prefix when you @idea:site-config[configure rookery].
 
-  #idea("hyperlinks", title: [Hyperlinks])[
+  #concept("hyperlinks", title: [Hyperlinks])[
     Hyperlinks are the lowest-touch way to reference an idea in rookery, and are implemented as regular #link("https://typst.app/docs/reference/model/ref/")[Typst references].
     Say you have an idea:
 
@@ -140,7 +142,7 @@
     Creating a hyperlink to an idea will add it to that idea's @idea:idea[set of backlinks].
   ]
 
-  #idea("windows", title: [Windows])[
+  #concept("windows", title: [Windows])[
     Windows can be used to interpolate the entirety of an idea's content into a different context.
     They are useful in home pages or other sections that aggregate content.
 
@@ -193,7 +195,7 @@
 
     #window(<citations>, folded: true)
 
-    #idea("window-depth", title: [Window depth])[
+    #concept("window-depth", title: [Window depth])[
       Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
       In order to prevent this, rookery has a notion of *window depth*, which is set to `1` by default.
 
@@ -215,7 +217,7 @@
   ]
 ]
 
-#idea("outlining", title: [Outlining ideas])[
+#concept("outlining", title: [Outlining ideas])[
   You can outline the ideas in a context like so:
 
   ```typ
@@ -246,53 +248,53 @@
   #ideas-outline(title: none, rookery-wide: true)
 ]
 
-#idea("searching", title: [Searching ideas])[
-  An outline lists your rookery. Searching it is a separate package,
-  `@rheo/rookery-search`, and it is worth knowing that it comes in three layers,
-  because only the top one needs Rheo.
-
-  `#ideas()` is the bottom layer, and it lives in rookery itself: every idea in
-  the rookery as plain data — its id, its title, its dates, and a link to its
-  page. Everything else is built on it, and so can anything you want to write.
-
-  `#search-ideas("query")` ranks that corpus and hands back the matches, still as
-  data. It is ordinary Typst, so it runs under plain `typst compile` with no Rheo
-  and no JavaScript at all:
-
-  ```typ
-  #import "@rheo/rookery-search:0.3.0": search-ideas
-  #context {
-    for e in search-ideas("window") [ - #link(e.href, e.text) ]
-  }
-  ```
-
-  That is a search rendered at compile time — a static list of matches, which is
-  a perfectly good answer for a printed target, or for a site that would rather
-  not ship a script.
-
-  `#search-bar()` is the top layer, and the one in the header of this page. It
-  puts the corpus on the page as JSON, adds an input, and wires the two together
-  in the browser. This is the layer that needs Rheo: its results link to the
-  standalone pages Rheo mints, and its behavior comes from a script Rheo
-  injects. Without Rheo it emits nothing, rather than a search box that could
-  never work.
-
-  ```typ
-  #import "@rheo/rookery-search:0.3.0": search-bar
-  #search-bar(placeholder: "Search ideas", limit: 12)
-  ```
-
-  Matching runs over an idea's id _and_ its title, never its body, and it is a
-  subsequence match — so `wnd` finds @idea:windows. A `-` or `_` reads as a
-  space, which is why `window-depth` is findable as "window depth" too.
-
-  If the bar is not the interface you want, you are not stuck with it. Iterate
-  `#search-ideas` in Typst and render whatever you like, or rank in the browser
-  with the same rule the bar uses, exposed there as `RheoRookerySearch.score`.
-  What you should not do is write a second ranking rule of your own: the package
-  keeps its Typst and JavaScript copies pinned to each other by a test, and a
-  third copy would drift from both.
-
-  This site is written with rookery, so this idea is in that index like any
-  other — the search box above will find it.
-]
+// #todo("searching", title: [Searching ideas])[
+//   An outline lists your rookery. Searching it is a separate package,
+//   `@rheo/rookery-search`, and it is worth knowing that it comes in three layers,
+//   because only the top one needs Rheo.
+//
+//   `#ideas()` is the bottom layer, and it lives in rookery itself: every idea in
+//   the rookery as plain data — its id, its title, its dates, and a link to its
+//   page. Everything else is built on it, and so can anything you want to write.
+//
+//   `#search-ideas("query")` ranks that corpus and hands back the matches, still as
+//   data. It is ordinary Typst, so it runs under plain `typst compile` with no Rheo
+//   and no JavaScript at all:
+//
+//   ```typ
+//   #import "@rheo/rookery-search:0.3.0": search-ideas
+//   #context {
+//     for e in search-ideas("window") [ - #link(e.href, e.text) ]
+//   }
+//   ```
+//
+//   That is a search rendered at compile time — a static list of matches, which is
+//   a perfectly good answer for a printed target, or for a site that would rather
+//   not ship a script.
+//
+//   `#search-bar()` is the top layer, and the one in the header of this page. It
+//   puts the corpus on the page as JSON, adds an input, and wires the two together
+//   in the browser. This is the layer that needs Rheo: its results link to the
+//   standalone pages Rheo mints, and its behavior comes from a script Rheo
+//   injects. Without Rheo it emits nothing, rather than a search box that could
+//   never work.
+//
+//   ```typ
+//   #import "@rheo/rookery-search:0.3.0": search-bar
+//   #search-bar(placeholder: "Search ideas", limit: 12)
+//   ```
+//
+//   Matching runs over an idea's id _and_ its title, never its body, and it is a
+//   subsequence match — so `wnd` finds @idea:windows. A `-` or `_` reads as a
+//   space, which is why `window-depth` is findable as "window depth" too.
+//
+//   If the bar is not the interface you want, you are not stuck with it. Iterate
+//   `#search-ideas` in Typst and render whatever you like, or rank in the browser
+//   with the same rule the bar uses, exposed there as `RheoRookerySearch.score`.
+//   What you should not do is write a second ranking rule of your own: the package
+//   keeps its Typst and JavaScript copies pinned to each other by a test, and a
+//   third copy would drift from both.
+//
+//   This site is written with rookery, so this idea is in that index like any
+//   other — the search box above will find it.
+// ]

@@ -4,22 +4,26 @@
 #show: template.with(current-page: "faq")
 #set document(title: "FAQ")
 
+#let faq(tags: (), ..args) = idea(tags: (("faq",) + tags), ..args)
 #ideas-outline()
 
-#idea(<inspiration>, title: [What inspired rookery?])[
+#faq(<inspiration>, title: [What inspired rookery?])[
   Rookery builds on #link("https://www.ohrg.org/devonthink-part-iii")[thinking] #link("https://www.ohrg.org/devonthink-part-ii")[about] #link("https://www.ohrg.org/devonthink-part-i")[associative archiving] that dates back to 2019.
   Its name and metaphor system derive from thinking about #link("https://www.ohrg.org/birdkeeping")[software in the age of large language models].
 
   More generally as a knowledge management tool, rookery takes its cue from the #link("https://zettelkasten.de/overview/")[Zettelkasten method], which was popularized in 2019 by #link("https://en.wikipedia.org/wiki/Roam_(software)")[Roam Research], and which has since influenced both #link("https://obsidian.md/")[Obsidian] and #link("https://www.notion.com/")[Notion], two popular knowledge management platforms.
 
-  Though closest in spirit to Obsidian in the sense that it allows you to create and manage a local-first knowledge base using markdown files on disk, Rookery is more opinionated than Obsidian and Notion, but less opinionated than strict Zettelkasten.
+  Of these tools, rookery is closest in spirit to Obsidian in the sense that it allows you to create and manage a local-first knowledge base using up files on disk.
+  But you do not need to use a specific editor to write your rookeries; you can author the #link("https://typst.app/")[Typst] files in it however you prefer.
+  Another way of thinking about rookery is that it is _more_ opinionated than Obsidian and Notion in that it requires you to think with @idea:idea[ideas].
+  To some degree, it is also _less_ opinionated than Zettelkasten in that it doesn't enforce or require strictly atomic notes.
 
-  Rookery takes more direct inspiration from three ways of thinking about note systems:
+  Three ways of thinking about note systems have directly influenced rookery's design:
   + Andy Matsuchak's #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen notes].
   + Jon Sterling's #link("https://www.forester-notes.org/QHXS/index.xml")[intellectual junkyards].
   + #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Emacs' Org-mode].
 
-  #idea(title: [What is the genealogy of `idea`?])[
+  #faq(title: [What is the genealogy of `idea`?])[
     The semantics of an `idea` is taken from the default #link("https://docs.doomemacs.org/latest/")[Doom Emacs] #link("./.gitignore")[TODO keywords], one of which is `IDEA`.
 
     An idea in a rookery should be conceptualized as an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic note], which is why each idea is given its own standalone page.
@@ -30,10 +34,10 @@
     Though there is no inbuilt sense in which one idea can depend on or be blocked by another, you can create a stronger dependency system over tags, i.e. using a `blockedby:xxx` convention.
   ]
 
-  #idea(<other-tools>, title: [What are other tools like rookery?])[
+  #faq(<other-tools>, title: [What are other tools like rookery?])[
     Rookery was #link(<idea:inspiration>)[inspired by a range of existing knowledge management tools].
 
-    #idea(<forester-rookery>, title: [Forester | Rookery])[
+    #faq(<forester-rookery>, title: [Forester | Rookery])[
 
       #link("https://www.forester-notes.org/30FM/index.xml")[Forester] is the open source system most similar to rookery, and also its chief inspiration.
       Forester is an #link("https://sr.ht/~jonsterling/forester/")[OCaml engine] that Jon Sterling develops to power #link("https://www.jonmsterling.com/")[his website].
@@ -54,7 +58,7 @@
       - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is a pre-release software (version 0.`x`) that was announced in August 2026.
     ]
 
-    #idea(<kodama-rookery>, title: [Kodama | Rookery])[
+    #faq(<kodama-rookery>, title: [Kodama | Rookery])[
 
       #link("https://kodama-community.github.io/")[Kodama] is another forester-inspired tool for authoring #link("https://www.forester-notes.org/QHXS/index.xml")[intellectual junkyards] in Typst.
 
@@ -66,7 +70,7 @@
   ]
 ]
 
-#idea(<using-typst>, title: [Do I need to use Rheo to use rookery?])[
+#faq(<using-typst>, title: [Do I need to use Rheo to use rookery?])[
   #link("https://rheo.ohrg.org/")[Rheo] is a typesetting engine based on Typst that is also maintained at the #link("https://freecomputinglab.ohrg.org/")[Free Computing Lab].
   In addition to providing an EPUB export option, Rheo can also #link("https://rheo.ohrg.org/packages")[register custom JavaScript and CSS from a package] such as rookery.
 
@@ -76,7 +80,7 @@
 ]
 
 
-#idea(<maintenance>, title: [Who maintains rookery?])[
+#faq(<maintenance>, title: [Who maintains rookery?])[
   Rookery is tooling maintained as part of the #link("https://freecomputinglab.ohrg.org/")[Free Computing Lab], an association of academics who have no strict affiliation with any company.
   The tool was originally built by #link("https://lachlankermode.com/")[Lachlan Kermode] as a way to organize his #link("https://weeknotes.ohrg.org/")[research weeknotes].
   #link("https://rheo.ohrg.org/")[Rheo] is also built and maintained by the Free Computing Lab.
