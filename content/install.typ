@@ -21,8 +21,8 @@
   ```
 
   That's it!
-  You're now ready to hatch some ideas in a rookery.
 
+  Your rookery is now ready to nurture your every next idea.
 ]
 
 == Configuration
