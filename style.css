@@ -367,20 +367,25 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
 }
 
-/* The id, in the family the site keeps for machinery, at the size the nav uses
-   — the two are the same kind of small mono label and now match exactly.
+/* The id, in the family the site keeps for machinery. It names the font itself
+   rather than inheriting it: on the tab above `#idea`'s heading it would
+   otherwise take that context's Inter, and in a `#window`'s summary — no
+   heading at all — the body's sans.
 
-   It names font AND size itself rather than inheriting either: on the tab above
-   `#idea`'s heading it would otherwise take that context's Inter, and in a
-   `#window`'s summary — no heading at all — the body's sans at the footer's
-   reduced size. Three contexts, one appearance.
+   The SIZE is not ours to set here. `rookery.css` carries its own
+   `.idea-label { font-size: var(--idea-label-size, 0.57rem) }` at the same
+   specificity and loads after this file, so it wins on source order and a
+   `font-size` in this rule would be dead. The package's own arithmetic — the
+   tab's lift, a window's summary, the footer's padding — measures against that
+   variable, so moving the size anywhere else would open the card's corner. To
+   change it, pass `label-size` in the theme (template.typ), or set
+   `--idea-label-size` on `:root`.
 
    Left as written, neither small-caps nor uppercased: `[idea:rookery]` is an
    identifier to be copied verbatim into `#window("...")`, and a reader who
    retyped what an uppercased id appeared to say would get it wrong. */
 .idea-label {
   font-family: var(--mono-font);
-  font-size: var(--label-size);
   font-variant: normal;
 }
 
