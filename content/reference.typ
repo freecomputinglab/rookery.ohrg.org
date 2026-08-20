@@ -105,6 +105,22 @@
       [`bibliography`],
       [`none`],
       [Typst's own `#bibliography` arguments, for the single bibliography a rookery's @idea:citations[citations] all draw from.],
+
+      [`index-page`],
+      [`true`],
+      [Whether to mint `ideas/index.html`, a landing page listing every idea in the rookery. Set it to `false` where your site already publishes an index of its own.],
+
+      [`refs`],
+      [`true`],
+      [Whether rookery installs the `show ref:` rule that renders `@idea:etal` as the idea rather than a figure number. Set it to `false` to keep Typst's own behaviour, or to install a rule of your own. See @idea:hyperlinks[hyperlinks].],
+
+      [`ref-target`],
+      [`"page"`],
+      [Where every `@idea:etal` in the document lands: `"page"` on the idea's standalone page, `"anchor"` in the context it was hatched in. Ignored when `refs` is `false`. See @idea:hyperlinks[hyperlinks].],
+
+      [`syndicate`],
+      [`false`],
+      [Whether each minted page also carries an `<rssfeed:item>` beacon, so a feed package can collect your ideas without either package importing the other. Off by default: a package should not write into another's label namespace unasked. An idea with no date never gets one.],
     )
   ]
 
