@@ -366,6 +366,20 @@
   Here is the outline of all ideas in this rookery:
 
   #ideas-outline(title: none, rookery-wide: true)
+
+  #concept(<rookery-index>, title: [The rookery's own index])[
+    `ideas/` is the directory every permalink on this site points into, and the address a reader will guess.
+    Rookery mints #link("/ideas/")[a page there] for you: a count, and every idea in the rookery linked to its own standalone page, carrying its date and its tags.
+    It costs you nothing---no configuration, no file---and you turn it off with `index-page: false` if your site already publishes an index of its own.
+
+    It is not the same thing as the rookery-wide outline just above, and the difference is where the rows point.
+    An outline links each idea to its anchor on the page that hatched it, which is what a table of contents on that page should do.
+    The index links each idea to the page rookery minted _for_ it, which is what a directory of standalone pages should do.
+
+    Its rows wear an outline's classes all the same---`.idea-outline`, `.idea-outline-row`, `.idea-tag-<tag>`---so a stylesheet that already knows one knows the other, and the index needs no CSS of its own.
+
+    It is the one minted page that is not an idea, and your @idea:idea-template[idea page template] sees that: `id` arrives as `none` and `note` as an empty dictionary, so a template that assumes a string ID wants a branch.
+  ]
 ]
 
 // #todo("searching", title: [Searching ideas])[

@@ -108,7 +108,7 @@
 
       [`index-page`],
       [`true`],
-      [Whether to mint `ideas/index.html`, a landing page listing every idea in the rookery. Set it to `false` where your site already publishes an index of its own.],
+      [Whether to mint `ideas/index.html`, a landing page listing every idea in the rookery. Set it to `false` where your site already publishes an index of its own. See @idea:rookery-index[the rookery's own index].],
 
       [`refs`],
       [`true`],
