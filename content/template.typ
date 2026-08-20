@@ -1,10 +1,42 @@
 #import "@rheo/rookery:0.4.0": rookery
 #import "@rheo/rookery-search:0.4.0": search-modal
 
+// One colour per kind of idea this site hatches, for the tag pills in an
+// idea's hat — rookery 0.4.0's `theme.tags-color`, which only the pills use.
+//
+// CSS custom properties rather than hex literals: the hues themselves are
+// declared once, in `style.css`'s `:root` as `--tag-concept` and friends, where
+// the outline-row and search-chip rules for the same tags also read them. The
+// package stringifies whatever it is given straight into the pill's inline
+// `style`, so `var(...)` resolves in the browser like any other value and there
+// is no second copy of a colour to keep in step.
+//
+// A tag with no entry here keeps rookery's own neutral pill, which is the right
+// answer for a tag this site does not use as a kind.
+#let TAG-COLORS = (
+  concept: (
+    text: "var(--tag-concept)",
+    background: "color-mix(in oklab, var(--tag-concept) 14%, transparent)",
+  ),
+  reference: (
+    text: "var(--tag-reference)",
+    background: "color-mix(in oklab, var(--tag-reference) 14%, transparent)",
+  ),
+  setup: (
+    text: "var(--tag-setup)",
+    background: "color-mix(in oklab, var(--tag-setup) 14%, transparent)",
+  ),
+  faq: (
+    text: "var(--tag-faq)",
+    background: "color-mix(in oklab, var(--tag-faq) 14%, transparent)",
+  ),
+)
+
 #let THEME = (
   link-color: "rgba(230, 140, 0, 0.16)",
   fold-color: "rgba(255, 190, 40, 0.07)",
   date-color: rgb("#a08a5a"),
+  tags-color: TAG-COLORS,
 )
 
 #let _site-page-order = (

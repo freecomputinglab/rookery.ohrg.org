@@ -1,15 +1,32 @@
 #import "template.typ": template
 #import "@rheo/rookery:0.4.0": footnote, idea, ideas-outline
 
-#show: template.with(current-page: "install")
+#show: template.with(current-page: "reference")
 #set document(
   title: "Reference",
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
+// The two kinds of idea this page hatches, wrapped the way `concepts.typ` and
+// `faq.typ` wrap theirs: the tag is the page's own vocabulary rather than
+// something a call site should have to remember, and `show-tags: true` puts it
+// in the hat as a coloured pill (hues in `TAG-COLORS`, template.typ). Setup is
+// a step you follow once; reference is a table you come back to.
+#let setup(tags: (), show-tags: true, ..args) = idea(
+  tags: (("setup",) + tags),
+  show-tags: show-tags,
+  ..args,
+)
+
+#let reference(tags: (), show-tags: true, ..args) = idea(
+  tags: (("reference",) + tags),
+  show-tags: show-tags,
+  ..args,
+)
+
 #ideas-outline()
 
-#idea("installing", title: [Installing rookery], tags: ("setup",))[
+#setup("installing", title: [Installing rookery])[
   The easiest way to get started with a rookery is by #link("https://rheo.ohrg.org/getting-started")[installing Rheo], a typesetting engine based on Typst.
   #footnote[If you prefer to use native Typst to compile a rookery, see @idea:using-typst]
 
@@ -27,7 +44,7 @@
 
 == Configuration
 
-#idea(<site-config>, title: [Site-wide configuration], tags: ("setup",))[
+#setup(<site-config>, title: [Site-wide configuration])[
   You can configure your rookery by calling a show rule after you import it.
 
   ```typ
@@ -64,7 +81,7 @@
   #show: template
   ```
 
-  #idea(<config-reference>, title: [Argument reference], tags: ("reference",))[
+  #reference(<config-reference>, title: [Argument reference])[
     #table(
       columns: (auto, auto, 1fr),
       table.header([Parameter], [Default], [What it sets]),
@@ -91,7 +108,7 @@
     )
   ]
 
-  #idea(<theming>, title: [Theming a rookery], tags: ("reference",))[
+  #reference(<theming>, title: [Theming a rookery])[
     A rookery's look is five colors, which you hand it as the `theme:` dictionary:
 
     ```typ
@@ -117,7 +134,7 @@
     )
     ```
 
-    #idea(<theme-reference>, title: [Color reference])[
+    #reference(<theme-reference>, title: [Color reference])[
       #table(
         columns: (auto, auto, 1fr),
         table.header([Color], [Default], [What it sets]),
@@ -138,7 +155,7 @@
       )
     ]
 
-    #idea(<class-reference>, title: [Class reference])[
+    #reference(<class-reference>, title: [Class reference])[
 
       You can also style more granularly with your own CSS using the classes below.
       A trailing `*` below stands for a family whose members are named in the description.
@@ -192,7 +209,7 @@
     ]
   ]
 
-  #idea(<idea-template>, title: [Idea page template], tags: ("reference",))[
+  #reference(<idea-template>, title: [Idea page template])[
     Each @idea:idea[idea] in your rookery gets its own page.
     By default, it shows the idea's title and ID, its body, and the context and backlinks footer.
     You can set a template for it---to add a site header and footer, for example---like so:

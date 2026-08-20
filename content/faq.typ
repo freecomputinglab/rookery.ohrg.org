@@ -7,7 +7,13 @@
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
-#let faq(tags: (), ..args) = idea(tags: (("faq",) + tags), ..args)
+// `show-tags: true` by default, as on the other pages: the kind shows as a
+// coloured pill in the hat, from `TAG-COLORS` in template.typ.
+#let faq(tags: (), show-tags: true, ..args) = idea(
+  tags: (("faq",) + tags),
+  show-tags: show-tags,
+  ..args,
+)
 #ideas-outline()
 
 #faq(<inspiration>, title: [What inspired rookery?])[

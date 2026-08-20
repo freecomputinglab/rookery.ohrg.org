@@ -1,7 +1,14 @@
 #import "template.typ": template
 #import "@rheo/rookery:0.4.0": footnote, idea, ideas-outline, note, todo, window
 
-#let concept(tags: (), ..args) = idea(tags: (("concept",) + tags), ..args)
+// `show-tags: true` by default, so every card on the page wears its kind as a
+// coloured pill in the hat — the hue comes from `TAG-COLORS` in template.typ.
+// Named rather than hardcoded so a call site can still turn it off.
+#let concept(tags: (), show-tags: true, ..args) = idea(
+  tags: (("concept",) + tags),
+  show-tags: show-tags,
+  ..args,
+)
 
 #show: template.with(current-page: "concepts")
 #set document(
@@ -88,6 +95,7 @@
     You must use `bytes(read(...))` rather than a path to pass a reference file, but rookery bibliographies otherwise work the same as #link("https://typst.app/docs/reference/model/bibliography/")[Typst bibliographies].
 
     Once a rookery is configured with a bibliography, you can cite as you naturally would in Typst @maedje2022typst.
+    Bibliographies will appear at the bottom of every idea with a citation under a 'References' heading.
 
     Citation numbering is rookery-wide, which means that numeric styles will not be scoped to each idea.
     (An idea with one citation may show it as `[7]`, for example, if it is the 7#super[th] citation in the rookery.)
@@ -161,7 +169,6 @@
     #window(<first-idea>)
     ```
 
-
     Note that we do not need the `idea:` prefix.
     Like `#hyperlink`,`#window` is a function imported from rookery that already knows which namespace to look in.
 
@@ -171,6 +178,7 @@
 
     ```typ
     #window(
+      // filter by ids
       (<first-idea>, <second-idea>, <third-idea>),
       // only show the idea's name and id
       folded: true,
@@ -178,6 +186,9 @@
       limit: 12,
       // include the document date
       show-date: true,
+      // select ideas in windows using tags in addition to IDs
+      // IDs and ideas matching tags compose
+      tags: ("post", "docs")
     )
     ```
 

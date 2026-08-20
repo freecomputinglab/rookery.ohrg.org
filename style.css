@@ -83,6 +83,19 @@
      outside one, so both halves of the site agree. The accent rather than the
      fill: the fill is translucent, and a 2px line drawn in it barely shows. */
   --idea-external-color: var(--accent);
+  /* ONE HUE PER KIND OF IDEA this site hatches — the four tags in its whole
+     vocabulary, and the only place any of their colours is written down.
+     `TAG-COLORS` in content/template.typ paints the hat pills by naming these
+     properties rather than repeating their values, so a hue changed here
+     changes the pill, the outline tick and the search chip together.
+
+     Matched lightness, low saturation, and the amber one first because it is
+     the site's own accent: the colour has to say WHICH KIND at a glance
+     without any of the four shouting over the prose it sits beside. */
+  --tag-concept: #b4791a;
+  --tag-reference: #3f6790;
+  --tag-setup: #3f7a52;
+  --tag-faq: #7a4d84;
 }
 
 /* ============================================
@@ -369,6 +382,82 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--mono-font);
   font-size: var(--label-size);
   font-variant: normal;
+}
+
+/* ============================================
+   Tag colours
+
+   A tag is the only thing on this site that says what KIND of idea you are
+   reading — a concept, a piece of reference, a setup step, a question — and
+   until now it said it in words only, in one place, on the card. Every tag
+   wears the class `idea-tag-<tag>` on all four surfaces rookery puts it on:
+   the card, the note's heading, an outline row, and (with `show-tags: true`)
+   the pill in the hat. `@rheo/rookery-search` puts the same class on its
+   result chips. So one hue per tag, applied through that shared class, colours
+   the kind everywhere it appears.
+
+   The pills are NOT here: rookery 0.4.0 colours those from the `tags-color`
+   theme key, set in content/template.typ, because a per-tag pill colour is
+   something the package now asks for and a property beats a rule. It names
+   the same `--tag-*` custom properties declared in `:root` above, so the two
+   mechanisms cannot drift.
+
+   ONE SURFACE IS LEFT ALONE ON PURPOSE — the card and the heading. Colouring
+   the note's own title by kind would make the page's typography argue with
+   its prose, and the pill already says it right beside them. The rules below
+   are for the two places a reader is scanning MANY notes at once and the kind
+   is the thing being scanned for.
+   ============================================ */
+/* The tick on an outline row: the hairline rookery draws as
+   `.idea-outline-row::before`, growing off the outline's left rule. Recolouring
+   the marker rather than the row's text keeps a long index legible — 24 rows of
+   coloured link text would read as 24 different link states — while still
+   letting the eye group the kinds down the column. Only `border-top-color`,
+   so the marker's measured width and 2px weight stay the package's. */
+.idea-outline-row.idea-tag-concept::before {
+  border-top-color: var(--tag-concept);
+}
+
+.idea-outline-row.idea-tag-reference::before {
+  border-top-color: var(--tag-reference);
+}
+
+.idea-outline-row.idea-tag-setup::before {
+  border-top-color: var(--tag-setup);
+}
+
+.idea-outline-row.idea-tag-faq::before {
+  border-top-color: var(--tag-faq);
+}
+
+/* A search result's chips, which the package renders in the browser and which
+   `tags-color` therefore does not reach (it emits an inline style at compile
+   time; these elements do not exist then). Written as rules for that reason
+   rather than by preference.
+
+   `color-mix` with no rgba fallback, deliberately: where it is unsupported the
+   whole declaration is dropped and the chip keeps the package's own neutral
+   fill, which is a fine answer. The alternative is writing each hue a second
+   time as a literal, and a second copy is the thing this section exists to
+   avoid. The 14% mix is the package's own default strength. */
+.rookery-search-tag.idea-tag-concept {
+  color: var(--tag-concept);
+  background-color: color-mix(in oklab, var(--tag-concept) 14%, transparent);
+}
+
+.rookery-search-tag.idea-tag-reference {
+  color: var(--tag-reference);
+  background-color: color-mix(in oklab, var(--tag-reference) 14%, transparent);
+}
+
+.rookery-search-tag.idea-tag-setup {
+  color: var(--tag-setup);
+  background-color: color-mix(in oklab, var(--tag-setup) 14%, transparent);
+}
+
+.rookery-search-tag.idea-tag-faq {
+  color: var(--tag-faq);
+  background-color: color-mix(in oklab, var(--tag-faq) 14%, transparent);
 }
 
 /* ============================================
