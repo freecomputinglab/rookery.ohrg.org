@@ -215,8 +215,8 @@
         [`.idea-label`, `.idea-date`],
         [The `[idea:etal]` permalink and the date beside it, in a heading, a window summary or prose, wherever either is @idea:hatching-ideas[shown].],
 
-        [`.idea-tag-<tag>`],
-        [One extra class per tag the idea carries, on each of the three elements that name it: its heading, its box and its outline row.],
+        [`.idea-tag`, `.idea-tag-<tag>`],
+        [A tag pill in the hat, and one extra class per tag the idea carries. The second reaches every surface that names the tag---the idea's heading, its box, its outline row, its pill, and a search result's chip, which JavaScript builds in the browser---so a single rule of your own styles a tag everywhere it shows up.],
 
         [`.idea-ref`], [An `@idea:other` reference in prose. See @idea:referencing-ideas[referencing ideas].],
 
@@ -246,6 +246,36 @@
         [`.idea-page-list`, `.idea-page-row`],
         [A list of pages in either section, and one row in it---a page cannot fold, so it wears a window's shape without being one.],
       )
+
+      #reference(<property-reference>, title: [Property reference])[
+        Every value in the @idea:theme-reference[theme reference] arrives as a CSS custom property, so you can set any of them in your own stylesheet instead of in Typst---`--idea-link-color` for `link-color`, and so on down the table.
+
+        Five more properties exist only that way, with no `theme:` key of their own.
+        They are the details a site tunes rarely enough not to warrant a Typst argument, and you set them on `:root` like any other:
+
+        #table(
+          columns: (auto, auto, 1fr),
+          table.header([Property], [Default], [What it sets]),
+
+          [`--idea-tag-size`],
+          [`--idea-label-size`],
+          [A tag pill's font size. Follows the ID's size unless you separate them.],
+
+          [`--idea-tag-radius`], [`999px`], [A pill's corner radius.],
+
+          [`--idea-tag-color`, `--idea-tag-bg`],
+          [`--idea-id-color`, `rgba(128, 128, 128, .18)`],
+          [An untagged-by-`tags-color` pill's text and background. Setting `tags-color` writes these per tag for you.],
+
+          [`--idea-tag-line`],
+          [`--idea-border-color`],
+          [The tick an outline row draws off the outline's rule, where the row's idea carries a tag.],
+
+          [`--idea-external-color`],
+          [`--idea-id-color`],
+          [The underline an _outbound_ link takes on hover, in a references block or an idea page's footer---so a link that leaves your rookery reads differently from one that stays in it.],
+        )
+      ]
     ]
   ]
 
