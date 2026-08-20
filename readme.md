@@ -2,28 +2,37 @@
 
 Documentation site for [`@rheo/rookery`](https://github.com/lachlankermode/rheo-packages),
 built with [Rheo](https://rheo.ohrg.org) — and written with the package it
-documents, so every note on it is a real `#idea` and every page under `notes/`
+documents, so every note on it is a real `#idea` and every page under `ideas/`
 was minted from one.
 
 ```sh
-just watch   # live-rebuild and open
-just build   # one-shot HTML into build/
+just watch      # live-rebuild and open
+just build      # one-shot HTML into build/
+just check-deps # every @rheo/rookery spec in the repo names one version
 ```
 
 `@rheo/rookery:0.4.0` resolves from the Typst package cache; on this machine
 the whole `rheo-packages` repo is symlinked in as the `rheo` namespace, so
 edits to the package land here on the next rebuild with no publish step.
+`just bump-deps 0.4.0 0.5.0` moves every spec — the executable imports and the
+version each ```typ block teaches a reader to write — in one pass.
 
 ## Layout
 
 | path | role |
 | --- | --- |
-| `content/template.typ` | site chrome, and the single place rookery is configured — prefix, theme, `ref-rule` |
-| `content/index.typ` | the notes themselves, and views of them |
-| `content/guide/intro.typ` | a nested vertebra, so cross-page hrefs have to resolve one level deeper |
-| `content/about.typ` | about |
+| `content/template.typ` | site chrome, and the single place rookery is configured — theme, `window-depth`, `idea-page-template`, bibliography |
+| `content/index.typ` | the landing page, and the two foundational ideas the rest of the site windows onto |
+| `content/concepts.typ` | what a rookery is made of: hatching, referencing, windowing, outlining |
+| `content/reference.typ` | installing it, then the tables — configuration, theme, classes, properties |
+| `content/faq.typ` | where rookery came from, and how it compares to forester and Kodama |
+| `content/references.bib` | the one bibliography every citation on the site draws from |
 | `style.css` | site styling; the package's own CSS is injected by rheo |
 | `fonts/` | Berkeley Mono, four faces (self-hosted; see below) |
+
+Every `#idea` on those pages also gets a minted page under `build/html/ideas/`,
+and rookery mints `ideas/index.html` alongside them — a listing of the whole
+rookery, on by default since 0.4.0 and left on here.
 
 Two families, split by what a thing is rather than where it sits. **Berkeley
 Mono** is site furniture and identifiers — the wordmark, the nav, and a note's
