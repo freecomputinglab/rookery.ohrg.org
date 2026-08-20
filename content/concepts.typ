@@ -12,7 +12,7 @@
 
 #show: template.with(current-page: "concepts")
 #set document(
-  title: "Concepts",
+  title: "Rookery - Concepts",
   date: datetime(year: 2026, month: 8, day: 20),
 )
 

@@ -3,7 +3,7 @@
 
 #show: template.with(current-page: "reference")
 #set document(
-  title: "Reference",
+  title: "Rookery - Reference",
   date: datetime(year: 2026, month: 8, day: 20),
 )
 

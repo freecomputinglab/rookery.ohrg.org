@@ -104,7 +104,32 @@
 //
 // Defined before `template` and applying `chrome` rather than `template` —
 // the two would otherwise have to reference each other.
+// The site prefix every browser tab wears, so a reader with a dozen of them
+// open can tell which site each belongs to before reading the page's own name.
+#let SITE = "Rookery"
+#let site-title(name) = SITE + " - " + name
+
 #let idea-page(id: none, note: (:), doc) = {
+  // The minted page's own `<title>`. The package sets one already — the note's
+  // title, or its slug where it has none, and "Ideas" for the landing page —
+  // but it hands `rheo-document` that value OUTSIDE this template, so the only
+  // way to prefix it is to set it again here, where a later `set document`
+  // wins.
+  //
+  // `note.title` is CONTENT, not a string, and `document(title:)` takes either;
+  // joining with content rather than flattening avoids needing a
+  // content-to-string walk the package does not export. The empty-`note` branch
+  // is the landing page, which is the one minted page that is not an idea.
+  let name = if note.len() == 0 {
+    [Ideas]
+  } else if note.at("title", default: none) != none {
+    note.title
+  } else {
+    // Untitled: the package falls back to the slug, and so do we — `id` is the
+    // full `idea:etal`, and the slug is what follows the prefix separator.
+    raw(id.split(":").last())
+  }
+  set document(title: [#SITE - #name])
   show: chrome.with(current-page: id)
   doc
 }

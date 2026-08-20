@@ -3,7 +3,7 @@
 
 #show: template.with(current-page: "index")
 #set document(
-  title: "Homepage",
+  title: "Rookery - Homepage",
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
