@@ -296,3 +296,67 @@
     ```
   ]
 ]
+
+== As data
+
+#reference(<as-data>, title: [Reading a rookery as data])[
+  Everything above renders your ideas the way rookery thinks ideas should be rendered.
+  `#ideas()` is where you take the same material and do something else with it: the whole rookery as a plain array of dictionaries, ordered by ID.
+
+  ```typ
+  #import "@rheo/rookery:0.4.0": ideas, note-href
+  #context {
+    for e in ideas(tags: "phd") [- #link(e.href, e.text)]
+  }
+  ```
+
+  It has to be called inside `#context`.
+  Reading the registry whole means reading it at the end of the document, which is only legal there---and `#ideas()` is not itself a context function, because a context function can only return content and the entire point is that this one returns data you can sort, filter and count.
+
+  It takes the same `tags:` and `match:` as a @idea:window-tags[window] and an @idea:filtering-outlines[outline].
+  ID order rather than authoring order is deliberate: it is the one order stable across builds, which is what makes a diff of generated output mean something.
+
+  #reference(<row-reference>, title: [Row reference])[
+    #table(
+      columns: (auto, 1fr),
+      table.header([Field], [What it holds]),
+
+      [`id`], [The full ID, prefix included---`"idea:etal"`.],
+
+      [`name`], [The same ID with the prefix stripped---`"etal"`, the form you write in `#window("etal")`.],
+
+      [`title`, `text`],
+      [The title as content, or `none`; and that title flattened to a plain string, `""` where there is none. Take `text` for matching and sorting, `title` for rendering.],
+
+      [`tags`],
+      [The idea's @idea:tags[tags], in the order you gave them---which is not alphabetical, and not quite the order they were written, since `#note` and `#todo` prepend their own.],
+
+      [`body`],
+      [The idea's body flattened to a plain string, `""` where there is none. Matchable and excerptable, not renderable---for rendering, see `#idea-body` below. A nested idea's text is excluded, since it registers separately and owns its own.],
+
+      [`href`, `page`],
+      [A link to the idea's minted page: `href` measured from the page you are calling on, `page` from the site root. Both `none` where nothing mints pages.],
+
+      [`minted`, `updated`], [The idea's dates, or `none`.],
+    )
+  ]
+
+  #reference(<data-functions>, title: [The rest of the seam])[
+    Three functions ask the same questions about one idea rather than about all of them.
+    Each takes what `#window` takes---a bare name, a full ID, or a label---and each wants `#context`.
+
+    ```typ
+    #context note-href("etal") // -> "../ideas/etal.html"
+    #context note-path("etal") // -> "ideas/etal.html"
+    #context idea-body("etal", limit: 3)
+    ```
+
+    `#note-href` is relative to the page it was called on, because that is what an href in the output has to be---so do not compute one on a page and use it on another.
+    `#note-path` answers the same page from the site root, which is what a caller with no page of its own needs: a feed, a sitemap, anything invoked once from shared code rather than from a page.
+    Both are `none` wherever nothing mints pages---plain Typst, and the combined PDF---while `#ideas()` still lists everything, because the corpus does not depend on Rheo and only the links to minted pages do.
+
+    `#idea-body` renders one idea's body with no chrome at all: no summary row, no fold, no box.
+    It is a @idea:windows[window]'s content without the window, and it takes the same `limit:` and `depth:`.
+    The difference that matters is that it does not *announce* the idea the way a window does, so it creates no backlink---which is what makes it safe to run once per idea on every page, where a window would leave every page linking to the whole rookery.
+  ]
+]
