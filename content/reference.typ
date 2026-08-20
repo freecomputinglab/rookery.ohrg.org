@@ -125,7 +125,7 @@
   ]
 
   #reference(<theming>, title: [Theming a rookery])[
-    A rookery's look is five colors, which you hand it as the `theme:` dictionary:
+    A rookery's look is ten values---five colors, two measurements, two knobs for the ID's own type, and one map of colors per tag---which you hand it as the `theme:` dictionary:
 
     ```typ
     #import "@rheo/rookery:0.4.0": rookery
@@ -150,10 +150,14 @@
     )
     ```
 
-    #reference(<theme-reference>, title: [Color reference])[
+    Every value is either a Typst color or a raw CSS string.
+    A string passes through untouched, which is what makes `rgba(...)`, `color-mix(...)`, `var(--your-own)` and anything else CSS accepts available to you---Typst's own color type can express none of them.
+    A key rookery does not recognize is an error naming the ones it does, rather than a typo that silently fails to apply.
+
+    #reference(<theme-reference>, title: [Theme reference])[
       #table(
         columns: (auto, auto, 1fr),
-        table.header([Color], [Default], [What it sets]),
+        table.header([Key], [Default], [What it sets]),
 
         [`link-color`],
         [`rgba(128, 0, 255, .12)`],
@@ -168,6 +172,26 @@
         [`border-color`],
         [`link-color`],
         [The left rule that an idea, a window and an @idea:outlining[outline] all carry.],
+
+        [`rule-width`],
+        [`2px`],
+        [How thick that rule is. The card's corner is arithmetic against it, so the tab the ID straddles stays shut when you move it.],
+
+        [`pad`],
+        [`0.5em`],
+        [The padding every rookery block measures from---an idea's box, a window's, and the indent a nested one takes.],
+
+        [`label-font`],
+        [`monospace`],
+        [The face the `[idea:etal]` ID is set in, and the outline's 'Contents' title with it. Both are machinery rather than writing, so both leave the prose face behind.],
+
+        [`label-size`],
+        [`0.57rem`],
+        [The size of that ID. Load-bearing beyond the label: the tab's lift, a window's summary and the footer's padding are all measured against it, so the corner closes at whatever size you choose. `rem` rather than `em`, so it does not shrink again inside a window.],
+
+        [`tags-color`],
+        [`(:)`],
+        [One color, or a `(text:, background:)` pair, per tag---delivered as a rule on `.idea-tag-<tag>` so it reaches the pill, the outline row's marker and a search result's chip alike.],
       )
     ]
 
