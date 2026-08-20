@@ -137,6 +137,9 @@
     On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
 
     A footnote written outside an idea's context proxies the #link("https://typst.app/docs/reference/model/footnote/")[native Typst function] so that it behaves normally.
+
+    What you write _inside_ a footnote belongs to the idea as well, and not to the footnote.
+    A @idea:citations[citation] in a footnote is claimed by the surrounding idea and listed in its References,#footnote[As this one is @maedje2022typst. Look for it in this idea's References block below, rather than in the footnote itself.] and a @idea:windows[window] or an `@idea:` reference in a footnote registers its backlink exactly as it would in the idea's own prose.
   ]
 
   #concept("citations", title: [Citations])[
