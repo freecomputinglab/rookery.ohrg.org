@@ -108,7 +108,7 @@
 
       [`index-page`],
       [`true`],
-      [Whether to mint `ideas/index.html`, a landing page listing every idea in the rookery. Set it to `false` where your site already publishes an index of its own. See @idea:rookery-index[the rookery's own index].],
+      [Whether to mint `ideas/index.html`, a landing page listing every idea in the rookery. Set it to `false` where your site already publishes an index of its own.],
 
       [`refs`],
       [`true`],
@@ -191,11 +191,11 @@
 
         [`tags-color`],
         [`(:)`],
-        [One color, or a `(text:, background:)` pair, per tag---delivered as a rule on `.idea-tag-<tag>` so it reaches the pill, the outline row's marker and a search result's chip alike. See @idea:coloring-tags[coloring tags].],
+        [One color, or a `(text:, background:)` pair, per tag---delivered as a rule on `.idea-tag-<tag>` so it reaches the pill, the outline row's marker and a search result's chip alike.],
       )
     ]
 
-    #reference(<class-reference>, title: [Class reference])[
+    #reference(<class-reference>, title: [HTML class reference])[
 
       You can also style more granularly with your own CSS using the classes below.
       A trailing `*` below stands for a family whose members are named in the description.
@@ -246,36 +246,33 @@
         [`.idea-page-list`, `.idea-page-row`],
         [A list of pages in either section, and one row in it---a page cannot fold, so it wears a window's shape without being one.],
       )
+    ]
 
-      #reference(<property-reference>, title: [Property reference])[
-        Every value in the @idea:theme-reference[theme reference] arrives as a CSS custom property, so you can set any of them in your own stylesheet instead of in Typst---`--idea-link-color` for `link-color`, and so on down the table.
+    #reference(<css-reference>, title: [CSS variable reference])[
+      You can override any value from the @idea:theme-reference[theme reference] as a CSS variable, as well as other aspects of a rookery's appearance.
 
-        Five more properties exist only that way, with no `theme:` key of their own.
-        They are the details a site tunes rarely enough not to warrant a Typst argument, and you set them on `:root` like any other:
+      #table(
+        columns: (auto, auto, 1fr),
+        table.header([Property], [Default], [What it sets]),
 
-        #table(
-          columns: (auto, auto, 1fr),
-          table.header([Property], [Default], [What it sets]),
+        [`--idea-tag-size`],
+        [`--idea-label-size`],
+        [A tag pill's font size. Follows the ID's size unless you separate them.],
 
-          [`--idea-tag-size`],
-          [`--idea-label-size`],
-          [A tag pill's font size. Follows the ID's size unless you separate them.],
+        [`--idea-tag-radius`], [`999px`], [A pill's corner radius.],
 
-          [`--idea-tag-radius`], [`999px`], [A pill's corner radius.],
+        [`--idea-tag-color`, `--idea-tag-bg`],
+        [`--idea-id-color`, `rgba(128, 128, 128, .18)`],
+        [An untagged-by-`tags-color` pill's text and background. Setting `tags-color` writes these per tag for you.],
 
-          [`--idea-tag-color`, `--idea-tag-bg`],
-          [`--idea-id-color`, `rgba(128, 128, 128, .18)`],
-          [An untagged-by-`tags-color` pill's text and background. Setting `tags-color` writes these per tag for you.],
+        [`--idea-tag-line`],
+        [`--idea-border-color`],
+        [The tick an outline row draws off the outline's rule, where the row's idea carries a tag.],
 
-          [`--idea-tag-line`],
-          [`--idea-border-color`],
-          [The tick an outline row draws off the outline's rule, where the row's idea carries a tag.],
-
-          [`--idea-external-color`],
-          [`--idea-id-color`],
-          [The underline an _outbound_ link takes on hover, in a references block or an idea page's footer---so a link that leaves your rookery reads differently from one that stays in it.],
-        )
-      ]
+        [`--idea-external-color`],
+        [`--idea-id-color`],
+        [The underline an _outbound_ link takes on hover, in a references block or an idea page's footer---so a link that leaves your rookery reads differently from one that stays in it.],
+      )
     ]
   ]
 
@@ -299,24 +296,37 @@
 
 == As data
 
-#reference(<as-data>, title: [Reading a rookery as data])[
-  Everything above renders your ideas the way rookery thinks ideas should be rendered.
-  `#ideas()` is where you take the same material and do something else with it: the whole rookery as a plain array of dictionaries, ordered by ID.
+#reference(<as-databases>, title: [Rookeries are databases of `ideas`])[
+  Your rookeries' contents are always _also_ available in Typst through the `#ideas()` function.
+  This function returns all of your ideas as a data structure that you may then use to customize your rookery or power downstream applications.
+  `ideas` has to be called inside `#context`:
 
   ```typ
-  #import "@rheo/rookery:0.4.0": ideas, note-href
+  #import "@rheo/rookery:0.4.0": ideas, note-href, note-path, idea-body
   #context {
-    for e in ideas(tags: "phd") [- #link(e.href, e.text)]
+    for e in ideas(tags: "concept") [- #link(e.href, e.text)]
+
+    note-href("as-databases")
+    // -> "../ideas/as-databases.html", relative to invocation
+
+    note-path("as-databases")
+    // -> "ideas/as-databases.html", path from site root
+
+    idea-body(
+      // idea ID
+      "as-databases",
+      // limit number of lines
+      limit: 15,
+      // how many layers of children ideas
+      depth: 2,
+    )
+    // -> full content (without chrome)
   }
   ```
 
-  It has to be called inside `#context`.
-  Reading the registry whole means reading it at the end of the document, which is only legal there---and `#ideas()` is not itself a context function, because a context function can only return content and the entire point is that this one returns data you can sort, filter and count.
+  #reference(<ideas-reference>, title: [Ideas reference])[
+    The `ideas` function returns an array of dictionaries that each have the following structure:
 
-  It takes the same `tags:` and `match:` as a @idea:window-tags[window] and an @idea:filtering-outlines[outline].
-  ID order rather than authoring order is deliberate: it is the one order stable across builds, which is what makes a diff of generated output mean something.
-
-  #reference(<row-reference>, title: [Row reference])[
     #table(
       columns: (auto, 1fr),
       table.header([Field], [What it holds]),
@@ -341,22 +351,4 @@
     )
   ]
 
-  #reference(<data-functions>, title: [The rest of the seam])[
-    Three functions ask the same questions about one idea rather than about all of them.
-    Each takes what `#window` takes---a bare name, a full ID, or a label---and each wants `#context`.
-
-    ```typ
-    #context note-href("etal") // -> "../ideas/etal.html"
-    #context note-path("etal") // -> "ideas/etal.html"
-    #context idea-body("etal", limit: 3)
-    ```
-
-    `#note-href` is relative to the page it was called on, because that is what an href in the output has to be---so do not compute one on a page and use it on another.
-    `#note-path` answers the same page from the site root, which is what a caller with no page of its own needs: a feed, a sitemap, anything invoked once from shared code rather than from a page.
-    Both are `none` wherever nothing mints pages---plain Typst, and the combined PDF---while `#ideas()` still lists everything, because the corpus does not depend on Rheo and only the links to minted pages do.
-
-    `#idea-body` renders one idea's body with no chrome at all: no summary row, no fold, no box.
-    It is a @idea:windows[window]'s content without the window, and it takes the same `limit:` and `depth:`.
-    The difference that matters is that it does not *announce* the idea the way a window does, so it creates no backlink---which is what makes it safe to run once per idea on every page, where a window would leave every page linking to the whole rookery.
-  ]
 ]

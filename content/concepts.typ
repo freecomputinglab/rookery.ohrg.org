@@ -60,63 +60,33 @@
   ```
 
   #concept("tags", title: [Tags])[
-    A tag is a string you attach to an idea, and that is all it is.
-    There is no fixed set and nothing is reserved or validated: an idea carrying `todo` means only that you wrote `todo` on it.
-    Tags are neither a taxonomy nor a task tracker.
-    They are how you say that some ideas belong together, so that later you can @idea:windows[window] on them, @idea:outlining[outline] them, or style them as a kind.
+    You can add tags to any idea.
+    Tags work as a lateral filter across many ideas that you can use to group @idea:windows[windows] on them, group @idea:outlining[outlines], or otherwise organize them.
 
     ```typ
-    #idea("meeting-notes", tags: ("draft", "review"))[...]
+    #idea(
+      "meeting-notes",
+      tags: ("draft", "review"),
+    )[ ... ]
     ```
 
-    Each tag becomes an `.idea-tag-<tag>` class on the idea's heading, on its box, and on its row in an outline, which is enough to style a kind of idea without ever showing the tag itself.
-    The `#todo` and `#note` above are sugar over this same array, prepending their own tag to whatever you pass.
+    When creating new @idea:idea[ideas] or @idea:windows[windows], you can set `show-tags: true` to demonstrate
 
-    You can ask an idea what it carries, in the order you gave them:
+    ```typ
+    #window(
+      "meeting-notes",
+      show-tags: true,
+    )
+    ```
+
+    This will render pills next to the idea's ID, just like you see above.
+    The colors associated with each tag can be configured in @idea:theme-reference[your rookery's theme].
+
+    You can also work backwards, getting tags from an idea:
 
     ```typ
     #context tags-of("meeting-notes") // -> ("draft", "review")
     ```
-
-    An idea that does not exist answers `()` rather than failing---a caller asking what something is tagged is filtering, not dereferencing.
-
-    #concept(<showing-tags>, title: [Showing tags])[
-      Pass `show-tags: true` and an idea's tags appear as pills in its hat, on the same short rule the ID sits on, in a fixed order: ID, then tags, then date.
-      It is off by default, exactly like `show-date`.
-
-      ```typ
-      #idea("meeting-notes", tags: ("draft", "review"), show-tags: true)[...]
-      #window("meeting-notes", show-tags: true) // pills here too, asked for separately
-      ```
-
-      Every idea on this site is hatched with `show-tags: true`, which is why each card wears its kind: `concept` on this page, `setup` and `reference` on the @idea:installing[reference], `faq` on the FAQ.
-      An idea with no tags renders no pill, so turning it on costs nothing where there is nothing to show.
-    ]
-
-    #concept(<coloring-tags>, title: [Coloring tags])[
-      A pill is grey until you say otherwise.
-      `tags-color` in the @idea:theming[theme] gives a tag its own color, as a background alone or as a text-and-background pair:
-
-      ```typ
-      #show: rookery.with(theme: (
-        tags-color: (
-          draft: rgb("#3366ff"),                           // background
-          note: (background: rgb("#0000ff"), text: white), // both
-          warn: (text: rgb("#aa0000")),                    // text
-        ),
-      ))
-      ```
-
-      That color does not land on the pill as an inline style.
-      It arrives as a rule on `.idea-tag-<tag>`, which is what lets one entry reach every surface already wearing the class: the pill, the tick an @idea:outlining[outline] row draws off its rule, and a search result's chip---which JavaScript builds in the browser, where no style Typst wrote could follow it.
-
-      Those generated rules sit in a CSS layer, and unlayered CSS beats layered CSS whatever the source order, so a rule of your own on `.idea-tag-draft` still wins.
-
-      Two consequences are worth knowing.
-      A `tags-color` _key_ has to be usable as a CSS class, because it becomes one---a letter or an underscore, then letters, digits, hyphens and underscores.
-      (An idea's own `tags:` array is unconstrained; the rule is about naming a color for a tag, not about carrying one.)
-      And since a colored pill is a CSS rule, it reaches HTML alone: an EPUB ships no stylesheet, and the paged target draws no hat to put a pill in.
-    ]
   ]
 
   #concept("footnotes", title: [Footnotes])[
@@ -218,7 +188,7 @@
     They are useful in home pages or other sections that aggregate content.
 
     Fundamentally, windows are a form of augmented hyperlink.
-    They take their name from Nelson's notion of the #link("https://www.xanadu.com.au/ted/TN/PARALUNE/paraviz.html")[transpointing window] as, when paired with backlinks, they allow you to see the content either side of the link.
+    They take their name from Nelson's notion of the #link("https://www.xanadu.com.au/ted/TN/PARALUNE/paraviz.html")[transpointing window] as they allow you to see the content either side of the link (like a window).
 
     Say you have an idea:
     ```typ
@@ -247,96 +217,39 @@
       folded: true,
       // truncate each body to its first 12 blocks
       limit: 12,
+      // how to order the matching ideas in the window
+      // one of "auto", "date", or "lexicographic"
+      sort: "date", // "auto" by default, i.e. in order of specification
       // show the idea's date in the hat
       show-date: true,
       // and its tags, as pills
       show-tags: true,
+      // select ideas with one of the following tags
+      tags: ("concept", "reference"),
+      // whether tags should ALL be required, or only ANY one of them
+      match: "all" // "any" by default
     )
     ```
+  ]
 
-    Here is an example of a window on the two foundational ideas in rookery, 'rookery' and 'idea', folded and with date:
+  #concept("window-depth", title: [Window depth])[
+    Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
+    In order to prevent this, rookery has a notion of *window depth*, which is set to `1` by default.
 
-    #window((<rookery>, <idea>), folded: true, show-date: true)
+    When a window is called at a level of recursion greater than the window depth, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
+    It's best to think of window depth as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
 
-    Adding a window to an idea will include the window's context in the idea's backlinks.
+    You can set the window depth per window, or site-wide:
+    ```typ
+    #show: rookery.with(window-depth: 1)
+    #window(<first-idea>)
+    #window(<first-idea>, depth: 2)
+    ```
 
-    An idea's @idea:footnotes[footnotes] travel with it into a window, numbered from 1 again and listed in the window's own block --- open this one and compare it with the same idea further up the page:
+    Here is a window on this selfsame idea.
+    Because this documentation uses the default depth of `1`, it only recurses as a window once, and then bottoms out as a link:
 
-    #window(<footnotes>, folded: true)
-
-    So do its @idea:citations[citations]: a window carries its own References block, resolving inside the window rather than pointing back at the idea's own page.
-
-    #window(<citations>, folded: true)
-
-    #concept(<window-tags>, title: [Windowing on tags])[
-      Naming ideas says _show me these_.
-      Passing @idea:tags[tags] says _and everything tagged this way_.
-      The two compose rather than replace each other: a window shows the union of what you named and what the tags select, so it keeps the ideas you pinned deliberately while staying current as you hatch more.
-
-      ```typ
-      #window(<first-idea>, tags: "phd")           // First, then everything tagged phd
-      #window(tags: ("phd", "draft"), match: "all") // only ideas carrying both
-      ```
-
-      `match:` is `"any"` by default, so an idea needs only one of the tags you list; `"all"` demands every one.
-      Either half may be left out, but not both---an empty `#window()` is an error rather than a window on nothing.
-
-      An idea that is both named and tag-matched appears *once*, in the position you named it.
-      This is invisible in the output, which is exactly why it is worth saying.
-
-      Tag selection is always rookery-wide.
-      It reads the whole registry rather than the current page, so the same window pulls the same ideas wherever you put it.
-
-      One asymmetry to carry away, against what you were told just above: an idea you *named* gets a backlink from the window, and an idea the tags pulled in does *not*.
-      A window announces what it points at before the registry can be read, and a tag match is not known that early, so the backlink cannot be recorded at all.
-      Name an idea explicitly if you want the link to travel back to it.
-
-      Here is a live one.
-      Every idea on the @idea:installing[reference] carries the `setup` or `reference` tag, so this window collects the setup half of it without naming a single ID:
-
-      #window(tags: "setup", folded: true, show-tags: true)
-
-      Point a tag window at ideas that _contain_ it and the recursion guard thins the result: an idea cannot be transcluded into a window written inside itself, so it is left out rather than drawn twice.
-      Select a tag your surrounding idea does not carry, or name the ideas you want.
-
-      #concept(<window-sort>, title: [Window order])[
-        `sort:` is `auto`, `"date"` or `"lexicographic"`, and the difference between the first and the other two is the subtle part.
-
-        `auto`, the default, keeps the ideas you named in the order you named them and appends the tag matches after them by ID.
-        A window that only names its ideas therefore reads exactly as it always has.
-
-        Naming a sort orders the *whole* selection instead, discarding your call-site order along with it.
-        `"date"` is newest first on the idea's minted date, with undated ideas last; `"lexicographic"` is by ID.
-        Sorting by date is only worth asking for where your ideas carry dates that differ---every page of this site sets one document date, so its own ideas would all tie and fall back to ID order.
-
-        ```typ
-        // First, Second, then the phd ideas by ID
-        #window((<first-idea>, <second-idea>), tags: "phd")
-        // all four, newest first, wherever you named them
-        #window((<first-idea>, <second-idea>), tags: "phd", sort: "date")
-        ```
-      ]
-    ]
-
-    #concept("window-depth", title: [Window depth])[
-      Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
-      In order to prevent this, rookery has a notion of *window depth*, which is set to `1` by default.
-
-      When a window is called at a level of recursion greater than the window depth, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
-      It's best to think of window depth as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
-
-      You can set the window depth per window, or site-wide:
-      ```typ
-      #show: rookery.with(window-depth: 1)
-      #window(<first-idea>)
-      #window(<first-idea>, depth: 2)
-      ```
-
-      Here is a window on this selfsame idea.
-      Because this documentation uses the default depth of `1`, it only recurses as a window once, and then bottoms out as a link:
-
-      #window(<window-depth>, folded: true)
-    ]
+    #window(<window-depth>, folded: true)
   ]
 ]
 
@@ -352,112 +265,24 @@
   Ideas with no title are left out (since they have no label).
   As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are also not included.
 
-  You can add a title and curtail the depth of an outline like so:
+  You can add a title and configure the outline:
 
   ```typ
-  #ideas-outline(title: none, depth: 2)
-  ```
-
-  Pass `rookery-wide: true` to list _every_ idea in the rookery, rather than just the current context's:
-
-  ```typ
-  #ideas-outline(title: [The whole rookery], rookery-wide: true)
+  #ideas-outline(
+    title: [The whole rookery],
+    // only show ideas this many levels deep
+    depth: 2,
+    // limit ideas shown to those with one of these tags
+    tags: ("todo", "note"),
+    // customize the way ideas are filtered
+    filter: t => "todo" in t and "done" not in t,
+    // list every idea in the rookery
+    rookery-wide: true,
+  )
   ```
 
   The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
-
-  #concept(<filtering-outlines>, title: [Filtering an outline])[
-    An outline takes the same `tags:` and `match:` that a @idea:window-tags[window] does, and means the same thing by them: `tags:` is a string or an array, and `match:` is `"any"` by default or `"all"`.
-
-    ```typ
-    #ideas-outline(tags: "todo")
-    #ideas-outline(tags: ("todo", "phd"))               // any of them
-    #ideas-outline(tags: ("todo", "phd"), match: "all") // all of them
-    ```
-
-    Those two can say _any of these_ and _all of these_ and nothing further.
-    When you want something they cannot express, `filter:` takes a predicate of your own over the idea's tag array:
-
-    ```typ
-    #ideas-outline(title: [Open], filter: t => "todo" in t and "done" not in t)
-    ```
-
-    It sees the tags and nothing else---no title, no ID, no depth---and where you pass both, `filter:` and `tags:` are ANDed rather than either-or.
-
-    Two behaviours are worth expecting before you meet them.
-    A filter *prunes and promotes*: an idea that matches while its parent does not is re-based onto its nearest surviving ancestor, so the tree never shows a gap where an excluded parent used to be.
-    And `depth:` counts levels in the filtered tree, since pruning happens first---`depth: 1` means the top level of what you asked for, not whatever survived from the top level of everything.
-
-    A filtered outline that matches nothing renders nothing at all, heading included.
-    An unfiltered empty outline still prints its heading, and the difference is deliberate: an empty outline is an answer, whereas an empty filtered one is a promise the filter had already ruled out---you can carry `#ideas-outline(title: [Todos], tags: "todo")` on every section without printing a "Todos" heading over every section that has none.
-  ]
-
   Here is the outline of all ideas in this rookery:
 
   #ideas-outline(title: none, rookery-wide: true)
-
-  #concept(<rookery-index>, title: [The rookery's own index])[
-    `ideas/` is the directory every permalink on this site points into, and the address a reader will guess.
-    Rookery mints #link("/ideas/")[a page there] for you: a count, and every idea in the rookery linked to its own standalone page, carrying its date and its tags.
-    It costs you nothing---no configuration, no file---and you turn it off with `index-page: false` if your site already publishes an index of its own.
-
-    It is not the same thing as the rookery-wide outline just above, and the difference is where the rows point.
-    An outline links each idea to its anchor on the page that hatched it, which is what a table of contents on that page should do.
-    The index links each idea to the page rookery minted _for_ it, which is what a directory of standalone pages should do.
-
-    Its rows wear an outline's classes all the same---`.idea-outline`, `.idea-outline-row`, `.idea-tag-<tag>`---so a stylesheet that already knows one knows the other, and the index needs no CSS of its own.
-
-    It is the one minted page that is not an idea, and your @idea:idea-template[idea page template] sees that: `id` arrives as `none` and `note` as an empty dictionary, so a template that assumes a string ID wants a branch.
-  ]
 ]
-
-// #todo("searching", title: [Searching ideas])[
-//   An outline lists your rookery. Searching it is a separate package,
-//   `@rheo/rookery-search`, and it is worth knowing that it comes in three layers,
-//   because only the top one needs Rheo.
-//
-//   `#ideas()` is the bottom layer, and it lives in rookery itself: every idea in
-//   the rookery as plain data — its id, its title, its dates, and a link to its
-//   page. Everything else is built on it, and so can anything you want to write.
-//
-//   `#search-ideas("query")` ranks that corpus and hands back the matches, still as
-//   data. It is ordinary Typst, so it runs under plain `typst compile` with no Rheo
-//   and no JavaScript at all:
-//
-//   ```typ
-//   #import "@rheo/rookery-search:0.4.0": search-ideas
-//   #context {
-//     for e in search-ideas("window") [ - #link(e.href, e.text) ]
-//   }
-//   ```
-//
-//   That is a search rendered at compile time — a static list of matches, which is
-//   a perfectly good answer for a printed target, or for a site that would rather
-//   not ship a script.
-//
-//   `#search-bar()` is the top layer, and the one in the header of this page. It
-//   puts the corpus on the page as JSON, adds an input, and wires the two together
-//   in the browser. This is the layer that needs Rheo: its results link to the
-//   standalone pages Rheo mints, and its behavior comes from a script Rheo
-//   injects. Without Rheo it emits nothing, rather than a search box that could
-//   never work.
-//
-//   ```typ
-//   #import "@rheo/rookery-search:0.4.0": search-bar
-//   #search-bar(placeholder: "Search ideas", limit: 12)
-//   ```
-//
-//   Matching runs over an idea's id _and_ its title, never its body, and it is a
-//   subsequence match — so `wnd` finds @idea:windows. A `-` or `_` reads as a
-//   space, which is why `window-depth` is findable as "window depth" too.
-//
-//   If the bar is not the interface you want, you are not stuck with it. Iterate
-//   `#search-ideas` in Typst and render whatever you like, or rank in the browser
-//   with the same rule the bar uses, exposed there as `RheoRookerySearch.score`.
-//   What you should not do is write a second ranking rule of your own: the package
-//   keeps its Typst and JavaScript copies pinned to each other by a test, and a
-//   third copy would drift from both.
-//
-//   This site is written with rookery, so this idea is in that index like any
-//   other — the search box above will find it.
-// ]
