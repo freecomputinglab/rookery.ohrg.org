@@ -1,12 +1,12 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.3.0": footnote, idea, ideas-outline, note, todo, window
+#import "@rheo/rookery:0.4.0": footnote, idea, ideas-outline, note, todo, window
 
 #let concept(tags: (), ..args) = idea(tags: (("concept",) + tags), ..args)
 
 #show: template.with(current-page: "concepts")
 #set document(
   title: "Concepts",
-  date: datetime(year: 2026, month: 8, day: 15),
+  date: datetime(year: 2026, month: 8, day: 20),
 )
 
 #ideas-outline()

@@ -1,10 +1,10 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.3.0": footnote, idea, note, todo, window
+#import "@rheo/rookery:0.4.0": footnote, idea, note, todo, window
 
 #show: template.with(current-page: "index")
 #set document(
   title: "Homepage",
-  date: datetime(year: 2026, month: 8, day: 15),
+  date: datetime(year: 2026, month: 8, day: 20),
 )
 
 #context if target() == "html" {
@@ -15,7 +15,7 @@
   image("img/rookery-banner.png", alt: "Rookery")
 }
 
-#idea("rookery", title: [A rookery])[
+#idea("rookery", title: [A rookery], tags: ("concept",))[
   A rookery is a place where your ideas can grow.
   Rookeries are collections of files, entirely local and owned by you, with no vendor or cloud lock-in.
   When rookeries are compiled with #link("https://rheo.ohrg.org")[Rheo], every idea can be rendered as a webpage, a PDF, or an EPUB, at any time.
@@ -25,7 +25,7 @@
 
   #window((<installing>), folded: false)
 
-  #idea("idea", title: [An idea])[
+  #idea("idea", title: [An idea], tags: ("concept",))[
     An idea in a @idea:rookery[rookery] is written in #link("https://typst.app/")[Typst].
     Every idea can be referenced by any other idea or page in the same rookery.
 
