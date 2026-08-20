@@ -191,7 +191,7 @@
 
         [`tags-color`],
         [`(:)`],
-        [One color, or a `(text:, background:)` pair, per tag---delivered as a rule on `.idea-tag-<tag>` so it reaches the pill, the outline row's marker and a search result's chip alike.],
+        [One color, or a `(text:, background:)` pair, per tag---delivered as a rule on `.idea-tag-<tag>` so it reaches the pill, the outline row's marker and a search result's chip alike. See @idea:coloring-tags[coloring tags].],
       )
     ]
 

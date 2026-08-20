@@ -59,6 +59,66 @@
   #note[A note.] // #idea(..., tags: ("note"))
   ```
 
+  #concept("tags", title: [Tags])[
+    A tag is a string you attach to an idea, and that is all it is.
+    There is no fixed set and nothing is reserved or validated: an idea carrying `todo` means only that you wrote `todo` on it.
+    Tags are neither a taxonomy nor a task tracker.
+    They are how you say that some ideas belong together, so that later you can @idea:windows[window] on them, @idea:outlining[outline] them, or style them as a kind.
+
+    ```typ
+    #idea("meeting-notes", tags: ("draft", "review"))[...]
+    ```
+
+    Each tag becomes an `.idea-tag-<tag>` class on the idea's heading, on its box, and on its row in an outline, which is enough to style a kind of idea without ever showing the tag itself.
+    The `#todo` and `#note` above are sugar over this same array, prepending their own tag to whatever you pass.
+
+    You can ask an idea what it carries, in the order you gave them:
+
+    ```typ
+    #context tags-of("meeting-notes") // -> ("draft", "review")
+    ```
+
+    An idea that does not exist answers `()` rather than failing---a caller asking what something is tagged is filtering, not dereferencing.
+
+    #concept(<showing-tags>, title: [Showing tags])[
+      Pass `show-tags: true` and an idea's tags appear as pills in its hat, on the same short rule the ID sits on, in a fixed order: ID, then tags, then date.
+      It is off by default, exactly like `show-date`.
+
+      ```typ
+      #idea("meeting-notes", tags: ("draft", "review"), show-tags: true)[...]
+      #window("meeting-notes", show-tags: true) // pills here too, asked for separately
+      ```
+
+      Every idea on this site is hatched with `show-tags: true`, which is why each card wears its kind: `concept` on this page, `setup` and `reference` on the @idea:installing[reference], `faq` on the FAQ.
+      An idea with no tags renders no pill, so turning it on costs nothing where there is nothing to show.
+    ]
+
+    #concept(<coloring-tags>, title: [Coloring tags])[
+      A pill is grey until you say otherwise.
+      `tags-color` in the @idea:theming[theme] gives a tag its own color, as a background alone or as a text-and-background pair:
+
+      ```typ
+      #show: rookery.with(theme: (
+        tags-color: (
+          draft: rgb("#3366ff"),                           // background
+          note: (background: rgb("#0000ff"), text: white), // both
+          warn: (text: rgb("#aa0000")),                    // text
+        ),
+      ))
+      ```
+
+      That color does not land on the pill as an inline style.
+      It arrives as a rule on `.idea-tag-<tag>`, which is what lets one entry reach every surface already wearing the class: the pill, the tick an @idea:outlining[outline] row draws off its rule, and a search result's chip---which JavaScript builds in the browser, where no style Typst wrote could follow it.
+
+      Those generated rules sit in a CSS layer, and unlayered CSS beats layered CSS whatever the source order, so a rule of your own on `.idea-tag-draft` still wins.
+
+      Two consequences are worth knowing.
+      A `tags-color` _key_ has to be usable as a CSS class, because it becomes one---a letter or an underscore, then letters, digits, hyphens and underscores.
+      (An idea's own `tags:` array is unconstrained; the rule is about naming a color for a tag, not about carrying one.)
+      And since a colored pill is a CSS rule, it reaches HTML alone: an EPUB ships no stylesheet, and the paged target draws no hat to put a pill in.
+    ]
+  ]
+
   #concept("footnotes", title: [Footnotes])[
     A footnote belongs to the idea in which you write it in, just as @idea:citations[citations] do.
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function:
