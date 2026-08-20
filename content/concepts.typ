@@ -363,6 +363,32 @@
 
   The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
 
+  #concept(<filtering-outlines>, title: [Filtering an outline])[
+    An outline takes the same `tags:` and `match:` that a @idea:window-tags[window] does, and means the same thing by them: `tags:` is a string or an array, and `match:` is `"any"` by default or `"all"`.
+
+    ```typ
+    #ideas-outline(tags: "todo")
+    #ideas-outline(tags: ("todo", "phd"))               // any of them
+    #ideas-outline(tags: ("todo", "phd"), match: "all") // all of them
+    ```
+
+    Those two can say _any of these_ and _all of these_ and nothing further.
+    When you want something they cannot express, `filter:` takes a predicate of your own over the idea's tag array:
+
+    ```typ
+    #ideas-outline(title: [Open], filter: t => "todo" in t and "done" not in t)
+    ```
+
+    It sees the tags and nothing else---no title, no ID, no depth---and where you pass both, `filter:` and `tags:` are ANDed rather than either-or.
+
+    Two behaviours are worth expecting before you meet them.
+    A filter *prunes and promotes*: an idea that matches while its parent does not is re-based onto its nearest surviving ancestor, so the tree never shows a gap where an excluded parent used to be.
+    And `depth:` counts levels in the filtered tree, since pruning happens first---`depth: 1` means the top level of what you asked for, not whatever survived from the top level of everything.
+
+    A filtered outline that matches nothing renders nothing at all, heading included.
+    An unfiltered empty outline still prints its heading, and the difference is deliberate: an empty outline is an answer, whereas an empty filtered one is a promise the filter had already ruled out---you can carry `#ideas-outline(title: [Todos], tags: "todo")` on every section without printing a "Todos" heading over every section that has none.
+  ]
+
   Here is the outline of all ideas in this rookery:
 
   #ideas-outline(title: none, rookery-wide: true)
