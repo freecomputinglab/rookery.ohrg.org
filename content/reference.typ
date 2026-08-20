@@ -33,7 +33,7 @@
   Once you have `rheo` on your path, you can use rookery in your Rheo project by importing it and hatching an idea:
 
   ```typ
-  #import "@rheo/rookery:0.3.0": idea
+  #import "@rheo/rookery:0.4.0": idea
   #idea[I want to hatch ideas with rookery.]
   ```
 
@@ -48,7 +48,7 @@
   You can configure your rookery by calling a show rule after you import it.
 
   ```typ
-  #import "@rheo/rookery:0.3.0": rookery
+  #import "@rheo/rookery:0.4.0": rookery
   #show: rookery.with(
     // IDs are now `note:etal` rather than `idea:etal`
     prefix: "note",
@@ -63,7 +63,7 @@
 
   ```typ
   // template.typ
-  #import "@rheo/rookery:0.3.0": rookery
+  #import "@rheo/rookery:0.4.0": rookery
   #let template(doc) = {
     show: rookery.with(
       theme: THEME,
@@ -112,7 +112,7 @@
     A rookery's look is five colors, which you hand it as the `theme:` dictionary:
 
     ```typ
-    #import "@rheo/rookery:0.3.0": rookery
+    #import "@rheo/rookery:0.4.0": rookery
     #show: rookery.with(
       theme: (
         // the accent every rookery link takes on hover
