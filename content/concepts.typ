@@ -238,17 +238,16 @@
 
     ```typ
     #window(
-      // filter by ids
+      // the ideas to window on
       (<first-idea>, <second-idea>, <third-idea>),
-      // only show the idea's name and id
+      // only show each idea's title and ID
       folded: true,
-      // limit the number of lines shown in the window
+      // truncate each body to its first 12 blocks
       limit: 12,
-      // include the document date
+      // show the idea's date in the hat
       show-date: true,
-      // select ideas in windows using tags in addition to IDs
-      // IDs and ideas matching tags compose
-      tags: ("post", "docs")
+      // and its tags, as pills
+      show-tags: true,
     )
     ```
 
@@ -265,6 +264,56 @@
     So do its @idea:citations[citations]: a window carries its own References block, resolving inside the window rather than pointing back at the idea's own page.
 
     #window(<citations>, folded: true)
+
+    #concept(<window-tags>, title: [Windowing on tags])[
+      Naming ideas says _show me these_.
+      Passing @idea:tags[tags] says _and everything tagged this way_.
+      The two compose rather than replace each other: a window shows the union of what you named and what the tags select, so it keeps the ideas you pinned deliberately while staying current as you hatch more.
+
+      ```typ
+      #window(<first-idea>, tags: "phd")           // First, then everything tagged phd
+      #window(tags: ("phd", "draft"), match: "all") // only ideas carrying both
+      ```
+
+      `match:` is `"any"` by default, so an idea needs only one of the tags you list; `"all"` demands every one.
+      Either half may be left out, but not both---an empty `#window()` is an error rather than a window on nothing.
+
+      An idea that is both named and tag-matched appears *once*, in the position you named it.
+      This is invisible in the output, which is exactly why it is worth saying.
+
+      Tag selection is always rookery-wide.
+      It reads the whole registry rather than the current page, so the same window pulls the same ideas wherever you put it.
+
+      One asymmetry to carry away, against what you were told just above: an idea you *named* gets a backlink from the window, and an idea the tags pulled in does *not*.
+      A window announces what it points at before the registry can be read, and a tag match is not known that early, so the backlink cannot be recorded at all.
+      Name an idea explicitly if you want the link to travel back to it.
+
+      Here is a live one.
+      Every idea on the @idea:installing[reference] carries the `setup` or `reference` tag, so this window collects the setup half of it without naming a single ID:
+
+      #window(tags: "setup", folded: true, show-tags: true)
+
+      Point a tag window at ideas that _contain_ it and the recursion guard thins the result: an idea cannot be transcluded into a window written inside itself, so it is left out rather than drawn twice.
+      Select a tag your surrounding idea does not carry, or name the ideas you want.
+
+      #concept(<window-sort>, title: [Window order])[
+        `sort:` is `auto`, `"date"` or `"lexicographic"`, and the difference between the first and the other two is the subtle part.
+
+        `auto`, the default, keeps the ideas you named in the order you named them and appends the tag matches after them by ID.
+        A window that only names its ideas therefore reads exactly as it always has.
+
+        Naming a sort orders the *whole* selection instead, discarding your call-site order along with it.
+        `"date"` is newest first on the idea's minted date, with undated ideas last; `"lexicographic"` is by ID.
+        Sorting by date is only worth asking for where your ideas carry dates that differ---every page of this site sets one document date, so its own ideas would all tie and fall back to ID order.
+
+        ```typ
+        // First, Second, then the phd ideas by ID
+        #window((<first-idea>, <second-idea>), tags: "phd")
+        // all four, newest first, wherever you named them
+        #window((<first-idea>, <second-idea>), tags: "phd", sort: "date")
+        ```
+      ]
+    ]
 
     #concept("window-depth", title: [Window depth])[
       Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
