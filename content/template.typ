@@ -39,16 +39,18 @@
   tags-color: TAG-COLORS,
 )
 
-#let _site-page-order = (
-  "concepts",
-  "reference",
-  "faq",
+// The topbar's entries, in order: a vertebra's handle and the label it wears
+// there. Both are written out rather than read from `rheo-context().spine-flat`,
+// whose `title` is no home for a nav label under either rheo. Since 0.6.0 it is
+// purely path-derived — "Faq" for `faq.typ`, which is not how the site spells
+// it. Under 0.5.2 it was the authored `#set document(title: ...)`, which
+// `site-title` prefixes with the site name: right for a browser tab, wrong for
+// an entry in a bar that already says `rookery` to its left.
+#let SITE-PAGES = (
+  (handle: "concepts", label: [Concepts]),
+  (handle: "reference", label: [Reference]),
+  (handle: "faq", label: [FAQ]),
 )
-
-#let site-pages = {
-  let spine-flat = sys.inputs.at("rheo-context", default: (spine-flat: ())).spine-flat
-  _site-page-order.map(handle => spine-flat.find(v => v.handle == handle))
-}
 
 #let site-header(current-page) = html.elem("header", attrs: (class: "site-header"))[
   #html.elem("div", attrs: (class: "site-header-inner"))[
@@ -60,10 +62,10 @@
       #html.elem(
         "ul",
         attrs: (:),
-        site-pages
+        SITE-PAGES
           .map(p => {
             let cls = if p.handle == current-page { "active" } else { "" }
-            html.elem("li", attrs: (class: cls), link(label(p.handle), p.title))
+            html.elem("li", attrs: (class: cls), link(label(p.handle), p.label))
           })
           .join(),
       )
@@ -93,7 +95,7 @@
 // The template for the standalone page rookery mints per idea, handed to the
 // package by `template` below and called by its `.marrow.typ` once per note.
 // `id` is the note's full id, so the nav entry for `idea:rookery` is simply
-// not one of `site-pages` and nothing is marked active — a note page belongs
+// not one of `SITE-PAGES` and nothing is marked active — a note page belongs
 // to no section, which is the honest answer.
 //
 // A NAMED top-level binding, deliberately: the package stores this on a
