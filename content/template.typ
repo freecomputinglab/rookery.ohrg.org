@@ -58,7 +58,7 @@
     // the accent rather than only taking it on hover.
     #let wordmark-class = if current-page == "index" { "wordmark active" } else { "wordmark" }
     #html.elem("span", attrs: (class: wordmark-class), link(label("index"))[rookery])
-    #html.elem("nav", attrs: (class: "site-nav", aria-label: "Site sections"))[
+    #html.elem("nav", attrs: (class: "site-nav", id: "site-nav", aria-label: "Site sections"))[
       #html.elem(
         "ul",
         attrs: (:),
@@ -72,6 +72,27 @@
     ]
 
     #search-modal(placeholder: "Search ideas")
+
+    // Left of nothing on desktop — `.nav-toggle` is hidden there and this
+    // sits at the end of the bar same as always. Below the Responsive
+    // breakpoint it's what collapses `#site-nav` into a dropdown, so it goes
+    // AFTER search-modal in document order: the two are flex siblings with no
+    // `order` override, so source order is display order, and the search
+    // trigger has to stay left of the toggle rather than get swallowed into
+    // the menu it opens.
+    #html.elem(
+      "button",
+      attrs: (
+        class: "nav-toggle",
+        type: "button",
+        aria-expanded: "false",
+        aria-controls: "site-nav",
+        aria-label: "Menu",
+      ),
+      html.elem("span", attrs: (class: "nav-toggle-bar"), [])
+        + html.elem("span", attrs: (class: "nav-toggle-bar"), [])
+        + html.elem("span", attrs: (class: "nav-toggle-bar"), []),
+    )
   ]
 ]
 

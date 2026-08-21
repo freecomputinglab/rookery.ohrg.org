@@ -125,7 +125,7 @@
   ]
 
   #reference(<theming>, title: [Theming a rookery])[
-    A rookery's look is ten values---five colors, two measurements, two knobs for the ID's own type, and one map of colors per tag---which you hand it as the `theme:` dictionary:
+    You can theme rookery using a show rule:
 
     ```typ
     #import "@rheo/rookery:0.4.0": rookery
@@ -151,8 +151,7 @@
     ```
 
     Every value is either a Typst color or a raw CSS string.
-    A string passes through untouched, which is what makes `rgba(...)`, `color-mix(...)`, `var(--your-own)` and anything else CSS accepts available to you---Typst's own color type can express none of them.
-    A key rookery does not recognize is an error naming the ones it does, rather than a typo that silently fails to apply.
+    Rookery allows a string so that you can specify `rgba(...)`, `color-mix(...)`, `var(--your-own)` and anything else CSS accepts valid.
 
     #reference(<theme-reference>, title: [Theme reference])[
       #table(
@@ -294,9 +293,7 @@
   ]
 ]
 
-== As data
-
-#reference(<as-databases>, title: [Rookeries are databases of `ideas`])[
+#reference(<as-databases>, title: [Rookeries are databases of ideas])[
   Your rookeries' contents are always _also_ available in Typst through the `#ideas()` function.
   This function returns all of your ideas as a data structure that you may then use to customize your rookery or power downstream applications.
   `ideas` has to be called inside `#context`:

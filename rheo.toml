@@ -10,6 +10,12 @@ exclude = ["template.typ"]
 [[html.assets]]
 css_stylesheet = "./style.css"
 
+[[html.assets]]
+js_scripts = "./nav.js"
+
+[[html.assets]]
+js_scripts = "./tables.js"
+
 [pdf.spine]
 title = "Rookery"
 

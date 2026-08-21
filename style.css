@@ -141,6 +141,18 @@
   padding-bottom: 0.6rem;
 }
 
+/* Typst's HTML export wraps a loose run of inline content in an anonymous
+   `<p>` wherever it isn't already inside a block element — the wordmark, the
+   search trigger and the nav toggle all get this treatment, so THEY, not the
+   elements inside them, are `.site-header-inner`'s actual flex items. Left
+   alone they carry the UA default `<p>` margin (1em top/bottom), which
+   `align-items: center` centers in full — every one of these `<p>`s, not just
+   the tallest, so the bar's height is set by that margin rather than by the
+   wordmark/icon content actually filling it. */
+.site-header-inner > p {
+  margin: 0;
+}
+
 /* Uppercase, not small-caps. Berkeley Mono is a monospace face: small-caps in
    it are synthesised by the browser, which scales the capitals down and leaves
    them sitting at the wrong weight for the rest of the face. Setting the text
@@ -159,9 +171,10 @@
   color: var(--accent);
 }
 
-/* Pushed to the far end of the bar, and allowed to wrap under the wordmark on
-   a narrow screen rather than being hidden behind a toggle — three entries fit
-   on one line at any width worth designing for. */
+/* Pushed to the far end of the bar. Above the Responsive breakpoint this is
+   the whole story — three entries fit inline beside the wordmark and search
+   trigger. Below it, the Responsive section turns this into a dropdown
+   toggled by `.nav-toggle`, so the bar itself never wraps at any width. */
 .site-nav {
   margin-left: auto;
 }
@@ -207,6 +220,81 @@
 .site-nav li.active a {
   color: var(--accent);
   font-weight: 600;
+}
+
+/* ============================================
+   Nav toggle (hamburger)
+
+   Hidden here — a bar three entries wide has no need of it above the
+   Responsive breakpoint. The Responsive section is what shows it and gives
+   `.site-nav` its collapsed, dropdown behaviour; the shape of the icon itself
+   lives here since it does not change with viewport width.
+
+   Three bars, each positioned by hand rather than stacked with `gap`: the
+   middle one has to fade out in place while the outer two rotate to a cross,
+   and a gap-based stack cannot hold a bar at an angle without it also sliding
+   along the axis the stack lays out on.
+
+   Driven by `aria-expanded` alone — `nav.js` only ever toggles that one
+   attribute, and every visual change, here and in Responsive, reads it via
+   `:has()` or a descendant selector rather than a second `.open` class the
+   two could drift out of step with. */
+.nav-toggle {
+  display: none;
+  position: relative;
+  width: 1.4rem;
+  height: 1rem;
+  flex-shrink: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+}
+
+.nav-toggle-bar {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: currentColor;
+  border-radius: 1px;
+  transition: transform 0.2s ease, opacity 0.2s ease, top 0.2s ease;
+}
+
+.nav-toggle-bar:nth-child(1) {
+  top: 0;
+}
+
+.nav-toggle-bar:nth-child(2) {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.nav-toggle-bar:nth-child(3) {
+  top: 100%;
+  transform: translateY(-100%);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle-bar,
+  .site-nav {
+    transition: none;
+  }
 }
 
 /* ============================================
@@ -320,6 +408,14 @@
    Clears the bar plus a little air. */
 html {
   scroll-padding-top: 4rem;
+  /* Belt-and-suspenders against a horizontal scrollbar: nothing on this site
+     is meant to exceed the viewport's width, but a `min()`/`calc(100vw - …)`
+     miscalculation in a package this site does not control (the search
+     dialog's own width, the mobile nav dropdown) is exactly the kind of thing
+     that only shows up on a real narrow device, not at any width tested by
+     hand. Clipping here is silent insurance, not a fix for a known overflow —
+     if one is ever found, fix its source and leave this in place regardless. */
+  overflow-x: hidden;
 }
 
 body {
@@ -330,7 +426,14 @@ body {
   line-height: 1.3;
   margin: 0 auto;
   padding: 50px;
-  max-width: 36em;
+  /* 50em ≈ 800px at the default root size. Wider than a pure prose measure
+     wants, because this site is not pure prose: a reference row is a name, a
+     default and a sentence side by side, and a ```typ block is as wide as the
+     longest line an author would actually type. Both were being squeezed at
+     36em — the tables into three cramped columns, the code blocks into their
+     own horizontal scroll. `em`, so the measure follows the text if the reader
+     scales it. */
+  max-width: 50em;
 }
 
 /* ============================================
@@ -546,6 +649,24 @@ tbody td:first-child {
   white-space: nowrap;
 }
 
+/* An identifier written as `code` has no spaces in it — `--idea-tag-color`,
+   `idea-page-template` — so nothing in it is a break opportunity, and a cell
+   holding one is as wide as the whole token whatever the column is worth. The
+   measure here is finite (the body's own max-width minus the page padding,
+   minus an `.idea-box`'s own padding at each level of nesting), so that is how
+   a table comes to be wider than the prose around it. Let the token break
+   rather than
+   push the row sideways.
+
+   `break-word` rather than `anywhere`: only the latter feeds a break
+   opportunity into intrinsic sizing, which lets auto table layout squeeze a
+   column down to a single character and split `"idea"` across two lines in a
+   column that had room for it. `break-word` breaks a token only once it would
+   actually overflow the line it is on. */
+td code {
+  overflow-wrap: break-word;
+}
+
 /* Flush with the surrounding prose at both edges: the table has no side rules,
    so the leading inset would read as an indent. */
 th:first-child, td:first-child {
@@ -634,11 +755,170 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     font-size: 0.9em;
   }
 
-  /* No search rules here any more. The trigger button is already compact
-     (an icon and a `<kbd>` hint) and needs no narrow-viewport treatment of
-     its own, unlike the old dropdown, which had to be repositioned to avoid
-     running off the screen. The modal itself hides its preview pane and its
-     `<kbd>` hint below the PACKAGE's own breakpoint (40em ≈ 640px, at the
-     default root font size) — wider than this site's 600px, so it already
-     covers this range and the site should not duplicate it. */
+  /* The modal itself still needs no narrow-viewport treatment of its own —
+     it hides its preview pane and its `<kbd>` hint below the PACKAGE's own
+     breakpoint (40em ≈ 640px, at the default root font size) — wider than
+     this site's 600px, so it already covers this range and the site should
+     not duplicate it. The trigger BUTTON's own bar position does need a rule
+     here now: see the `:has()` selector below. */
+
+  /* Below this width, `.site-nav` no longer fits beside the wordmark and the
+     search trigger without wrapping the bar onto a second line — so instead
+     it comes out of the inline flow entirely and the toggle takes over.
+     `nowrap` is what makes "always one line" true: without it, a flex item
+     that no longer fits would still wrap even with `.site-nav` gone from the
+     row (e.g. a very long future nav label), where the intent here is that
+     the wordmark, search trigger and hamburger themselves never wrap into a
+     second line at any width. */
+  .site-header-inner {
+    flex-wrap: nowrap;
+    padding-bottom: 0.4rem;
+  }
+
+  /* Thinner bar on a phone screen, where the vertical space this bar's own
+     padding costs is a bigger fraction of what's visible above the fold than
+     it is on desktop — the desktop value stays put in the base rule above. */
+  .site-header {
+    padding-top: 0.4rem;
+  }
+
+  .nav-toggle {
+    display: inline-block;
+  }
+
+  /* `.site-nav`'s own `margin-left: auto` (the thing that pushes it, and
+     everything after it, to the far end of the bar on desktop) stops working
+     once it's taken out of flow below — an absolutely-positioned box's
+     margin cannot push its still-in-flow siblings. The search trigger takes
+     over that job here, but NOT via a rule on `.rookery-search-trigger`
+     itself: Typst's HTML export wraps a loose run of inline content in an
+     anonymous `<p>` wherever it isn't already inside a block element, and the
+     trigger button — emitted bare by `@rheo/rookery-search` — gets exactly
+     this treatment. That `<p>`, not the button inside it, is the actual flex
+     child of `.site-header-inner`, so it is the `<p>` that needs the margin:
+     `margin-left: auto` on the button itself would sit on a non-flex-item box
+     and do nothing, which is what shipped here the first time. Eating all the
+     free space to its left pushes this `<p>` and `.nav-toggle`'s own `<p>`
+     after it to the right edge as a pair — trigger, then toggle, exactly the
+     order they're already in in the markup. */
+  .site-header-inner > p:has(> .rookery-search-trigger) {
+    margin-left: auto;
+  }
+
+  /* Taken out of flow (position: absolute) so it does not force the bar
+     above onto a second line, and positioned against `.site-header` — the
+     nearest positioned ancestor, since sticky counts as positioned — rather
+     than `.site-header-inner`, so the dropdown spans the FULL bar rather than
+     stopping at whatever padding-bottom `.site-header-inner` carries.
+
+     Hidden with `visibility`/`opacity`, not `display`: `display: none` cannot
+     be transitioned, and this is the animation the toggle opens with — a
+     short slide-and-fade down from under the bar. `margin-left: 0` cancels
+     the auto margin above (which is what pushes the same element to the far
+     end of the bar's flex row) — irrelevant with `left`/`right` both set, but
+     an absolutely-positioned box with a non-zero auto margin and no
+     intrinsic width is an edge case not worth relying on. */
+  .site-nav {
+    display: block;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-left: 0;
+    background-color: var(--background-color);
+    border-bottom: 1px solid var(--hover-fill);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-6px);
+    transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+  }
+
+  .site-header-inner:has(.nav-toggle[aria-expanded="true"]) .site-nav {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .site-nav ul {
+    flex-direction: column;
+    flex-wrap: nowrap;
+    gap: 0;
+    padding: 0.4rem 0;
+  }
+
+  /* No left padding: the dropdown's left edge is the same x as the wordmark's
+     (`.site-nav` is `left: 0` against `.site-header`, which carries no
+     padding of its own), so a nonzero left inset here would be the only thing
+     breaking that alignment. Right padding stays, for breathing room on a
+     row that otherwise runs edge-to-edge. */
+  .site-nav li {
+    justify-content: flex-start;
+    padding: 0.5rem 1.2rem 0.5rem 0;
+  }
+
+  /* Tables stop being grids here and become one card per row.
+
+     A reference row is a name, sometimes a default, and a sentence about it.
+     Three columns need a measure to share; a phone has none to spare, and the
+     reference page's tables sit two or three `.idea-box`es deep, each of which
+     takes more of it. Auto table layout has nowhere left to put the sentence,
+     so the row grows past its container and the page scrolls sideways.
+
+     Stacked, every cell gets the full width in turn: the name reads as the
+     card's title, the default and the sentence follow under it. The `<thead>`
+     goes with the grid, since a column label has no column to head — it moves
+     into the cells instead, via the `data-label` `tables.js` copies onto each
+     one from its `<th>`. */
+  table {
+    display: block;
+    margin: 1em 0;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tbody,
+  tbody tr,
+  tbody td {
+    display: block;
+  }
+
+  /* The row is the card, so it takes over the rule and the vertical rhythm
+     that the cells carried while they were a grid. */
+  tbody tr {
+    padding: 0.7em 0;
+    border-bottom: 1px solid var(--rule);
+  }
+
+  tbody td {
+    border-bottom: none;
+    padding: 0;
+  }
+
+  /* The base rule keeps this cell on one line so the description column can
+     absorb the wrapping — with the columns gone there is no other column to
+     absorb anything, and the name is free to wrap like everything else. */
+  tbody td:first-child {
+    white-space: normal;
+  }
+
+  tbody td + td {
+    margin-top: 0.2em;
+  }
+
+  /* Only the middle columns are labelled. The first cell is the row's title
+     and the last is prose that already says what it is, so both would read
+     worse with a word in front of them; a bare default value in between is
+     the one thing that needs saying (a column of identifiers under a title
+     that is also an identifier otherwise reads as a second name). Attribute
+     present only where `tables.js` ran, and it labels every cell — the
+     selector, not the script, is what keeps the ends clean. */
+  tbody td:not(:first-child):not(:last-child)[data-label]::before {
+    content: attr(data-label);
+    margin-right: 0.4em;
+    color: var(--muted);
+    font-family: var(--heading-font);
+    font-variant: small-caps;
+  }
 }
