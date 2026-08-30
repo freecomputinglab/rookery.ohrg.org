@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.4.0": footnote, idea, ideas-outline
+#import "@rookery/core:0.1.0": footnote, idea, ideas-outline
 
 #show: template.with(current-page: "reference")
 #set document(
@@ -33,7 +33,7 @@
   Once you have `rheo` on your path, you can use rookery in your Rheo project by importing it and hatching an idea:
 
   ```typ
-  #import "@rheo/rookery:0.4.0": idea
+  #import "@rookery/core:0.1.0": idea
   #idea[I want to hatch ideas with rookery.]
   ```
 
@@ -48,7 +48,7 @@
   You can configure your rookery by calling a show rule after you import it.
 
   ```typ
-  #import "@rheo/rookery:0.4.0": rookery
+  #import "@rookery/core:0.1.0": rookery
   #show: rookery.with(
     // IDs are now `note:etal` rather than `idea:etal`
     prefix: "note",
@@ -63,7 +63,7 @@
 
   ```typ
   // template.typ
-  #import "@rheo/rookery:0.4.0": rookery
+  #import "@rookery/core:0.1.0": rookery
   #let template(doc) = {
     show: rookery.with(
       theme: THEME,
@@ -128,7 +128,7 @@
     You can theme rookery using a show rule:
 
     ```typ
-    #import "@rheo/rookery:0.4.0": rookery
+    #import "@rookery/core:0.1.0": rookery
     #show: rookery.with(
       theme: (
         // the accent every rookery link takes on hover
@@ -299,7 +299,7 @@
   `ideas` has to be called inside `#context`:
 
   ```typ
-  #import "@rheo/rookery:0.4.0": ideas, note-href, note-path, idea-body
+  #import "@rookery/core:0.1.0": ideas, note-href, note-path, idea-body
   #context {
     for e in ideas(tags: "concept") [- #link(e.href, e.text)]
 

@@ -1,7 +1,7 @@
 default:
     @echo "rookery.ohrg.org: 'just watch' to live-rebuild, 'just build' for a one-shot"
 
-# `@rheo/rookery:0.4.0` and `@rheo/rookery-search:0.4.0` are fetched from the
+# `@rookery/core:0.1.0` and `@rookery/search:0.1.0` are fetched from the
 # rheo-packages GitHub releases into the Typst package cache, by rheo itself —
 # nothing to install. To iterate on a package's source instead of the published
 # tarball, displace the cached copy with a symlink to the working tree:
@@ -33,7 +33,7 @@ build:
     rheo compile . --html
     just fonts
 
-# Every `@rheo/rookery` and `@rheo/rookery-search` spec in the repo moves at
+# Every `@rookery/core` and `@rookery/search` spec in the repo moves at
 # once — the seven executable imports and the fifteen inside ```typ blocks
 # alike. The example blocks are deliberately NOT hidden behind a shared imports
 # module: they teach a reader what to type, so each has to name a real
@@ -51,10 +51,10 @@ bump-deps OLD NEW:
     set -euo pipefail
     grep -rl --binary-files=without-match \
       --exclude-dir=build --exclude-dir=.jj --exclude-dir=.git --exclude-dir=.beads \
-      -e "@rheo/rookery:{{OLD}}" -e "@rheo/rookery-search:{{OLD}}" . \
+      -e "@rookery/core:{{OLD}}" -e "@rookery/search:{{OLD}}" . \
       | xargs -r sed -i \
-        -e "s|@rheo/rookery:{{OLD}}|@rheo/rookery:{{NEW}}|g" \
-        -e "s|@rheo/rookery-search:{{OLD}}|@rheo/rookery-search:{{NEW}}|g"
+        -e "s|@rookery/core:{{OLD}}|@rookery/core:{{NEW}}|g" \
+        -e "s|@rookery/search:{{OLD}}|@rookery/search:{{NEW}}|g"
     just check-deps
 
 # The standing guard — `rheo-packages`' `just check-versions` in this repo's
@@ -66,12 +66,12 @@ check-deps:
     set -euo pipefail
     vers=$(grep -rhEo --binary-files=without-match \
       --exclude-dir=build --exclude-dir=.jj --exclude-dir=.git --exclude-dir=.beads \
-      '@rheo/rookery(-search)?:[0-9]+\.[0-9]+\.[0-9]+' . | sed 's/.*://' | sort -u)
+      '@rookery/core(-search)?:[0-9]+\.[0-9]+\.[0-9]+' . | sed 's/.*://' | sort -u)
     if [ "$(printf '%s\n' "$vers" | wc -l)" -ne 1 ]; then
-      echo "@rheo/rookery specs disagree: $(printf '%s' "$vers" | tr '\n' ' ')" >&2
+      echo "@rookery/core specs disagree: $(printf '%s' "$vers" | tr '\n' ' ')" >&2
       grep -rnE --binary-files=without-match \
         --exclude-dir=build --exclude-dir=.jj --exclude-dir=.git --exclude-dir=.beads \
-        '@rheo/rookery(-search)?:[0-9]+\.[0-9]+\.[0-9]+' . >&2
+        '@rookery/core(-search)?:[0-9]+\.[0-9]+\.[0-9]+' . >&2
       exit 1
     fi
-    echo "all @rheo/rookery specs at $vers"
+    echo "all @rookery/core specs at $vers"

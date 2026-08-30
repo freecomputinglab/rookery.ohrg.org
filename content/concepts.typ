@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.4.0": footnote, idea, ideas-outline, note, todo, window
+#import "@rookery/core:0.1.0": footnote, idea, ideas-outline, window
 
 // `show-tags: true` by default, so every card on the page wears its kind as a
 // coloured pill in the hat — the hue comes from `TAG-COLORS` in template.typ.
@@ -23,7 +23,7 @@
   The `#idea` function at its most basic takes the content of an idea.
 
   ```typ
-  #import "@rheo/rookery:0.4.0": idea
+  #import "@rookery/core:0.1.0": idea
   #idea[Hatch a new idea.]
   ```
 
@@ -51,12 +51,11 @@
   You can think of an idea as an #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen note], an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic unit of thought], or as a generalization of the #link("https://orgmode.org/manual/TODO-Basics.html")[Orgmode TODO].
   Ideas are intentially designed as very generic units of content that can cover both these encapsulations, as well as broader containers of writing such as blog posts or journal entries.
 
-  Rookery also provides syntactic sugar for ideas with common tags:
+  `@rookery/todos` provides syntactic sugar for an idea carrying a `todo` tag:
 
   ```typ
-  #import "@rheo/rookery:0.4.0": todo, note
+  #import "@rookery/todos:0.1.0": todo
   #todo[A todo.] // #idea(..., tags: ("todo"))
-  #note[A note.] // #idea(..., tags: ("note"))
   ```
 
   #concept("tags", title: [Tags])[
@@ -94,7 +93,7 @@
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function:
 
     ```typ
-    #import "@rheo/rookery:0.4.0": idea, footnote
+    #import "@rookery/core:0.1.0": idea, footnote
     #idea("etal")[
       A claim#footnote[The evidence.] worth qualifying.
     ]
@@ -155,7 +154,7 @@
     The following three bullets all produce the same result: a hyperlink that reads 'My first idea' to the idea's standalone page.
 
     ```typ
-    #import "@rheo/rookery:0.4.0": hyperlink
+    #import "@rookery/core:0.1.0": hyperlink
     - @idea:first-idea
     - @idea:first-idea[My first idea]
     - #hyperlink(<first-idea>)[My first idea]
@@ -173,7 +172,7 @@
     If you want to redirect _all_ `@idea:x`-style references to anchors, `#hyperlink` is also `@idea:x`'s renderer, installed as a `show ref:` rule — `.with()` it instead of the default:
 
     ```typ
-    #import "@rheo/rookery:0.4.0": hyperlink
+    #import "@rookery/core:0.1.0": hyperlink
     #show ref: hyperlink.with(link-to: "anchor")
     - @idea:first-idea // will link to anchor
     ```
@@ -198,7 +197,7 @@
     You can produce a window on this idea like so:
 
     ```typ
-    #import "@rheo/rookery:0.4.0": window
+    #import "@rookery/core:0.1.0": window
     #window(<first-idea>)
     ```
 
@@ -257,7 +256,7 @@
   You can outline the ideas in a context like so:
 
   ```typ
-  #import "@rheo/rookery:0.4.0": ideas-outline
+  #import "@rookery/core:0.1.0": ideas-outline
   #ideas-outline()
   ```
 

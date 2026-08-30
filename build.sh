@@ -30,7 +30,7 @@ export PATH="$RHEO_CACHE:$PATH"
 # Verify rheo is accessible
 rheo --version || echo "Warning: rheo --version failed, but continuing..."
 
-# `@rheo/rookery` and `@rheo/rookery-search` are fetched from the rheo-packages
+# `@rookery/core` and `@rookery/search` are fetched from the rheo-packages
 # GitHub releases by the rheo CLI itself, so there is nothing to clone or build
 # here — the versions in `content/template.typ` are what CI resolves.
 

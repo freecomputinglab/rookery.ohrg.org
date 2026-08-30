@@ -1,9 +1,6 @@
-version = "0.5.2"
+version = "0.6.2"
 content_dir = "content"
 
-# `template.typ` is a library, not a page — every other `.typ` under
-# `content/` is a vertebra, so without this it would compile to its own
-# `template.html`. The global `[spine]` table applies to every format.
 [spine]
 exclude = ["template.typ"]
 
@@ -21,3 +18,7 @@ title = "Rookery"
 
 [epub.spine]
 title = "Rookery"
+
+[packages.rookery]
+repo = "https://github.com/freecomputinglab/rookery"
+branch = "0.1.0"
