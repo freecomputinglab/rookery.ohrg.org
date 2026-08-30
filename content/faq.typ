@@ -1,5 +1,5 @@
 #import "template.typ": template
-#import "@rheo/rookery:0.4.0": footnote, idea, ideas-outline, todo
+#import "@rookery/core:0.1.0": footnote, idea, ideas-outline
 
 #show: template.with(current-page: "faq")
 #set document(

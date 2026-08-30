@@ -1,5 +1,5 @@
-#import "@rheo/rookery:0.4.0": rookery
-#import "@rheo/rookery-search:0.4.0": search-modal
+#import "@rookery/core:0.1.0": rookery
+#import "@rookery/search:0.1.0": search-modal
 
 // One colour per kind of idea this site hatches, for the tag pills in an
 // idea's hat — rookery 0.4.0's `theme.tags-color`, which only the pills use.

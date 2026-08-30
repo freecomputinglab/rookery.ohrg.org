@@ -1,6 +1,6 @@
 # rookery.ohrg.org
 
-Documentation site for [`@rheo/rookery`](https://github.com/lachlankermode/rheo-packages),
+Documentation site for [`@rookery/core`](https://github.com/lachlankermode/rheo-packages),
 built with [Rheo](https://rheo.ohrg.org) — and written with the package it
 documents, so every note on it is a real `#idea` and every page under `ideas/`
 was minted from one.
@@ -8,10 +8,10 @@ was minted from one.
 ```sh
 just watch      # live-rebuild and open
 just build      # one-shot HTML into build/
-just check-deps # every @rheo/rookery spec in the repo names one version
+just check-deps # every @rookery/core spec in the repo names one version
 ```
 
-`@rheo/rookery:0.4.0` resolves from the Typst package cache; on this machine
+`@rookery/core:0.1.0` resolves from the Typst package cache; on this machine
 the whole `rheo-packages` repo is symlinked in as the `rheo` namespace, so
 edits to the package land here on the next rebuild with no publish step.
 `just bump-deps 0.4.0 0.5.0` moves every spec — the executable imports and the

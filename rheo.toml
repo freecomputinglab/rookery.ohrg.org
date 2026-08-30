@@ -1,4 +1,4 @@
-version = "0.5.2"
+version = "0.6.2"
 content_dir = "content"
 
 # `template.typ` is a library, not a page — every other `.typ` under
@@ -21,3 +21,15 @@ title = "Rookery"
 
 [epub.spine]
 title = "Rookery"
+
+# `@rookery` is its own repository and namespace, so nothing resolves it by
+# default — rheo has to be told where it comes from.
+#
+# THE BRANCH, not a release: the 0.1.0 family has not merged yet, and a
+# repository ref is consumable as it stands, so there is nothing to publish
+# first and every push is picked up on the next build. rheo keys its cache by
+# the resolved commit, so a moved branch is a natural miss rather than a stale
+# hit.
+[packages.rookery]
+repo = "https://github.com/freecomputinglab/rookery"
+branch = "0.1.0"

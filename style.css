@@ -300,7 +300,7 @@
 /* ============================================
    Search
 
-   The trigger button and the modal come from `@rheo/rookery-search`, placed
+   The trigger button and the modal come from `@rookery/search`, placed
    in the header by `site-header` in content/template.typ. Nothing here
    reimplements it: the matching, the two-pane layout and the keyboard
    handling all ship with the package, and this site only dresses them.
@@ -475,7 +475,7 @@ h1, h2, h3, h4, h5, h6 {
    otherwise take that context's Inter, and in a `#window`'s summary — no
    heading at all — the body's sans.
 
-   The SIZE is not ours to set here. `rookery.css` carries its own
+   The SIZE is not ours to set here. `core.css` carries its own
    `.idea-label { font-size: var(--idea-label-size, 0.57rem) }` at the same
    specificity and loads after this file, so it wins on source order and a
    `font-size` in this rule would be dead. The package's own arithmetic — the
@@ -500,7 +500,7 @@ h1, h2, h3, h4, h5, h6 {
    until now it said it in words only, in one place, on the card. Every tag
    wears the class `idea-tag-<tag>` on all four surfaces rookery puts it on:
    the card, the note's heading, an outline row, and (with `show-tags: true`)
-   the pill in the hat. `@rheo/rookery-search` puts the same class on its
+   the pill in the hat. `@rookery/search` puts the same class on its
    result chips. So one hue per tag, applied through that shared class, colours
    the kind everywhere it appears.
 
@@ -793,7 +793,7 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
      over that job here, but NOT via a rule on `.rookery-search-trigger`
      itself: Typst's HTML export wraps a loose run of inline content in an
      anonymous `<p>` wherever it isn't already inside a block element, and the
-     trigger button — emitted bare by `@rheo/rookery-search` — gets exactly
+     trigger button — emitted bare by `@rookery/search` — gets exactly
      this treatment. That `<p>`, not the button inside it, is the actual flex
      child of `.site-header-inner`, so it is the `<p>` that needs the margin:
      `margin-left: auto` on the button itself would sit on a non-flex-item box
