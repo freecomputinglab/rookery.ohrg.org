@@ -33,14 +33,14 @@
   + #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Emacs' Org-mode].
 
   #faq(title: [What is the genealogy of `idea`?])[
-    The semantics of an `idea` is taken from the default #link("https://docs.doomemacs.org/latest/")[Doom Emacs] #link("./.gitignore")[TODO keywords], one of which is `IDEA`.
+    An idea in a rookery can be conceptualized as an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic note] of sorts, which is why each idea is given its own standalone page.
+    As with notes in other Zettelkasten-inspired systems, ideas that link to each other #link(<idea:idea>)[produce backlinks].
 
-    An idea in a rookery should be conceptualized as an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic note], which is why each idea is given its own standalone page.
-    As with notes in other Zettelkasten-inspired systsems, ideas that link to each other #link(<idea:idea>)[produce backlinks]
+    In addition to the sense of an idea as a 'Zettel' or note, you can also think about them as slightly more general kinds of 'todo' item, as in #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Org-mode TODOs].
+    Indeed, the notion of ideas comes from the `IDEA` variant in #link("https://en.wikipedia.org/wiki/Doom_Emacs")[Doom Emacs], a preconfigured cluster of plugins for the Emacs editor.
 
-    In addition to this sense of an idea (as a 'Zettel', or note), it can also be the basis for a 'todo' item (as an Org-mode TODO).
-    This is one of the reasons that rookery ships the `#todo` function as syntactic sugar for an `#idea` with a `"todo"` tag.
-    Though there is no inbuilt sense in which one idea can depend on or be blocked by another, you can create a stronger dependency system over tags, i.e. using a `blockedby:xxx` convention.
+    The sense of an idea as the base for more structured kinds of notes such as todos is one of the reasons that rookery ships `#tagged-idea`, a factory (curried) function that projects can use to create `#todo` or other kinds of more structured ideas.
+    Though there is no inbuilt sense in rookery that allows one idea to depend on or be blocked by another, for example, you could augment these more principled ideas using @idea:tags[tags] as a metadata system.
   ]
 
   #faq(<other-tools>, title: [What are other tools like rookery?])[
