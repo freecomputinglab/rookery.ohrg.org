@@ -225,6 +225,35 @@
       match: "all" // "any" by default
     )
     ```
+
+    Three further arguments decide how much chrome a window wears.
+    Reach for them when a window is the thing being read rather than a pointer to an idea that lives elsewhere:
+
+    ```typ
+    #window(
+      <first-idea>,
+      // whether there is a disclosure at all, `true` by default.
+      // `false` removes it: nothing to click, and nothing that
+      // can hide the body
+      foldable: false,
+      // whether a window with NO title keeps the blank line
+      // where a title would have gone, `true` by default
+      reserve-title: false,
+      // whether the window tints on hover, `true` by default
+      show-background: false,
+    )
+    ```
+
+    `foldable` is not the same argument as `folded`, and the two are easy to conflate.
+    `folded` sets the _initial_ state of a disclosure that exists, and a reader can still open or close it.
+    `foldable` decides whether there is a disclosure to begin with; once it is `false`, `folded` does nothing.
+
+    `reserve-title` only ever affects a window whose idea has _no_ title.
+    A titled window keeps its ordinary spacing whichever way you set it.
+    You will only see the difference alongside `show-label: false`, which asks a window to name itself only where its idea carries an authored title---without that, a window falls back to a derived label and so is almost never titleless.
+
+    `show-background` is independent of `show-frame`, which takes the left rule and the indent and leaves the tint alone.
+    Both directions are useful: `@rookery/slipshow` renders each slide with `show-frame: false` and _keeps_ the tint, because the frame is decoration while the tint is the slide answering a pointer.
   ]
 
   #concept("window-depth", title: [Window depth])[

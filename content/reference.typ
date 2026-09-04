@@ -153,7 +153,7 @@
       theme: (
         // the accent every rookery link takes on hover
         link-color: rgb("#e68c00"),
-        // the quieter hover a foldable window gets
+        // the quieter hover a window gets
         fold-color: "rgba(230, 140, 0, .05)",
         // the left rule, where it should not follow `link-color`
         border-color: rgb("#3d3d3d"),
@@ -182,7 +182,7 @@
         [`rgba(128, 0, 255, .12)`],
         [The hover background on any rookery link, and the fallback `border-color` takes when you leave it unset.],
 
-        [`fold-color`], [`rgba(0, 100, 255, .05)`], [The hover background on a foldable @idea:windows[window] block.],
+        [`fold-color`], [`rgba(0, 100, 255, .05)`], [The hover background on a @idea:windows[window] block, unless that window sets `show-background: false`.],
 
         [`id-color`], [`gray`], [The `[idea:etal]` ID's own text.],
 
