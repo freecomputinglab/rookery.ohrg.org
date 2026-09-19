@@ -63,7 +63,7 @@
 
   #concept("tags", title: [Tags])[
     You can add tags to any idea.
-    Tags work as a lateral filter across many ideas that you can use to group @idea:windows[windows] on them, group @idea:outlining[outlines], or filter ideas in a @idea:rookery-search[search modal].
+    Tags work as a lateral filter across many ideas that you can use to group @idea:windows[windows] on them, group @idea:outlines[outlines], or filter ideas in a @idea:rookery-search[search modal].
 
     ```typ
     #idea(
@@ -219,7 +219,7 @@
     ]
   ]
 
-  #concept("outlining", title: [Outlines])[
+  #concept("outlines", title: [Outlines])[
     You can outline the ideas in a context like so:
 
     ```typ

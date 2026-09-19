@@ -38,4 +38,4 @@
 ]
 
 This site is a rookery.
-Everything you see here exemplifies rookery features such as @idea:windows[windows], @idea:hyperlinks[hyperlinks], and @idea:outlining[outlining].
+Everything you see here exemplifies rookery features such as @idea:windows[windows], @idea:hyperlinks[hyperlinks], and @idea:outlines[outlines].

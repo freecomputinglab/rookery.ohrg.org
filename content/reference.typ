@@ -202,7 +202,7 @@
 
         [`border-color`],
         [`link-color`],
-        [The left rule that an idea, a window and an @idea:outlining[outline] all carry.],
+        [The left rule that an idea, a window and an @idea:outlines[outline] all carry.],
 
         [`rule-width`],
         [`2px`],
@@ -238,7 +238,8 @@
         [`.idea-box`],
         [An idea's own block where it was written, carrying the left rule and the padding every rookery block nested inside it measures from.],
 
-        [`.idea-head`, `.idea-tab`], [The heading group, and the short top rule the name straddles at the card's corner.],
+        [`.idea-head`, `.idea-tab`],
+        [The heading group, and the short top rule the name straddles at the card's corner.],
 
         [`.idea`, `.idea-title`],
         [The idea's heading element---which carries the anchor an `@idea:etal` fragment resolves to---and the title text inside it.],
@@ -261,7 +262,7 @@
         [The second fold a `limit:` makes _inside_ the body: `.idea-window-more` its `<details>`, `-more-summary` the shown blocks you click to see the rest, and `.idea-window-ellipsis` the `…` at the end of them.],
 
         [`.idea-outline*`],
-        [A page's @idea:outlining[outline]: `.idea-outline` the list at each level of nesting, `-title` its "Contents" label, `-row` one row per idea.],
+        [A page's @idea:outlines[outline]: `.idea-outline` the list at each level of nesting, `-title` its "Contents" label, `-row` one row per idea.],
 
         [`.idea-footnote*`],
         [An idea's own @idea:footnotes[footnotes], carried on every surface it appears on: `.idea-footnotes` the block, `-title` its label, `.idea-footnote-list` and `.idea-footnote` its entries.],
@@ -283,8 +284,7 @@
         [`.idea-row*`],
         [One row of an @idea:idea-row-reference[`#idea-row`] list: `.idea-row` the `<li>`, `-when` its date cell, `-title` the title, `-cell` each extra cell, `-badges` the chip strip at the end. `@rookery/search` and `@rookery/timeline` draw the same row, so a rule of yours here reaches all three.],
 
-        [`.idea-index-count`],
-        [The "*n* ideas" line on the minted index page.],
+        [`.idea-index-count`], [The "*n* ideas" line on the minted index page.],
       )
 
       Every one of those elements also carries a `data-rookery` attribute
@@ -453,9 +453,7 @@
       [#type-datetime],
       [The date the idea was written. In its absence the containing document's own `#set document(date: ..)` is used; a date is otherwise never invented.],
 
-      [`display`],
-      [#type-dict],
-      [What the idea shows of itself, as a dictionary of nine flags — see below.],
+      [`display`], [#type-dict], [What the idea shows of itself, as a dictionary of nine flags — see below.],
     )
 
     Every `display` key takes a boolean, and defaults to #type-auto: the
@@ -622,9 +620,7 @@
       #table(
         columns: (auto, auto, 1fr),
         table.header([Argument], [Type], [Description]),
-        [`name`],
-        [#type-string | #type-label],
-        [The idea to render, in the same name forms every accessor here takes.],
+        [`name`], [#type-string | #type-label], [The idea to render, in the same name forms every accessor here takes.],
 
         [`unfurl`],
         [#type-int | #type-auto],
@@ -675,9 +671,7 @@
       #table(
         columns: (auto, auto, 1fr),
         table.header([Argument], [Type], [Description]),
-        [`when`],
-        [#type-content | #type-none],
-        [The date cell, already formatted. #type-none draws an em dash.],
+        [`when`], [#type-content | #type-none], [The date cell, already formatted. #type-none draws an em dash.],
 
         [`iso`],
         [#type-string | #type-none],
@@ -691,13 +685,9 @@
         [#type-string | #type-array, #type-dict],
         [Extra classes and attributes on the date cell, for a consumer that bands a deadline by how close it is. Core defines none of these names and styles none of them.],
 
-        [`title`],
-        [#type-content],
-        [The row's title.],
+        [`title`], [#type-content], [The row's title.],
 
-        [`href`],
-        [#type-string | #type-none],
-        [Where the title links. #type-none renders it as a span instead.],
+        [`href`], [#type-string | #type-none], [Where the title links. #type-none renders it as a span instead.],
 
         [`badges`],
         [#type-array],
@@ -796,9 +786,7 @@
       [#type-string | #type-array | #type-dict | #type-function],
       [@idea:tags[Tags] put on every idea minted, in the same forms `#idea` accepts, or a function `(content, labels) => tags` computing each section's own. An `#ideate-tag(..)` beacon placed in a section's content adds to these, and wins on a conflicting key.],
 
-      [`display`],
-      [#type-dict],
-      [As on @idea:idea-reference[`#idea`], and read by every idea minted — see below.],
+      [`display`], [#type-dict], [As on @idea:idea-reference[`#idea`], and read by every idea minted — see below.],
     )
 
     Two of the nine keys invert `#idea`'s own defaults, and are given here as
@@ -949,9 +937,7 @@
       [#type-bool],
       [Whether the window counts as a link from the page it sits on to the idea it shows. True is right for a window written into an idea's prose; `false` is for a derived view — a deck, an index, a preview — which renders an idea rather than pointing at it, and should not fill that idea's backlinks with pages nobody wrote a link on.],
 
-      [`display`],
-      [#type-dict],
-      [What the window shows of itself, as a dictionary of six flags — see below.],
+      [`display`], [#type-dict], [What the window shows of itself, as a dictionary of six flags — see below.],
     )
 
     As on @idea:idea-reference[`#idea`], every `display` key takes a boolean and
@@ -1069,7 +1055,7 @@
   // `@idea:` — which is the behaviour that makes retiring one safe.
   #reference(<outline-reference>, title: [`#outline`])[
     A contents list over the ideas in your rookery, derived from how you nest
-    them. See @idea:outlining[outlining ideas] for what it lists and what it
+    them. See @idea:outlines[outlining ideas] for what it lists and what it
     leaves out.
 
     Typst's own idiom for an outline over something other than headings is a
@@ -1204,9 +1190,7 @@
     #table(
       columns: (auto, auto, 1fr),
       table.header([Field], [Type], [What it holds]),
-      [`id`],
-      [#type-string],
-      [The full name, prefix included — `"idea:etal"`.],
+      [`id`], [#type-string], [The full name, prefix included — `"idea:etal"`.],
 
       [`name`],
       [#type-string],
@@ -1240,9 +1224,7 @@
       [#type-string | #type-none],
       [The same page from the site root. See @idea:idea-path-reference[`#idea-path`].],
 
-      [`created`],
-      [#type-datetime | #type-none],
-      [The idea's date.],
+      [`created`], [#type-datetime | #type-none], [The idea's date.],
     )
 
     Three things are deliberately not here in bulk: the body as content, the
@@ -1279,8 +1261,7 @@
         columns: (auto, 1fr),
         table.header([Form], [What it projects]),
 
-        [`key: "<tag>"`],
-        [That tag's value, or #type-none where the idea does not carry it.],
+        [`key: "<tag>"`], [That tag's value, or #type-none where the idea does not carry it.],
 
         [`family: "<prefix>"`],
         [The first flat tag whose key starts with the prefix, prefix stripped. `one-of:` restricts _and orders_ the candidates, so an idea carrying two of a family resolves to the earliest you listed rather than to whichever key order happens to yield first.],
