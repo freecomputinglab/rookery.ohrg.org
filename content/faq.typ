@@ -29,7 +29,7 @@
   + Jon Sterling's #link("https://www.forester-notes.org/QHXS/index.xml")[intellectual junkyards].
   + #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Emacs' Org-mode].
 
-  #faq(title: [What is the genealogy of `idea`?])[
+  #faq(<genealogy>, title: [What is the genealogy of `idea`?])[
     An idea in a rookery can be conceptualized as an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic note] of sorts, which is why each idea is given its own standalone page.
     As with notes in other Zettelkasten-inspired systems, ideas that link to each other #link(<idea:idea>)[produce backlinks].
 
