@@ -331,7 +331,7 @@
       table.header([Argument], [Type], [Description]),
       [`id`],
       [#type-label | #type-string],
-      [A unique identifier for the idea, allowing it to be referenced as `@idea:<id>` across the rookery. In the absence of an explicit id, it is derived using a kebab-case form of the idea's `title` and/or a counter.],
+      [A unique identifier for the idea, allowing it to be referenced as `@idea:<id>` across the rookery. In the absence of an explicit id, an idea with a `title` takes a slug of it; an idea with no usable title instead takes an ordinal scoped to its enclosing idea, or, at the top level, to the page.],
 
       [`title`],
       [#type-content],
@@ -429,7 +429,7 @@
 
       [`name`],
       [#type-function | #type-auto],
-      [A function `(content, labels) => str` computing each idea's id from its separating heading — `slug` is exported for exactly this. Defaults to #type-auto, the package counter. A fixed value is refused, as it would mint every idea in the body under one id.],
+      [A function `(content, labels) => str` computing each idea's id from its separating heading — `slug` is exported for exactly this. Defaults to #type-auto, which slugs the heading the same way an unnamed `#idea`'s title is slugged, falling back to a container-scoped ordinal when the heading yields no usable slug. A fixed value is refused, as it would mint every idea in the body under one id.],
 
       [`tags`],
       [#type-string | #type-array | #type-dict | #type-function],

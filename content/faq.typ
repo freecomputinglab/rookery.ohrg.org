@@ -60,7 +60,7 @@
       // - Forester has #link("https://www.forester-notes.org/013A/index.xml")[thoughtful mechanisms] for federating multiple forests by way of #link("https://www.forester-notes.org/30FN/index.xml")[selective tree publication], whereas rookeries are conceived as standalone collections. (Federating rookeries is intended future work.)
       - Rookery can be incrementally adopted in an existing Rheo project---a 'normal' #link("https://rheo.ohrg.org/")[writing project or website] that isn't organized as atomic notes---by sprinkling `#idea` blocks in as they are concieved, whereas forester must be adopted wholesale.
       - In addition to HTML and PDF, rookery can export to EPUB.
-      - Rookery allows you to specify human-readable, semantic IDs to ideas if you prefer not to use sequential codes.
+      - Rookery allows you to specify human-readable, semantic IDs to ideas if you prefer not to accept the ids it derives automatically.
       - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is a pre-release software (version 0.`x`) that was announced in August 2026.
     ]
 

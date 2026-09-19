@@ -6,7 +6,7 @@ priority: 2
 labels:
 - fix-idea-auto-id-drift
 deps: []
-closed: false
+closed: true
 ---
 Touches: content/reference.typ, content/faq.typ
 
