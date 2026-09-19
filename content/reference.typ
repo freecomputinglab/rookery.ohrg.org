@@ -26,19 +26,39 @@
 
 #ideas-outline()
 
-#setup("installing", title: [Installing rookery])[
+#setup("getting-started", title: [Getting started])[
   The easiest way to get started with a rookery is by #link("https://rheo.ohrg.org/getting-started")[installing Rheo], a typesetting engine based on Typst.
   #footnote[If you prefer to use native Typst to compile a rookery, see @idea:using-typst]
+  Once you have `rheo` on your path, scaffold a new Rheo project:
 
-  Once you have `rheo` on your path, you can use rookery in your Rheo project by importing it and hatching an idea:
+  ```bash
+  rheo init my_rookery
+  cd my_rookery
+  ```
+
+  Add the following section to the #link("https://rheo.ohrg.org/rheotoml")[rheo.toml] configuration file at the root of the `my_rookery` project:
+
+  ```toml
+  [packages.rookery]
+  releases = "freecomputinglab/rookery"
+  ```
+
+  This allows Rheo to discover the rookery packages.
+  Rheo has a built-in development server which will incrementally update your browser as you edit source files:
+
+  ```bash
+  rheo watch . --html --open
+  ```
+
+  Once this is running, you are all ready to hatch your first idea.
+  Do so in `index.typ` (or create a new file if you prefer):
 
   ```typ
   #import "@rookery/core:0.1.0": idea
   #idea[I want to hatch ideas with rookery.]
   ```
 
-  That's it!
-
+  You're all set!
   Your rookery is now ready to nurture your every next idea.
 ]
 

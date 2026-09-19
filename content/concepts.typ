@@ -23,40 +23,36 @@
   The `#idea` function at its most basic takes the content of an idea.
 
   ```typ
-  #import "@rookery/core:0.1.0": idea
   #idea[Hatch a new idea.]
   ```
+
+  You can think of an idea as an #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen note], an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic unit of thought], as a generalization of the #link("https://orgmode.org/manual/TODO-Basics.html")[Orgmode TODO], or simply as a referenceable and taggable block of content.
+  Ideas can range from short notes you want to jot down to blog posts, complete academic papers, meeting notes, .
+
 
   By default, an idea will inherit its date from the document in which it was hatched, and will not show it explicitly.
   If you want to keep track of when you updated individual ideas, you can explicitly set it when hatching.
   You can also give it tags to associate it with other ideas.
 
   ```typ
-  #concept(
-    // if not specified, the ID will be auto-generated
+  #idea(
+    // If not specified, the ID will be auto-generated
     <incremental-thought>,
-    // Link text when referenced
+    // The title is also the link text when this idea is referenced elsewhere in the rookery
     title: [On rookeries],
-    // defaults to #document.date
-    updated: datetime(year: 2026, month: 8, day: 16),
-    // Whether to show when idea is hatched
-    show-date: true,
-    // an arbitrary list of strings
+    // Defaults to #document.date
+    created: datetime(year: 2026, month: 8, day: 16),
+    // Whether to show an idea's `created` date in its minted page
+    display-date: true,
+    // Whether to show an idea's context in its minted page
+    display-context: true,
+    // An list of tags
     tags: ("in-progress", "phd")
   )[
-    // ...
+    Your idea content...
   ]
   ```
 
-  You can think of an idea as an #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen note], an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic unit of thought], or as a generalization of the #link("https://orgmode.org/manual/TODO-Basics.html")[Orgmode TODO].
-  Ideas are intentially designed as very generic units of content that can cover both these encapsulations, as well as broader containers of writing such as blog posts or journal entries.
-
-  `@rookery/todos` provides syntactic sugar for an idea carrying a `todo` tag:
-
-  ```typ
-  #import "@rookery/todos:0.1.0": todo
-  #todo[A todo.] // #idea(..., tags: ("todo"))
-  ```
 
   #concept("tags", title: [Tags])[
     You can add tags to any idea.

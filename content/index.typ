@@ -21,9 +21,7 @@
   When rookeries are compiled with #link("https://rheo.ohrg.org")[Rheo], every idea can be rendered as a webpage, a PDF, or an EPUB, at any time.
   This is true also for _collections_ of ideas, ranging from a set of associated ideas to your entire rookery.
 
-  Get started building your own rookery today:
-
-  #window((<installing>), folded: false)
+  #window((<getting-started>), folded: false)
 
   #idea("idea", title: [An idea], tags: ("concept",), show-tags: true)[
     An idea in a @idea:rookery[rookery] is written in #link("https://typst.app/")[Typst].
