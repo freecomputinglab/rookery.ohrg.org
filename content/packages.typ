@@ -1,7 +1,3 @@
-#import "template.typ": template
-#import "@rookery/core:0.1.0": footnote, idea, ideas-outline, window
-
-#show: template.with(current-page: "packages")
 #set document(
   title: "Rookery - Packages",
   date: datetime(year: 2026, month: 9, day: 19),

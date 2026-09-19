@@ -1,8 +1,5 @@
-#import "template.typ": template
-#import "@rookery/core:0.1.0": footnote, idea, ideas-outline, window
-
 // `show-tags: true` by default, so every card on the page wears its kind as a
-// coloured pill in the hat — the hue comes from `TAG-COLORS` in template.typ.
+// coloured pill in the hat — the hue comes from `TAG-COLORS` in `_lib/template.typ`.
 // Named rather than hardcoded so a call site can still turn it off.
 #let concept(tags: (), show-tags: true, ..args) = idea(
   tags: (("concept",) + tags),
@@ -10,7 +7,6 @@
   ..args,
 )
 
-#show: template.with(current-page: "concepts")
 #set document(
   title: "Rookery - Concepts",
   date: datetime(year: 2026, month: 8, day: 20),

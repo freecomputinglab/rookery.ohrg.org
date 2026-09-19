@@ -1,14 +1,10 @@
-#import "template.typ": template
-#import "@rookery/core:0.1.0": footnote, idea, ideas-outline
-
-#show: template.with(current-page: "faq")
 #set document(
   title: "Rookery - FAQ",
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
 // `show-tags: true` by default, as on the other pages: the kind shows as a
-// coloured pill in the hat, from `TAG-COLORS` in template.typ.
+// coloured pill in the hat, from `TAG-COLORS` in `_lib/template.typ`.
 #let faq(tags: (), show-tags: true, ..args) = idea(
   tags: (("faq",) + tags),
   show-tags: show-tags,

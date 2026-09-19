@@ -1,7 +1,3 @@
-#import "template.typ": template
-#import "@rookery/core:0.1.0": footnote, idea, ideas-outline
-
-#show: template.with(current-page: "reference")
 #set document(
   title: "Rookery - Reference",
   date: datetime(year: 2026, month: 8, day: 20),
@@ -10,7 +6,7 @@
 // The two kinds of idea this page hatches, wrapped the way `concepts.typ` and
 // `faq.typ` wrap theirs: the tag is the page's own vocabulary rather than
 // something a call site should have to remember, and `show-tags: true` puts it
-// in the hat as a coloured pill (hues in `TAG-COLORS`, template.typ). Setup is
+// in the hat as a coloured pill (hues in `TAG-COLORS`, `_lib/template.typ`). Setup is
 // a step you follow once; reference is a table you come back to.
 #let setup(tags: (), show-tags: true, ..args) = idea(
   tags: (("setup",) + tags),

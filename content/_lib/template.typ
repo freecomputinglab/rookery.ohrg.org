@@ -39,18 +39,57 @@
   tags-color: TAG-COLORS,
 )
 
-// The topbar's entries, in order: a vertebra's handle and the label it wears
-// there. Both are written out rather than read from `rheo-context().spine-flat`,
-// whose `title` is no home for a nav label under either rheo. Since 0.6.0 it is
-// purely path-derived — "Faq" for `faq.typ`, which is not how the site spells
-// it. Under 0.5.2 it was the authored `#set document(title: ...)`, which
-// `site-title` prefixes with the site name: right for a browser tab, wrong for
-// an entry in a bar that already says `rookery` to its left.
-#let SITE-PAGES = (
-  (handle: "concepts", label: [Concepts]),
-  (handle: "reference", label: [Reference]),
-  (handle: "faq", label: [FAQ]),
-)
+// THE TOPBAR'S ENTRIES: every vertebra in the top layer of `content_dir` except
+// `index.typ`, which the wordmark already links. Read off the spine rather than
+// written out here, so dropping `content/packages.typ` next to `faq.typ` puts
+// `packages` in the bar with no edit to this file — which is the whole point of
+// a derived nav over a hand-kept list.
+//
+// `sys.inputs.rheo-context` rather than `rheo-context()`: rheo injects that
+// helper into each SPINE file's scope only, and this file is excluded from the
+// spine. The half it does reach — `spine-flat` and the rest — is spine-WIDE, so
+// the one thing missing is "which page is this", which `template` takes as
+// `current-page` from the prelude instead.
+//
+// A DIRECTORY IS NOT A TOP-LAYER PAGE. `foo/index.typ` would publish as
+// `foo.html` and be indistinguishable from a root file by output path; the SPINE
+// path is what tells them apart, and it is the one this reads.
+//
+// THE STEM IS THE LABEL, not `spine-flat`'s `title`, which since rheo 0.6.0 is
+// purely path-derived anyway ("Faq" for `faq.typ`, not how the site spells it).
+// `.site-nav a` is `text-transform: uppercase` in `style.css`, so the bar reads
+// CONCEPTS / FAQ either way and the cased spelling never had a job here.
+//
+// `handle`, NOT the stem, is what the link is made from: rheo's link rule
+// resolves `#link(<handle>)` against `spine-flat` and rewrites it to the right
+// depth, so one entry works from a root vertebra and from a minted idea page a
+// directory down. The stem is only the visible word, and it is also what
+// `current-page` is compared against, the two being the same for a root file.
+#let SITE-PAGES = {
+  let flat = sys.inputs
+    .at("rheo-context", default: (:))
+    .at("spine-flat", default: ())
+    .filter(v => v.at("path", default: none) != none and v.at("handle", default: none) != none)
+
+  // A LEADING SEGMENT EVERY SPINE PATH SHARES is rheo's `content_dir` — a
+  // wrapper nobody named as a section — so it is stripped before the depth test.
+  // This site declares `content_dir = "content"`, so without this every path is
+  // one level down and the bar would come out empty. Repeated, because the
+  // setting can name more than one level.
+  let paths = flat.map(v => v.path)
+  while paths.len() > 0 and paths.first().contains("/") {
+    let head = paths.first().split("/").first()
+    if not paths.all(p => p.starts-with(head + "/")) { break }
+    paths = paths.map(p => p.slice(head.len() + 1))
+  }
+
+  // Spine order, not alphabetical: it is the order rheo settled on, so a site
+  // that one day declares `[spine] include` gets the bar it asked for.
+  flat
+    .zip(paths)
+    .filter(((v, p)) => not p.contains("/") and p != "index.typ")
+    .map(((v, p)) => (handle: v.handle, label: p.trim(".typ", at: end)))
+}
 
 #let site-header(current-page) = html.elem("header", attrs: (class: "site-header"))[
   #html.elem("div", attrs: (class: "site-header-inner"))[
@@ -164,12 +203,25 @@
 // `bytes(read(...))` rather than a path. Typst resolves a path against the file
 // the call appears in, and rookery's own `#bibliography` call lives inside the
 // package — a path would be looked for next to the package's `lib.typ`. Reading
-// here resolves against THIS file, which is where `references.bib` sits.
+// here is what puts the resolution back under this project's control.
+//
+// ROOT-ABSOLUTE, not `../references.bib`: the bibliography is the site's, not
+// `_lib/`'s, so it stays beside the pages that cite it and this file names it
+// from the project root rather than counting directories up.
 //
 // No `style:`: rookery defaults to an author-date style, because citation
 // numbering in Typst is document-wide and cannot be reset.
-#let BIBLIOGRAPHY = arguments(bytes(read("references.bib")))
+#let BIBLIOGRAPHY = arguments(bytes(read("/content/references.bib")))
 
+// NO VERTEBRA APPLIES THIS BY HAND any more. `[spine] prelude` in `rheo.toml`
+// splices `_lib/prelude.typ` into every vertebra, and it is the one
+// place that writes the `#show: template` — so a new page in `content/` is a
+// file with a `#set document(title: ...)` and prose, nothing else.
+//
+// `current-page` therefore arrives from the prelude as that vertebra's own
+// `rheo-context().handle`, the one per-file field rheo injects and the one fact
+// this file cannot read for itself (see `SITE-PAGES`). For a root file the
+// handle IS the stem, which is what the nav's active marker compares against.
 #let template(current-page: none, doc) = {
   show: rookery.with(
     theme: THEME,
