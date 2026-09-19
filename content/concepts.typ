@@ -1,9 +1,9 @@
-// `show-tags: true` by default, so every card on the page wears its kind as a
+// `display-tags: true` by default, so every card on the page wears its kind as a
 // coloured pill in the hat — the hue comes from `TAG-COLORS` in `_lib/template.typ`.
 // Named rather than hardcoded so a call site can still turn it off.
-#let concept(tags: (), show-tags: true, ..args) = idea(
+#let concept(tags: (), display-tags: true, ..args) = idea(
   tags: (("concept",) + tags),
-  show-tags: show-tags,
+  display-tags: display-tags,
   ..args,
 )
 
@@ -12,7 +12,7 @@
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
-#ideas-outline()
+#ideas-outline(scope: "page")
 
 #concept("hatching-ideas", title: [Hatching ideas])[
   Ideas are designed so that you can always hatch new ones without ceremony.
@@ -39,7 +39,7 @@
     )[ ... ]
 
     /* Window over all ideas with the tag "draft" */
-    #window(tags: "draft")
+    #window(tagged: "draft")
     ```
 
     Beneath their appearance as simple strings that can be used to organize ideas, tags are implemented as hash maps using strings as keys and abstract types as values.
@@ -193,11 +193,11 @@
       // one of "auto", "date", or "lexicographic"
       sort: "date", // "auto" by default, i.e. in order of specification
       // show the idea's date in the hat
-      show-date: true,
+      display-date: true,
       // and its tags, as pills
-      show-tags: true,
+      display-tags: true,
       // select ideas with one of the following tags
-      tags: ("concept", "reference"),
+      tagged: ("concept", "reference"),
       // whether tags should ALL be required, or only ANY one of them
       match: "all" // "any" by default
     )
@@ -217,7 +217,7 @@
       // where a title would have gone, `true` by default
       reserve-title: false,
       // whether the window tints on hover, `true` by default
-      show-background: false,
+      display-background: false,
     )
     ```
 
@@ -227,28 +227,28 @@
 
     `reserve-title` only ever affects a window whose idea has _no_ title.
     A titled window keeps its ordinary spacing whichever way you set it.
-    You will only see the difference alongside `show-label: false`, which asks a window to name itself only where its idea carries an authored title---without that, a window falls back to a derived label and so is almost never titleless.
+    You will only see the difference alongside `display-label: false`, which asks a window to name itself only where its idea carries an authored title---without that, a window falls back to a derived label and so is almost never titleless.
 
-    `show-background` is independent of `show-frame`, which takes the left rule and the indent and leaves the tint alone.
-    Both directions are useful: `@rookery/slipshow` renders each slide with `show-frame: false` and _keeps_ the tint, because the frame is decoration while the tint is the slide answering a pointer.
+    `display-background` is independent of `display-frame`, which takes the left rule and the indent and leaves the tint alone.
+    Both directions are useful: `@rookery/slipshow` renders each slide with `display-frame: false` and _keeps_ the tint, because the frame is decoration while the tint is the slide answering a pointer.
   ]
 
-  #concept("window-depth", title: [Window depth])[
+  #concept("window-depth", title: [Window unfurl])[
     Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
-    In order to prevent this, rookery has a notion of *window depth*, which is set to `1` by default.
+    In order to prevent this, rookery has a notion of *window unfurl*, which is set to `1` by default.
 
-    When a window is called at a level of recursion greater than the window depth, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
-    It's best to think of window depth as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
+    When a window is called at a level of recursion greater than the unfurl budget, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
+    It's best to think of window unfurl as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
 
-    You can set the window depth per window, or site-wide:
+    You can set the unfurl budget per window, or site-wide:
     ```typ
-    #show: rookery.with(window-depth: 1)
+    #show: rookery.with(window-unfurl: 1)
     #window(<first-idea>)
-    #window(<first-idea>, depth: 2)
+    #window(<first-idea>, unfurl: 2)
     ```
 
     Here is a window on this selfsame idea.
-    Because this documentation uses the default depth of `1`, it only recurses as a window once, and then bottoms out as a link:
+    Because this documentation uses the default unfurl of `1`, it only recurses as a window once, and then bottoms out as a link:
 
     #window(<window-depth>, folded: true)
   ]
@@ -262,7 +262,7 @@
   #ideas-outline()
   ```
 
-  This outline is derived from how you nest `#idea` hatchings.
+  This outline is derived from how you nest `#idea` hatchings, and lists every idea in the rookery by default---pass `scope: "page"` to narrow it to only the ideas written on this page.
   Ideas with no title are left out (since they have no label).
   As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are also not included.
 
@@ -274,16 +274,16 @@
     // only show ideas this many levels deep
     depth: 2,
     // limit ideas shown to those with one of these tags
-    tags: ("todo", "note"),
+    tagged: ("todo", "note"),
     // customize the way ideas are filtered
     filter: t => "todo" in t and "done" not in t,
-    // list every idea in the rookery
-    rookery-wide: true,
+    // list every idea in the rookery — the default
+    scope: "rookery",
   )
   ```
 
   The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
   Here is the outline of all ideas in this rookery:
 
-  #ideas-outline(title: none, rookery-wide: true)
+  #ideas-outline(title: none, scope: "rookery")
 ]

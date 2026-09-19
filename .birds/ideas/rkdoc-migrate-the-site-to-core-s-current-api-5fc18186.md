@@ -6,7 +6,7 @@ priority: 3
 labels:
 - feat-core-api-migration
 deps: []
-closed: false
+closed: true
 ---
 Touches: content/_lib/prelude.typ, content/index.typ, content/faq.typ, content/concepts.typ, content/reference.typ, content/packages/core.typ
 

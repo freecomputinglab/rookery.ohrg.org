@@ -3,14 +3,14 @@
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
-// `show-tags: true` by default, as on the other pages: the kind shows as a
+// `display-tags: true` by default, as on the other pages: the kind shows as a
 // coloured pill in the hat, from `TAG-COLORS` in `_lib/template.typ`.
-#let faq(tags: (), show-tags: true, ..args) = idea(
+#let faq(tags: (), display-tags: true, ..args) = idea(
   tags: (("faq",) + tags),
-  show-tags: show-tags,
+  display-tags: display-tags,
   ..args,
 )
-#ideas-outline()
+#ideas-outline(scope: "page")
 
 #faq(<inspiration>, title: [What inspired rookery?])[
   Rookery builds on #link("https://www.ohrg.org/devonthink-part-iii")[thinking] #link("https://www.ohrg.org/devonthink-part-ii")[about] #link("https://www.ohrg.org/devonthink-part-i")[associative archiving] that dates back to 2019.

@@ -258,10 +258,10 @@
     theme: THEME,
     idea-page-template: idea-page,
     // `1` — the default, and what this site's own prose has always claimed
-    // ("Because this documentation uses the default depth of `1`"). It read `0`,
+    // ("Because this documentation uses the default unfurl of `1`"). It read `0`,
     // which under the recursion semantics means NO WINDOWING ANYWHERE, so every
     // transclusion on the site rendered as a link row.
-    window-depth: 1,
+    window-unfurl: 1,
     bibliography: BIBLIOGRAPHY,
   )
   show: chrome.with(current-page: current-page)

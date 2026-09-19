@@ -8,10 +8,10 @@
 // page citing them sits.
 #import "/content/_lib/types.typ": *
 
-#let setup = idea.with(tag: "setup", show-tags: true)
-#let reference = idea.with(tag: "reference", show-tags: true)
+#let setup = idea.with(tag: "setup", display-tags: true)
+#let reference = idea.with(tag: "reference", display-tags: true)
 
-#ideas-outline()
+#ideas-outline(scope: "page")
 
 #setup("getting-started", title: [Getting started])[
   The easiest way to get started with a rookery is by #link("https://rheo.ohrg.org/getting-started")[installing Rheo], a typesetting engine based on Typst.
@@ -60,7 +60,7 @@
     // IDs are now `note:etal` rather than `idea:etal`
     prefix: "note",
     // a window written inside a windowed idea unfurls one level
-    window-depth: 1,
+    window-unfurl: 1,
     // the accent every rookery link takes on hover
     theme: (link-color: rgb("#e68c00")),
   )
@@ -75,7 +75,7 @@
     show: rookery.with(
       theme: THEME,
       idea-page-template: idea-page,
-      window-depth: 1,
+      window-unfurl: 1,
       bibliography: BIBLIOGRAPHY,
     )
     doc
@@ -97,9 +97,9 @@
       [`"idea"`],
       [The namespace an idea's ID lives in; non-empty, no `:` (the separator is added for you). See @idea:referencing-ideas[referencing ideas].],
 
-      [`window-depth`],
-      [`0`],
-      [How many levels of transclusion are allowed before a @idea:windows[window] bottoms out as a link to the idea's own page. `0` allows none. See @idea:window-depth[controlling window depth].],
+      [`window-unfurl`],
+      [`1`],
+      [How many levels of transclusion are allowed before a @idea:windows[window] bottoms out as a link to the idea's own page. `0` allows none. See @idea:window-depth[controlling window unfurl].],
 
       [`theme`],
       [`(:)`],
@@ -171,7 +171,7 @@
 
         [`fold-color`],
         [`rgba(0, 100, 255, .05)`],
-        [The hover background on a @idea:windows[window] block, unless that window sets `show-background: false`.],
+        [The hover background on a @idea:windows[window] block, unless that window sets `display-background: false`.],
 
         [`id-color`], [`gray`], [The `[idea:etal]` ID's own text.],
 
@@ -367,7 +367,7 @@
 
       [`display`],
       [#type-dict],
-      [What the idea shows of itself, as a dictionary of seven flags — see below.],
+      [What the idea shows of itself, as a dictionary of nine flags — see below.],
     )
 
     Every `display` key takes a boolean, and defaults to #type-auto: the
@@ -391,6 +391,10 @@
         context: true,
         // the minted page footer lists everything that links here
         backlinks: true,
+        // unused by the card itself — seeds what a later window on
+        // this idea falls back to when it does not override them
+        label: true,
+        background: true,
       ),
     )[..]
     ```
@@ -436,7 +440,7 @@
       [As on @idea:idea-reference[`#idea`], and read by every idea minted — see below.],
     )
 
-    Two of the seven keys invert `#idea`'s own defaults, and are given here as
+    Two of the nine keys invert `#idea`'s own defaults, and are given here as
     they are read when nothing is said:
 
     ```typ
@@ -452,10 +456,11 @@
     )
     ```
 
-    The remaining five keys — `title`, `date`, `tags`, `context` and
-    `backlinks` — carry their `#idea` meanings and defaults. As there, each key
-    is also an argument in its own right, with the prefix restored, and an
-    argument on the same call wins over the dictionary's value for that key.
+    The remaining seven keys — `title`, `date`, `tags`, `context`,
+    `backlinks`, `label` and `background` — carry their `#idea` meanings and
+    defaults. As there, each key is also an argument in its own right, with
+    the prefix restored, and an argument on the same call wins over the
+    dictionary's value for that key.
 
     Every other `#idea` argument is forwarded to every idea minted. Note that
     those ids are generated rather than authored, so an idea that has to be
@@ -489,7 +494,7 @@
       [#type-string | #type-label | #type-array],
       [The idea to show, or an array of them. A name is written bare (`"etal"`) or as the full id (`"idea:etal"`), as a string or a label, so `#window("etal")` and `#window(<etal>)` are the same call. Several are passed as one array — `#window(("a", "b"))` — and may be omitted entirely when `tags` does the selecting.],
 
-      [`tags`],
+      [`tagged`],
       [#type-string | #type-array | #type-dict],
       [The @idea:tags[tags] whose ideas to show, instead of naming them or alongside it. A window shows the union of the two, and an idea that is both named and tagged appears once, where it was named.],
 
@@ -501,9 +506,9 @@
       [#type-string | #type-auto],
       [The order the ideas are shown in. #type-auto, the default, keeps the named ideas in the order they were written and appends the tag matches by id; `"date"` and `"lexicographic"` order the whole selection instead.],
 
-      [`depth`],
+      [`unfurl`],
       [#type-int | #type-auto],
-      [How far transclusion nests. `0` renders the idea as a link to its own page and transcludes nothing, `1` renders it and collapses any window written inside it to a bare permalink, and `n` unfurls `n - 1` levels of those. Defaults to the rookery-wide `#rookery(window-depth: ..)`, itself `1`. Windows are all that count: an idea written inside a transcluded body is rebuilt in full whatever the budget.],
+      [How far transclusion nests. `0` renders the idea as a link to its own page and transcludes nothing, `1` renders it and collapses any window written inside it to a bare permalink, and `n` unfurls `n - 1` levels of those. Defaults to the rookery-wide `#rookery(window-unfurl: ..)`, itself `1`. Windows are all that count: an idea written inside a transcluded body is rebuilt in full whatever the budget.],
 
       [`limit`],
       [#type-int | #type-none],
@@ -577,7 +582,7 @@
   // this page. It goes back when it has been read back off `data.typ` in
   // `@rookery/core`.
   //
-  // `note-href`, `note-path` and `idea-body` ride along in the sample below
+  // `idea-href`, `idea-path` and `idea-body` ride along in the sample below
   // rather than carrying stubs of their own, which is the one place this
   // section is not one-idea-per-export.
   #reference(<ideas-reference>, title: [`#ideas`])[
@@ -586,14 +591,14 @@
     `ideas` has to be called inside `#context`:
 
     ```typ
-    #import "@rookery/core:0.1.0": ideas, note-href, note-path, idea-body
+    #import "@rookery/core:0.1.0": ideas, idea-href, idea-path, idea-body
     #context {
-      for e in ideas(tags: "concept") [- #link(e.href, e.text)]
+      for e in ideas(tagged: "concept") [- #link(e.href, e.text)]
 
-      note-href("ideas-reference")
+      idea-href("ideas-reference")
       // -> "../ideas/ideas-reference.html", relative to invocation
 
-      note-path("ideas-reference")
+      idea-path("ideas-reference")
       // -> "ideas/ideas-reference.html", path from site root
 
       idea-body(
@@ -602,7 +607,7 @@
         // limit number of lines
         limit: 15,
         // how many layers of children ideas
-        depth: 2,
+        unfurl: 2,
       )
       // -> full content (without chrome)
     }
@@ -628,7 +633,7 @@
   // WHAT BELONGS ON THIS LIST is every public name in `core`'s `src/lib.typ`
   // re-export chain that is not already documented somewhere on this page:
   // `rookery` is @idea:site-config[site-wide configuration], and `ideas`,
-  // `note-href`, `note-path` and `idea-body` are @idea:ideas-reference[the
+  // `idea-href`, `idea-path` and `idea-body` are @idea:ideas-reference[the
   // database surface]. The `IK`, `WK` and `FNK` marker constants are left off —
   // they are element kinds a downstream package queries for, not functions
   // anybody writes.
@@ -646,9 +651,9 @@
 
 
 
-  #reference(<tags-of-reference>, title: [`#tags-of`])[]
+  #reference(<idea-tags-reference>, title: [`#idea-tags`])[]
 
-  #reference(<tag-value-reference>, title: [`#tag-value`])[]
+  #reference(<idea-tag-reference>, title: [`#idea-tag`])[]
 
   #reference(<tag-index-reference>, title: [`#tag-index`])[]
 
