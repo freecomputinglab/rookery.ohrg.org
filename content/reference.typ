@@ -3,9 +3,6 @@
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
-// The Typst type names the argument tables below cite. ROOT-ABSOLUTE, like the
-// prelude's own import, so the path does not depend on where in `content/` the
-// page citing them sits.
 #import "/content/_lib/types.typ": *
 
 #let setup = idea.with(tag: "setup", display-tags: true)
@@ -15,7 +12,6 @@
 
 #setup("getting-started", title: [Getting started])[
   The easiest way to get started with a rookery is by #link("https://rheo.ohrg.org/getting-started")[installing Rheo], a typesetting engine based on Typst.
-  #footnote[If you prefer to use native Typst to compile a rookery, see @idea:using-typst]
   Once you have `rheo` on your path, scaffold a new Rheo project:
 
   ```bash
