@@ -83,7 +83,7 @@
      outside one, so both halves of the site agree. The accent rather than the
      fill: the fill is translucent, and a 2px line drawn in it barely shows. */
   --idea-external-color: var(--accent);
-  /* ONE HUE PER KIND OF IDEA this site hatches — the four tags in its whole
+  /* ONE HUE PER KIND OF IDEA this site hatches — the tags in its whole
      vocabulary, and the only place any of their colours is written down.
      `TAG-COLORS` in content/template.typ paints the hat pills by naming these
      properties rather than repeating their values, so a hue changed here
@@ -91,11 +91,19 @@
 
      Matched lightness, low saturation, and the amber one first because it is
      the site's own accent: the colour has to say WHICH KIND at a glance
-     without any of the four shouting over the prose it sits beside. */
+     without any of them shouting over the prose it sits beside. */
   --tag-concept: #b4791a;
   --tag-reference: #3f6790;
   --tag-setup: #3f7a52;
   --tag-faq: #7a4d84;
+  /* `alpha-package` IS NOT A KIND, IT IS A WARNING — the tag every alpha
+     package stub carries, which `content/packages/index.typ` windows to build
+     its shelf. Hence orange rather than another hue on the matched-lightness
+     ramp above: it is the one tag that should read as caution, and it is
+     deliberately the most saturated of the set. Redder and darker than
+     `--tag-concept`'s amber so the two do not read as the same tag at a
+     glance, since both can appear in the same search panel. */
+  --tag-alpha-package: #c2571a;
 }
 
 /* ============================================
@@ -538,6 +546,10 @@ h1, h2, h3, h4, h5, h6 {
   border-top-color: var(--tag-faq);
 }
 
+.idea-outline-row.idea-tag-alpha-package::before {
+  border-top-color: var(--tag-alpha-package);
+}
+
 /* A search result's chips, which the package renders in the browser and which
    `tags-color` therefore does not reach (it emits an inline style at compile
    time; these elements do not exist then). Written as rules for that reason
@@ -566,6 +578,11 @@ h1, h2, h3, h4, h5, h6 {
 .rookery-search-tag.idea-tag-faq {
   color: var(--tag-faq);
   background-color: color-mix(in oklab, var(--tag-faq) 14%, transparent);
+}
+
+.rookery-search-tag.idea-tag-alpha-package {
+  color: var(--tag-alpha-package);
+  background-color: color-mix(in oklab, var(--tag-alpha-package) 14%, transparent);
 }
 
 /* ============================================

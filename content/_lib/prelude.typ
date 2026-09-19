@@ -11,7 +11,12 @@
 // one by one before: a page that uses only `idea` is no worse off for also
 // having `window` in scope, and a page that grows a second view does not have
 // to edit its header to get one.
-#import "@rookery/core:0.1.0": footnote, idea, ideas-outline, window
+//
+// `outline` IS ROOKERY'S, not Typst's, on every page of this site. That is the
+// name a reader should write — `#outline(target: idea, ..)` — and the shadow
+// costs nothing, since every other target proxies straight through to Typst's
+// own outline unchanged.
+#import "@rookery/core:0.1.0": footnote, idea, outline, window
 
 // THE TEMPLATE, APPLIED HERE ONCE instead of at the top of every file. The
 // handle is the vertebra's own — `concepts` for `content/concepts.typ` — so the

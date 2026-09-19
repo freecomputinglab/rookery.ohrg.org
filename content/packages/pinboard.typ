@@ -8,6 +8,9 @@
 // is what `content/packages/index.typ` shows with `limit: 1` — so whatever is
 // written above the first blank line here is the overview the shelf reads out.
 // The rest of the page fills in when the package does.
-#idea(<rookery-pinboard>, title: [`@rookery/pinboard`])[
+// `tag: "alpha-package"` IS WHAT PUTS IT ON THAT SHELF: the index windows the
+// tag rather than naming each package one by one, so a new stub joins the shelf
+// by carrying the tag and nothing else has to be edited.
+#idea(<rookery-pinboard>, tag: "alpha-package", title: [`@rookery/pinboard`])[
   The `pinboard` package arranges ideas as draggable cards on a board that remembers where each one was put, after the structural method of John McPhee: lay out the components of a piece until a sequence appears among them.
 ]

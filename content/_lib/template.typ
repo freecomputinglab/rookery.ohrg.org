@@ -30,6 +30,14 @@
     text: "var(--tag-faq)",
     background: "color-mix(in oklab, var(--tag-faq) 14%, transparent)",
   ),
+  // NOT A KIND — a warning. Orange, because every note wearing it is alpha
+  // software the reader is being told to use at their own risk, and the pill
+  // should say so before the prose does. Same two-key shape as the kinds, so
+  // the hue itself stays declared once in `style.css`.
+  alpha-package: (
+    text: "var(--tag-alpha-package)",
+    background: "color-mix(in oklab, var(--tag-alpha-package) 14%, transparent)",
+  ),
 )
 
 #let THEME = (

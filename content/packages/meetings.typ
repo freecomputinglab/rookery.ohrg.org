@@ -8,6 +8,9 @@
 // is what `content/packages/index.typ` shows with `limit: 1` — so whatever is
 // written above the first blank line here is the overview the shelf reads out.
 // The rest of the page fills in when the package does.
-#idea(<rookery-meetings>, title: [`@rookery/meetings`])[
+// `tag: "alpha-package"` IS WHAT PUTS IT ON THAT SHELF: the index windows the
+// tag rather than naming each package one by one, so a new stub joins the shelf
+// by carrying the tag and nothing else has to be edited.
+#idea(<rookery-meetings>, tag: "alpha-package", title: [`@rookery/meetings`])[
   The `meetings` package mints a meeting as an idea: who was in the room, when it happened, and what was said.
 ]

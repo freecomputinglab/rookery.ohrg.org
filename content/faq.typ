@@ -10,7 +10,7 @@
   display-tags: display-tags,
   ..args,
 )
-#ideas-outline(scope: "page")
+#outline(target: idea, scope: "page")
 
 #faq(<inspiration>, title: [What inspired rookery?])[
   Rookery builds on #link("https://www.ohrg.org/devonthink-part-iii")[thinking] #link("https://www.ohrg.org/devonthink-part-ii")[about] #link("https://www.ohrg.org/devonthink-part-i")[associative archiving] that dates back to 2019.

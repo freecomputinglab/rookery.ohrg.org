@@ -3,27 +3,31 @@
   date: datetime(year: 2026, month: 9, day: 19),
 )
 
-All of the packages listed below are alpha software, and thus subject to API breakages, bugs, and unlikely behavior.
-*Use them at your own risk!*
+#idea(<alpha-packages>)[
 
-In order to take this risk, you need to update your Rheo project to use rookery's `dev` branch:
+  The following packages are alpha software, and thus subject to API breakages, bugs, and unlikely behavior.
+  *Use them at your own risk!*
 
-```toml
-[packages.rookery]
-repo = "https://github.com/freecomputinglab/rookery"
-branch = "dev"
-```
+  In order to take this risk, you need to update your Rheo project to use rookery's `dev` branch:
 
-#window(
-  (
-    <rookery-search>,
-    <rookery-timeline>,
-    <rookery-todos>,
-    <rookery-cfps>,
-    <rookery-bibtex>,
-    <rookery-slipshow>,
-    <rookery-pinboard>,
-    <rookery-meetings>,
-  ),
-  limit: 1,
-)
+  ```toml
+  [packages.rookery]
+  repo = "https://github.com/freecomputinglab/rookery"
+  branch = "dev"
+  ```
+  // THE SHELF IS THE TAG, not a list of names: every package stub carries
+  // `tag: "alpha-package"`, and this window selects on it. A package added under
+  // `content/packages/` joins the shelf by tagging itself, and a package that
+  // leaves alpha drops off it by dropping the tag — neither edits this page.
+  //
+  // `limit: 1` shows each stub's first block only, which is the one-sentence
+  // overview those pages are written to lead with.
+  //
+  // Tag selection sorts by id, so the shelf reads alphabetically rather than in
+  // whatever order the names were once typed here. It also means these windows
+  // do NOT show up in each package's Backlinks: `#window` announces only the
+  // ids it was NAMED, since a tag scan needs the registry that the backlink
+  // walk is still building (see `#window` in `@rookery/core`).
+  #window(tagged: "alpha-package", limit: 1)
+]
+

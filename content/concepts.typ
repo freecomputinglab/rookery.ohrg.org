@@ -12,7 +12,7 @@
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
-#ideas-outline(scope: "page")
+#outline(target: idea, scope: "page")
 
 #concept("hatching-ideas", title: [Hatching ideas])[
   Ideas are designed so that you can always hatch new ones without ceremony.
@@ -27,6 +27,39 @@
 
   An idea might be a short note you want to jot down, a record relating to person or a place, a blog post, an academic paper, a @idea:rookery-todos[todo item], a @idea:rookery-meetings[meeting note], a note associated to a @idea:rookery-bibtex[citation], a tracking issue for a @idea:rookery-cfps[call for proposals], or any other kind of structured content fragment you can imagine.
   You can specify custom metadata structures for certain types of ideas using @idea:tags[tags].
+
+  - @idea:idea-reference[Reference documentation for `#idea`].
+
+  #concept("ideating", title: [Ideating])[
+    When you sit down at your computer, ready to jot down some ideas or write a piece, it wouldn't be nice to have to always explicitly wrap your content in `#idea` blocks.
+    You can use the `#ideate` function in combination with a Typst `#show` rule to _implicitly_ parcel your writing into ideas:
+
+    ```typ
+    #import "@rookery/core": ideate
+    #show: ideate
+
+    = Let's get rolling
+    Straight into it without ceremony.
+    ```
+
+    This will wrap your writing as an idea, taking the `#document.title` as its name.
+    Importantly, you can parameterize the `#ideate` function to parcel your writing out into ideas differently:
+
+    ```typ
+    #show: ideate.with(separator: heading.where(level: 2))
+
+    == First idea
+    The body of my first idea.
+
+    == Second idea
+    The body of my second idea.
+    ```
+
+    This is useful when you want to take writing in Typst that isn't structured as ideas and import them into a rookery, as you don't have to retrofit `#idea` blocks throughout: you just need to design the right `#ideate` show rule.
+    Ideation also works nicely with #link("https://rheo.ohrg.org/spines")[Rheo spines], as it means that you organize your ideas using files and folders and still have them appear in the flat idea space so that they can be further organized using @idea:tags[tags].
+
+    - @idea:ideate-reference[Reference documentation for `#ideate`].
+  ]
 
   #concept("tags", title: [Tags])[
     You can add tags to any idea.
@@ -134,25 +167,9 @@
     Note that you must use the `idea:` prefix (which @idea:referencing-ideas[you may customize]) when you are using references in the Typst namespace.
     When using the `#hyperlink` function imported from rookery, you may omit the prefix if you choose.
 
-    A hyperlink goes to the idea's standalone minted page by default. If you want your references to link to the _anchor_ in the original context in which your idea was hatched instead, pass `hyperlink-target-minted: false` to an individual call:
-
-    ```typ
-    - #hyperlink(<first-idea>, hyperlink-target-minted: false)[My first idea]
-    ```
-
-    If you want to redirect _all_ `@idea:x`-style references to anchors, `#hyperlink` is also `@idea:x`'s renderer, installed as a `show ref:` rule — `.with()` it instead of the default:
-
-    ```typ
-    #import "@rookery/core:0.1.0": hyperlink
-    #show ref: hyperlink.with(hyperlink-target-minted: false)
-    - @idea:first-idea // will link to anchor
-    ```
-
-    `#show: rookery.with(hyperlink-target-minted: false)` does the same thing when you are applying the template rather than installing the rule yourself.
-
-    (`#set hyperlink.with(...)` does not work here — `set` rules only apply to Typst's own built-in element functions, not a plain package function like `hyperlink`.)
-
     Creating a hyperlink to an idea will add it to that idea's @idea:idea[set of backlinks].
+
+    - @idea:hyperlink-reference[Reference documentation for `#hyperlink`].
   ]
 
   #concept("windows", title: [Windows])[
@@ -160,7 +177,7 @@
     They are useful in home pages or other sections that aggregate content.
 
     Fundamentally, windows are a form of augmented hyperlink.
-    They take their name from Nelson's notion of the #link("https://www.xanadu.com.au/ted/TN/PARALUNE/paraviz.html")[transpointing window] as they allow you to see the content either side of the link (like a window).
+    They take their name from Ted Nelson's notion of the #link("https://www.xanadu.com.au/ted/TN/PARALUNE/paraviz.html")[transpointing window] as they allow you to see the content either side of the link (like a window).
 
     Say you have an idea:
     ```typ
@@ -178,59 +195,8 @@
     Like `#hyperlink`,`#window` is a function imported from rookery that already knows which namespace to look in.
 
     By default, this window will be unfolded, showing the full content of the idea.
-    If we want it to instead be folded, we can configure it with arguments.
-    We can also pass #link("https://typst.app/docs/reference/foundations/array/")[an array] of ideas to window on multiple ideas:
 
-    ```typ
-    #window(
-      // the ideas to window on
-      (<first-idea>, <second-idea>, <third-idea>),
-      // only show each idea's title and name
-      folded: true,
-      // truncate each body to its first 12 blocks
-      limit: 12,
-      // how to order the matching ideas in the window
-      // one of "auto", "date", or "lexicographic"
-      sort: "date", // "auto" by default, i.e. in order of specification
-      // show the idea's date in the hat
-      display-date: true,
-      // and its tags, as pills
-      display-tags: true,
-      // select ideas with one of the following tags
-      tagged: ("concept", "reference"),
-      // whether tags should ALL be required, or only ANY one of them
-      match: "all" // "any" by default
-    )
-    ```
-
-    Three further arguments decide how much chrome a window wears.
-    Reach for them when a window is the thing being read rather than a pointer to an idea that lives elsewhere:
-
-    ```typ
-    #window(
-      <first-idea>,
-      // whether there is a disclosure at all, `true` by default.
-      // `false` removes it: nothing to click, and nothing that
-      // can hide the body
-      foldable: false,
-      // whether a window with NO title keeps the blank line
-      // where a title would have gone, `true` by default
-      reserve-title: false,
-      // whether the window tints on hover, `true` by default
-      display-background: false,
-    )
-    ```
-
-    `foldable` is not the same argument as `folded`, and the two are easy to conflate.
-    `folded` sets the _initial_ state of a disclosure that exists, and a reader can still open or close it.
-    `foldable` decides whether there is a disclosure to begin with; once it is `false`, `folded` does nothing.
-
-    `reserve-title` only ever affects a window whose idea has _no_ title.
-    A titled window keeps its ordinary spacing whichever way you set it.
-    You will only see the difference alongside `display-label: false`, which asks a window to name itself only where its idea carries an authored title---without that, a window falls back to a derived label and so is almost never titleless.
-
-    `display-background` is independent of `display-frame`, which takes the left rule and the indent and leaves the tint alone.
-    Both directions are useful: `@rookery/slipshow` renders each slide with `display-frame: false` and _keeps_ the tint, because the frame is decoration while the tint is the slide answering a pointer.
+    - @idea:window-reference[Reference documentation for `#window`].
 
     #concept("window-depth", title: [Unfurling windows])[
       Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
@@ -267,31 +233,10 @@
     This outline is derived from how you nest `#idea` hatchings, and lists every idea in the rookery by default---pass `scope: "page"` to narrow it to only the ideas written on this page.
     As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are also not included.
 
-    You can add a title and configure the outline:
-
-    ```typ
-    #outline(
-      target: idea,
-      title: [The whole rookery],
-      // only show ideas this many levels deep
-      depth: 2,
-      // limit ideas shown to those with one of these tags
-      tagged: ("todo", "note"),
-      // customize the way ideas are filtered
-      filter: t => "todo" in t and "done" not in t,
-      // list every idea in the rookery — the default
-      scope: "rookery",
-    )
-    ```
+    - @idea:outline-reference[Reference documentation for `#outline`].
 
     The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
 
-    The same function is exported as `#ideas-outline` as well, taking the same arguments with no `target:` to write.
-    Reach for it where you would rather not shadow Typst's `#outline` in a file at all.
-    This site is that case: its pages share one import, and pulling `outline` into it would shadow Typst's own on every page of a rookery that never outlines a heading.
-    So the outline of all ideas below is written `#ideas-outline(title: none, scope: "rookery")`:
-
-    #ideas-outline(title: none, scope: "rookery")
   ]
 ]
 

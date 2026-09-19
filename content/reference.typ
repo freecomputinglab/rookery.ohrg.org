@@ -11,7 +11,7 @@
 #let setup = idea.with(tag: "setup", display-tags: true)
 #let reference = idea.with(tag: "reference", display-tags: true)
 
-#ideas-outline(scope: "page")
+#outline(target: idea, scope: "page")
 
 #setup("getting-started", title: [Getting started])[
   The easiest way to get started with a rookery is by #link("https://rheo.ohrg.org/getting-started")[installing Rheo], a typesetting engine based on Typst.
@@ -919,7 +919,7 @@
 
       [`filter`],
       [#type-function | #type-none],
-      [A predicate of your own over the idea's tag dictionary, ANDed with `tagged` and `match` rather than replacing them. It is what expresses a selection those two cannot: an exclusion, or an OR of ANDs. The same argument `#ideas` and `#ideas-outline` take.],
+      [A predicate of your own over the idea's tag dictionary, ANDed with `tagged` and `match` rather than replacing them. It is what expresses a selection those two cannot: an exclusion, or an OR of ANDs. The same argument `#ideas` and `#outline` take.],
 
       [`sort`],
       [#type-string | #type-auto],
@@ -1176,7 +1176,7 @@
       table.header([Argument], [Type], [Description]),
       [`tagged`],
       [#type-string | #type-array | #type-dict | #type-none],
-      [The @idea:tags[tags] to narrow the corpus to. The same argument `#window` and `#ideas-outline` take, with the same meanings.],
+      [The @idea:tags[tags] to narrow the corpus to. The same argument `#window` and `#outline` take, with the same meanings.],
 
       [`match`],
       [#type-string],
