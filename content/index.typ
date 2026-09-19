@@ -24,11 +24,11 @@
     Every idea can be referenced by any other idea or page in the same rookery.
 
     Each idea also gets a standalone page that will show its *context*---where it was first hatched---and its *backlinks*---the set of other ideas and pages that reference it---in its footer.
-    Try clicking on this idea's ID above (the `[idea:idea]` text), to see its standalone page as an example.
+    Try clicking on this idea's name above (the `[idea:idea]` text), to see its standalone page as an example.
 
     Ideas can be hyperlinked to other ideas, or they can be interpolated as *windows* onto the original idea.
     Clicking on the title of a window will unfold the idea within your current context.
-    Clicking on the idea's ID will take you to the idea's standalone page.
+    Clicking on the idea's name will take you to the idea's standalone page.
 
     Try unfolding these windows below by clicking on their title panel to learn more.
 

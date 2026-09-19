@@ -36,8 +36,8 @@
     In addition to the sense of an idea as a 'Zettel' or note, you can also think about them as slightly more general kinds of 'todo' item, as in #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Org-mode TODOs].
     Indeed, the notion of ideas comes from the `IDEA` variant in #link("https://en.wikipedia.org/wiki/Doom_Emacs")[Doom Emacs], a preconfigured cluster of plugins for the Emacs editor.
 
-    The sense of an idea as the base for more structured kinds of notes such as todos is one of the reasons that rookery ships `#tagged-idea`, a factory (curried) function that projects can use to create `#todo` or other kinds of more structured ideas.
-    Though there is no inbuilt sense in rookery that allows one idea to depend on or be blocked by another, for example, you could augment these more principled ideas using @idea:tags[tags] as a metadata system.
+    Rookery ideas are designed with structured extensions in mind.
+    You can structure ideas into @idea:rookery-todos[todos], @idea:rookery-meetings[meeting notes], or even @idea:rookery-cfps[application tracking pages].
   ]
 
   #faq(<other-tools>, title: [What are other tools like rookery?])[
@@ -50,7 +50,7 @@
       It is not wrong to think about rookery as forester reimplemented for and in Typst.
 
       Both rookery and forester have:
-      - Atomic notes with unique and stable IDs (ideas and trees, respectively)
+      - Atomic notes with unique and stable names (ideas and trees, respectively)
       - Bidirectional linking and #link("https://en.wikipedia.org/wiki/Transclusion")[transclusion], which is a fancy word meaning that you can embed one note in another as a @idea:windows[window].
       - Compilation to a standalone static site.
 
@@ -60,7 +60,7 @@
       // - Forester has #link("https://www.forester-notes.org/013A/index.xml")[thoughtful mechanisms] for federating multiple forests by way of #link("https://www.forester-notes.org/30FN/index.xml")[selective tree publication], whereas rookeries are conceived as standalone collections. (Federating rookeries is intended future work.)
       - Rookery can be incrementally adopted in an existing Rheo project---a 'normal' #link("https://rheo.ohrg.org/")[writing project or website] that isn't organized as atomic notes---by sprinkling `#idea` blocks in as they are concieved, whereas forester must be adopted wholesale.
       - In addition to HTML and PDF, rookery can export to EPUB.
-      - Rookery allows you to specify human-readable, semantic IDs to ideas if you prefer not to accept the ids it derives automatically.
+      - Rookery allows you to give ideas human-readable, semantic names if you prefer not to accept the names it derives automatically.
       - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is a pre-release software (version 0.`x`) that was announced in August 2026.
     ]
 

@@ -69,6 +69,19 @@
 // depth, so one entry works from a root vertebra and from a minted idea page a
 // directory down. The stem is only the visible word, and it is also what
 // `current-page` is compared against, the two being the same for a root file.
+// THE BAR'S OWN ORDER, which is a reading order and not the spine's. The spine
+// scans alphabetically (CONCEPTS / FAQ / PACKAGES / REFERENCE), and `[spine]
+// include` — the one key that would reorder it — is a FLAT reorder: it
+// discards the group structure around `packages/`, so `packages/bibtex.typ`
+// would publish as `bibtex.html` with the handle `bibtex` rather than
+// `packages:bibtex`. The nav is therefore the only place this order can be
+// stated, and it is stated here by handle.
+//
+// A handle absent from this list is not dropped — it follows the listed ones in
+// spine order, so a new top-layer page still appears in the bar with no edit
+// here, and this file only has an opinion about the pages it names.
+#let NAV-ORDER = ("concepts", "reference", "faq", "packages")
+
 #let SITE-PAGES = {
   let flat = sys.inputs
     .at("rheo-context", default: (:))
@@ -105,12 +118,23 @@
     }
   }
 
-  // Spine order, not alphabetical: it is the order rheo settled on, so a site
-  // that one day declares `[spine] include` gets the bar it asked for.
-  flat
+  // `NAV-ORDER` first, then anything it does not name, in spine order — the
+  // order rheo settled on, so an unlisted page lands where the spine put it
+  // rather than somewhere arbitrary. `position` returns `none` for a handle the
+  // list omits, and `len()` sorts those after every named one while `zip`ping
+  // the spine index in keeps them stably ordered among themselves.
+  let entries = flat
     .zip(paths)
     .map(((v, p)) => (handle: v.handle, label: nav-label(p)))
     .filter(e => e.label != none)
+
+  entries
+    .enumerate()
+    .sorted(key: ((i, e)) => {
+      let rank = NAV-ORDER.position(h => h == e.handle)
+      (if rank == none { NAV-ORDER.len() } else { rank }, i)
+    })
+    .map(((i, e)) => e)
 }
 
 #let site-header(current-page) = html.elem("header", attrs: (class: "site-header"))[
@@ -185,7 +209,7 @@
 
 // The template for the standalone page rookery mints per idea, handed to the
 // package by `template` below and called by its `.marrow.typ` once per note.
-// `id` is the note's full id, so the nav entry for `idea:rookery` is simply
+// `id` is the note's full name, so the nav entry for `idea:rookery` is simply
 // not one of `SITE-PAGES` and nothing is marked active — a note page belongs
 // to no section, which is the honest answer.
 //

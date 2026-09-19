@@ -35,17 +35,17 @@ and rookery mints `ideas/index.html` alongside them — a listing of the whole
 rookery, on by default since 0.4.0 and left on here.
 
 Two families, split by what a thing is rather than where it sits. **Berkeley
-Mono** is site furniture and identifiers — the wordmark, the nav, and a note's
-`[idea:etal]` id — marking the parts of the page that are machinery rather
-than writing. Nav entries and ids share one size, being the same kind of small
-mono label. **Inter** is everything that is writing: every heading, and a
-note's own title, which is its name.
+Mono** is site furniture and names — the wordmark, the nav, and a note's
+`[idea:etal]` name — marking the parts of the page that are machinery rather
+than writing. Nav entries and names share one size, being the same kind of
+small mono label. **Inter** is everything that is writing: every heading, and a
+note's own title, which is prose rather than machinery.
 
 Small-caps belongs to Inter only — in a monospace face the browser synthesises
 them, scaling capitals down to the wrong weight for the rest of the face, so
-Berkeley Mono is set upper outright where uppercase is wanted. An id is set
+Berkeley Mono is set upper outright where uppercase is wanted. A name is set
 neither way: `[idea:etal]` is meant to be copied verbatim into `#view("...")`,
-and a reader retyping what an uppercased id appeared to say would get it
+and a reader retyping what an uppercased name appeared to say would get it
 wrong.
 
 Inter is fetched from Google Fonts, matching rheo.ohrg.org and ohrg.org.
@@ -53,7 +53,7 @@ Berkeley Mono is self-hosted because it is licensed and on no CDN — and since
 rheo copies no static directories (`css_stylesheet` is its only html asset
 key), `just build` copies `fonts/` into `build/html/` after compiling, the same
 copy cftw.ohrg.org makes in its `build.sh`. Until it has run, the wordmark, nav
-and ids fall back to the generic `monospace`.
+and names fall back to the generic `monospace`.
 
 `template.typ` is a library, not a page, so `rheo.toml` excludes it from the
 spine — otherwise every `.typ` under `content/` compiles to its own page.

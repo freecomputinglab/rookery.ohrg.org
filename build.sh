@@ -30,10 +30,6 @@ export PATH="$RHEO_CACHE:$PATH"
 # Verify rheo is accessible
 rheo --version || echo "Warning: rheo --version failed, but continuing..."
 
-# `@rookery/core` and `@rookery/search` are fetched from the rheo-packages
-# GitHub releases by the rheo CLI itself, so there is nothing to clone or build
-# here — the versions in `content/template.typ` are what CI resolves.
-
 # Berkeley Mono is licensed, so the TTFs are gitignored rather than committed.
 # CI pulls them from the private fonts repo with FONTS_GITHUB_TOKEN; locally
 # they are already sitting in `fonts/`.

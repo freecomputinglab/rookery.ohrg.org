@@ -108,10 +108,10 @@
 
 #concept("referencing-ideas", title: [Referencing ideas])[
   You can reference an existing idea by creating either a *hyperlink* or a *window*.
-  Both kinds of references using the idea's *ID*, which is unique in a global namespace.
+  Both kinds of references use the idea's *name*, which is unique in a global namespace.
 
-  IDs are normal #link("https://typst.app/docs/reference/foundations/label/")[Typst labels], meaning that compilation will fail if there is a duplicate.
-  To ensure that rookery's labels don't easily clash with ones you create yourself, the prefix `idea:` is prepended to all of your idea IDs.
+  Names are normal #link("https://typst.app/docs/reference/foundations/label/")[Typst labels], meaning that compilation will fail if there is a duplicate.
+  To ensure that rookery's labels don't easily clash with ones you create yourself, the prefix `idea:` is prepended to all of your idea names.
   You can customize this prefix when you @idea:site-config[configure rookery].
 
   #concept("hyperlinks", title: [Hyperlinks])[
@@ -185,7 +185,7 @@
     #window(
       // the ideas to window on
       (<first-idea>, <second-idea>, <third-idea>),
-      // only show each idea's title and ID
+      // only show each idea's title and name
       folded: true,
       // truncate each body to its first 12 blocks
       limit: 12,
@@ -231,59 +231,68 @@
 
     `display-background` is independent of `display-frame`, which takes the left rule and the indent and leaves the tint alone.
     Both directions are useful: `@rookery/slipshow` renders each slide with `display-frame: false` and _keeps_ the tint, because the frame is decoration while the tint is the slide answering a pointer.
+
+    #concept("window-depth", title: [Unfurling windows])[
+      Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
+      In order to prevent this, rookery has a notion of *window unfurl*, which is set to `1` by default.
+
+      When a window is called at a level of recursion greater than the unfurl budget, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
+      It's best to think of window unfurl as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
+
+      You can set the unfurl budget per window, or site-wide:
+      ```typ
+      #show: rookery.with(window-unfurl: 1)
+      #window(<first-idea>)
+      #window(<first-idea>, unfurl: 2)
+      ```
+
+      Here is a window on this selfsame idea.
+      Because this documentation uses the default unfurl of `1`, it only recurses as a window once, and then bottoms out as a link:
+
+      #window(<window-depth>, folded: true)
+    ]
   ]
 
-  #concept("window-depth", title: [Window unfurl])[
-    Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
-    In order to prevent this, rookery has a notion of *window unfurl*, which is set to `1` by default.
+  #concept("outlining", title: [Outlines])[
+    You can outline the ideas in a context like so:
 
-    When a window is called at a level of recursion greater than the unfurl budget, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
-    It's best to think of window unfurl as a multiplier, as the amount of work rookery needs to do multiplies when you raise it.
-
-    You can set the unfurl budget per window, or site-wide:
     ```typ
-    #show: rookery.with(window-unfurl: 1)
-    #window(<first-idea>)
-    #window(<first-idea>, unfurl: 2)
+    #import "@rookery/core:0.1.0": idea, outline
+    #outline(target: idea)
     ```
 
-    Here is a window on this selfsame idea.
-    Because this documentation uses the default unfurl of `1`, it only recurses as a window once, and then bottoms out as a link:
+    Typst's own way of outlining something other than headings is to name it with `target:`, so rookery overloads that call rather than asking you to learn a second one.
+    `target: idea` outlines your ideas; every other target---the default `heading`, a figure kind, anything else---passes straight through to Typst's `#outline` unchanged.
 
-    #window(<window-depth>, folded: true)
+    This outline is derived from how you nest `#idea` hatchings, and lists every idea in the rookery by default---pass `scope: "page"` to narrow it to only the ideas written on this page.
+    As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are also not included.
+
+    You can add a title and configure the outline:
+
+    ```typ
+    #outline(
+      target: idea,
+      title: [The whole rookery],
+      // only show ideas this many levels deep
+      depth: 2,
+      // limit ideas shown to those with one of these tags
+      tagged: ("todo", "note"),
+      // customize the way ideas are filtered
+      filter: t => "todo" in t and "done" not in t,
+      // list every idea in the rookery — the default
+      scope: "rookery",
+    )
+    ```
+
+    The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
+
+    The same function is exported as `#ideas-outline` as well, taking the same arguments with no `target:` to write.
+    Reach for it where you would rather not shadow Typst's `#outline` in a file at all.
+    This site is that case: its pages share one import, and pulling `outline` into it would shadow Typst's own on every page of a rookery that never outlines a heading.
+    So the outline of all ideas below is written `#ideas-outline(title: none, scope: "rookery")`:
+
+    #ideas-outline(title: none, scope: "rookery")
   ]
 ]
 
-#concept("outlining", title: [Outlining ideas])[
-  You can outline the ideas in a context like so:
 
-  ```typ
-  #import "@rookery/core:0.1.0": ideas-outline
-  #ideas-outline()
-  ```
-
-  This outline is derived from how you nest `#idea` hatchings, and lists every idea in the rookery by default---pass `scope: "page"` to narrow it to only the ideas written on this page.
-  Ideas with no title are left out (since they have no label).
-  As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are also not included.
-
-  You can add a title and configure the outline:
-
-  ```typ
-  #ideas-outline(
-    title: [The whole rookery],
-    // only show ideas this many levels deep
-    depth: 2,
-    // limit ideas shown to those with one of these tags
-    tagged: ("todo", "note"),
-    // customize the way ideas are filtered
-    filter: t => "todo" in t and "done" not in t,
-    // list every idea in the rookery — the default
-    scope: "rookery",
-  )
-  ```
-
-  The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
-  Here is the outline of all ideas in this rookery:
-
-  #ideas-outline(title: none, scope: "rookery")
-]
