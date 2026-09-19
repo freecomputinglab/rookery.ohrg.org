@@ -23,61 +23,40 @@
   ```
 
   You can think of an idea as an #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen note], an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic unit of thought], as a generalization of the #link("https://orgmode.org/manual/TODO-Basics.html")[Orgmode TODO], or simply as a referenceable and taggable block of content.
-  Ideas can range from short notes you want to jot down to blog posts, complete academic papers, meeting notes, .
+  All ideas in your rookery are conceptually networked together so that you can treat a rookery as an #link("https://www.ohrg.org/devonthink-part-i.html")[associative archive].
 
-
-  By default, an idea will inherit its date from the document in which it was hatched, and will not show it explicitly.
-  If you want to keep track of when you updated individual ideas, you can explicitly set it when hatching.
-  You can also give it tags to associate it with other ideas.
-
-  ```typ
-  #idea(
-    // If not specified, the ID will be auto-generated
-    <incremental-thought>,
-    // The title is also the link text when this idea is referenced elsewhere in the rookery
-    title: [On rookeries],
-    // Defaults to #document.date
-    created: datetime(year: 2026, month: 8, day: 16),
-    // Whether to show an idea's `created` date in its minted page
-    display-date: true,
-    // Whether to show an idea's context in its minted page
-    display-context: true,
-    // An list of tags
-    tags: ("in-progress", "phd")
-  )[
-    Your idea content...
-  ]
-  ```
-
+  An idea might be a short note you want to jot down, a record relating to person or a place, a blog post, an academic paper, a @idea:rookery-todos[todo item], a @idea:rookery-meetings[meeting note], a note associated to a @idea:rookery-bibtex[citation], a tracking issue for a @idea:rookery-cfps[call for proposals], or any other kind of structured content fragment you can imagine.
+  You can specify custom metadata structures for certain types of ideas using @idea:tags[tags].
 
   #concept("tags", title: [Tags])[
     You can add tags to any idea.
-    Tags work as a lateral filter across many ideas that you can use to group @idea:windows[windows] on them, group @idea:outlining[outlines], or otherwise organize them.
+    Tags work as a lateral filter across many ideas that you can use to group @idea:windows[windows] on them, group @idea:outlining[outlines], or filter ideas in a @idea:rookery-search[search modal].
 
     ```typ
     #idea(
       "meeting-notes",
       tags: ("draft", "review"),
     )[ ... ]
+
+    /* Window over all ideas with the tag "draft" */
+    #window(tags: "draft")
     ```
 
-    When creating new @idea:idea[ideas] or @idea:windows[windows], you can set `show-tags: true` to demonstrate
+    Beneath their appearance as simple strings that can be used to organize ideas, tags are implemented as hash maps using strings as keys and abstract types as values.
+    This means that you can use them to build up complex data structures that function as metadata for more structured ideas:
 
     ```typ
-    #window(
-      "meeting-notes",
-      show-tags: true,
+    #idea(
+      title: [An idea with complex metadata],
+      tags: (
+        "opened": datetime(year: 2026, month: 9, day: 19),
+        "expected-length": duration(days: 2, hours: 1, minutes: 30),
+        "details": ("a": 1, "b": 2),
+      ),
     )
     ```
 
-    This will render pills next to the idea's ID, just like you see above.
-    The colors associated with each tag can be configured in @idea:theme-reference[your rookery's theme].
-
-    You can also work backwards, getting tags from an idea:
-
-    ```typ
-    #context tags-of("meeting-notes") // -> ("draft", "review")
-    ```
+    For an example of treating tags as metadata to create more structured idea variants, see @idea:rookery-timeline.
   ]
 
   #concept("footnotes", title: [Footnotes])[
@@ -155,19 +134,21 @@
     Note that you must use the `idea:` prefix (which @idea:referencing-ideas[you may customize]) when you are using references in the Typst namespace.
     When using the `#hyperlink` function imported from rookery, you may omit the prefix if you choose.
 
-    If you want your references to link to the _anchor_ in the original context in which your idea was hatched, rather than the idea's standalone page, pass `link-to: "anchor"` to an individual call:
+    A hyperlink goes to the idea's standalone minted page by default. If you want your references to link to the _anchor_ in the original context in which your idea was hatched instead, pass `hyperlink-target-minted: false` to an individual call:
 
     ```typ
-    - #hyperlink(<first-idea>, link-to: "anchor")[My first idea]
+    - #hyperlink(<first-idea>, hyperlink-target-minted: false)[My first idea]
     ```
 
     If you want to redirect _all_ `@idea:x`-style references to anchors, `#hyperlink` is also `@idea:x`'s renderer, installed as a `show ref:` rule — `.with()` it instead of the default:
 
     ```typ
     #import "@rookery/core:0.1.0": hyperlink
-    #show ref: hyperlink.with(link-to: "anchor")
+    #show ref: hyperlink.with(hyperlink-target-minted: false)
     - @idea:first-idea // will link to anchor
     ```
+
+    `#show: rookery.with(hyperlink-target-minted: false)` does the same thing when you are applying the template rather than installing the rule yourself.
 
     (`#set hyperlink.with(...)` does not work here — `set` rules only apply to Typst's own built-in element functions, not a plain package function like `hyperlink`.)
 

@@ -51,11 +51,15 @@
 // the one thing missing is "which page is this", which `template` takes as
 // `current-page` from the prelude instead.
 //
-// A DIRECTORY IS NOT A TOP-LAYER PAGE. `foo/index.typ` would publish as
-// `foo.html` and be indistinguishable from a root file by output path; the SPINE
-// path is what tells them apart, and it is the one this reads.
+// A SECTION IS A TOP-LAYER PAGE, and a page inside it is not. `packages/`
+// carries a page per package and a landing file that windows them all, and it
+// is the landing file alone that belongs in the bar — `packages/core.typ` is
+// reached from that page, not from the topbar. Output path cannot tell the two
+// apart (`packages/index.typ` publishes as `packages.html`, indistinguishable
+// from a root file); the SPINE path can, and it is the one this reads.
 //
-// THE STEM IS THE LABEL, not `spine-flat`'s `title`, which since rheo 0.6.0 is
+// THE STEM IS THE LABEL — the directory's name for a section — not
+// `spine-flat`'s `title`, which since rheo 0.6.0 is
 // purely path-derived anyway ("Faq" for `faq.typ`, not how the site spells it).
 // `.site-nav a` is `text-transform: uppercase` in `style.css`, so the bar reads
 // CONCEPTS / FAQ either way and the cased spelling never had a job here.
@@ -83,12 +87,30 @@
     paths = paths.map(p => p.slice(head.len() + 1))
   }
 
+  // The word this vertebra wears in the bar, or `none` for one that does not
+  // belong there. A root file is its own stem; a directory's landing file —
+  // `index.typ`, or `<dirname>.typ`, the two forms rheo accepts — stands for
+  // the whole directory and wears its name; anything deeper is a page WITHIN a
+  // section, reached from that section's page rather than from the bar. Root
+  // `index.typ` is the one root file left out, the wordmark already linking it.
+  let nav-label(p) = {
+    let parts = p.split("/")
+    let stem = parts.last().trim(".typ", at: end)
+    if parts.len() == 1 {
+      if stem == "index" { none } else { stem }
+    } else if parts.len() == 2 and (stem == "index" or stem == parts.first()) {
+      parts.first()
+    } else {
+      none
+    }
+  }
+
   // Spine order, not alphabetical: it is the order rheo settled on, so a site
   // that one day declares `[spine] include` gets the bar it asked for.
   flat
     .zip(paths)
-    .filter(((v, p)) => not p.contains("/") and p != "index.typ")
-    .map(((v, p)) => (handle: v.handle, label: p.trim(".typ", at: end)))
+    .map(((v, p)) => (handle: v.handle, label: nav-label(p)))
+    .filter(e => e.label != none)
 }
 
 #let site-header(current-page) = html.elem("header", attrs: (class: "site-header"))[
@@ -103,7 +125,16 @@
         attrs: (:),
         SITE-PAGES
           .map(p => {
-            let cls = if p.handle == current-page { "active" } else { "" }
+            // A SECTION IS ACTIVE FOR ITS PAGES TOO: reading
+            // `packages:core` is still being in PACKAGES, and the handle of a
+            // page inside a section is that section's handle plus `:`. A
+            // minted idea page carries the `idea:` prefix instead, so it
+            // matches no section and nothing is marked — which is the honest
+            // answer for a note belonging to none.
+            let within = (
+              type(current-page) == str and current-page.starts-with(p.handle + ":")
+            )
+            let cls = if p.handle == current-page or within { "active" } else { "" }
             html.elem("li", attrs: (class: cls), link(label(p.handle), p.label))
           })
           .join(),

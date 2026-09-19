@@ -3,22 +3,13 @@
   date: datetime(year: 2026, month: 8, day: 20),
 )
 
-// The two kinds of idea this page hatches, wrapped the way `concepts.typ` and
-// `faq.typ` wrap theirs: the tag is the page's own vocabulary rather than
-// something a call site should have to remember, and `show-tags: true` puts it
-// in the hat as a coloured pill (hues in `TAG-COLORS`, `_lib/template.typ`). Setup is
-// a step you follow once; reference is a table you come back to.
-#let setup(tags: (), show-tags: true, ..args) = idea(
-  tags: (("setup",) + tags),
-  show-tags: show-tags,
-  ..args,
-)
+// The Typst type names the argument tables below cite. ROOT-ABSOLUTE, like the
+// prelude's own import, so the path does not depend on where in `content/` the
+// page citing them sits.
+#import "/content/_lib/types.typ": *
 
-#let reference(tags: (), show-tags: true, ..args) = idea(
-  tags: (("reference",) + tags),
-  show-tags: show-tags,
-  ..args,
-)
+#let setup = idea.with(tag: "setup", show-tags: true)
+#let reference = idea.with(tag: "reference", show-tags: true)
 
 #ideas-outline()
 
@@ -130,9 +121,9 @@
       [`true`],
       [Whether rookery installs the `show ref:` rule that renders `@idea:etal` as the idea rather than a figure number. Set it to `false` to keep Typst's own behaviour, or to install a rule of your own. See @idea:hyperlinks[hyperlinks].],
 
-      [`ref-target`],
-      [`"page"`],
-      [Where every `@idea:etal` in the document lands: `"page"` on the idea's standalone page, `"anchor"` in the context it was hatched in. Ignored when `refs` is `false`. See @idea:hyperlinks[hyperlinks].],
+      [`hyperlink-target-minted`],
+      [`true`],
+      [Where every `@idea:etal` in the document lands: `true` on the idea's standalone minted page, `false` in the context it was hatched in. The same parameter `#hyperlink` itself takes. Ignored when `refs` is `false`. See @idea:hyperlinks[hyperlinks].],
 
       [`syndicate`],
       [`false`],
@@ -178,7 +169,9 @@
         [`rgba(128, 0, 255, .12)`],
         [The hover background on any rookery link, and the fallback `border-color` takes when you leave it unset.],
 
-        [`fold-color`], [`rgba(0, 100, 255, .05)`], [The hover background on a @idea:windows[window] block, unless that window sets `show-background: false`.],
+        [`fold-color`],
+        [`rgba(0, 100, 255, .05)`],
+        [The hover background on a @idea:windows[window] block, unless that window sets `show-background: false`.],
 
         [`id-color`], [`gray`], [The `[idea:etal]` ID's own text.],
 
@@ -309,59 +302,355 @@
   ]
 ]
 
-#reference(<as-databases>, title: [Rookeries are databases of ideas])[
-  Your rookeries' contents are always _also_ available in Typst through the `#ideas()` function.
-  This function returns all of your ideas as a data structure that you may then use to customize your rookery or power downstream applications.
-  `ideas` has to be called inside `#context`:
+// THE API SURFACE, one nested idea per exported name. `#idea`, `#ideate` and
+// `#window` are what a rookery is written WITH, and the rest of the list is
+// what it is read and queried with.
+//
+// AFTER `Site-wide configuration`, not before it: the getting-started page
+// hands a reader `#idea[..]` and the `rookery` show rule, and those two are
+// what the sections above answer. This is the exhaustive list you come back to
+// once you know what a rookery is, not the thing you meet first.
+//
+// The three written-out references lived on `content/packages/core.typ` until
+// the package shelf was cut back to the packages built ON TOP of the core.
+// They are not an optional add-on to be browsed alongside `search` and
+// `timeline` — they are the reference for the thing itself.
+#reference(<api-surface>, title: [API surface])[
+  Everything `@rookery/core` exports, one idea apiece. `#idea` hatches an idea
+  by hand, `#ideate` infers them from prose already written, and `#window`
+  shows one idea inside another page. Those three are written out here, with
+  @idea:ideas-reference[`#ideas`], which hands a rookery's own contents back
+  to Typst; the rest are stubs for now, listed after them.
 
-  ```typ
-  #import "@rookery/core:0.1.0": ideas, note-href, note-path, idea-body
-  #context {
-    for e in ideas(tags: "concept") [- #link(e.href, e.text)]
-
-    note-href("as-databases")
-    // -> "../ideas/as-databases.html", relative to invocation
-
-    note-path("as-databases")
-    // -> "ideas/as-databases.html", path from site root
-
-    idea-body(
-      // idea ID
-      "as-databases",
-      // limit number of lines
-      limit: 15,
-      // how many layers of children ideas
-      depth: 2,
-    )
-    // -> full content (without chrome)
-  }
-  ```
-
-  #reference(<ideas-reference>, title: [Ideas reference])[
-    The `ideas` function returns an array of dictionaries that each have the following structure:
+  #reference(<idea-reference>, title: [`#idea`])[
+    For an intuition on how to think about ideas, see @idea:idea.
+    The `#idea` function takes the following arguments, which are all optional:
 
     #table(
-      columns: (auto, 1fr),
-      table.header([Field], [What it holds]),
+      columns: (auto, auto, 1fr),
+      table.header([Argument], [Type], [Description]),
+      [`id`],
+      [#type-label | #type-string],
+      [A unique identifier for the idea, allowing it to be referenced as `@idea:<id>` across the rookery. In the absence of an explicit id, it is derived using a kebab-case form of the idea's `title` and/or a counter.],
 
-      [`id`], [The full ID, prefix included---`"idea:etal"`.],
-
-      [`name`], [The same ID with the prefix stripped---`"etal"`, the form you write in `#window("etal")`.],
-
-      [`title`, `text`],
-      [The title as content, or `none`; and that title flattened to a plain string, `""` where there is none. Take `text` for matching and sorting, `title` for rendering.],
-
-      [`tags`],
-      [The idea's @idea:tags[tags], in the order you gave them---which is not alphabetical, and not quite the order they were written, since `#note` and `#todo` prepend their own.],
+      [`title`],
+      [#type-content],
+      [The idea's title, which appears as both the link text in @idea:hyperlinks[hyperlinks] to the idea and the header text in @idea:windows[windows] on it. ],
 
       [`body`],
-      [The idea's body flattened to a plain string, `""` where there is none. Matchable and excerptable, not renderable---for rendering, see `#idea-body` below. A nested idea's text is excluded, since it registers separately and owns its own.],
+      [#type-content],
+      [The idea's content, rendered inside its card and transcluded by any @idea:windows[window] on it. An idea with no body is a title-only stub, which is how a placeholder for an idea not yet written is filed.],
 
-      [`href`, `page`],
-      [A link to the idea's minted page: `href` measured from the page you are calling on, `page` from the site root. Both `none` where nothing mints pages.],
+      [`level`],
+      [#type-int],
+      [The heading depth of the idea's title, so a nested idea can sit under the one containing it. Defaults to `1`.],
 
-      [`minted`, `updated`], [The idea's dates, or `none`.],
+      [`tags`],
+      [#type-string | #type-array | #type-dict],
+      [The idea's @idea:tags[tags], as one name, a list of names, or a dictionary whose values carry arbitrary metadata for the tag. Set at the call site, replacing whatever a constructor bound.],
+
+      [`tag`],
+      [#type-string],
+      [A single tag that is _merged_ into `tags` rather than replacing it, so a constructor such as `idea.with(tag: "note")` keeps its tag when the call site names tags of its own.],
+
+      [`base-tags`],
+      [#type-string | #type-array | #type-dict],
+      [As `tag`, but for several tags at once — for a family of ideas that is a narrowing of a broader one, so that every idea the constructor mints is still reachable under the wider tag.],
+
+      [`exclude-tags`],
+      [#type-string | #type-array],
+      [Tags that drop the idea from this build entirely. An excluded idea is absent rather than hidden: nothing renders where it was written, no page is minted for it, and it appears in no outline, search index or backlink list.],
+
+      [`created`],
+      [#type-datetime],
+      [The date the idea was written. In its absence the containing document's own `#set document(date: ..)` is used; a date is otherwise never invented.],
+
+      [`display`],
+      [#type-dict],
+      [What the idea shows of itself, as a dictionary of seven flags — see below.],
     )
+
+    Every `display` key takes a boolean, and defaults to #type-auto: the
+    rookery-wide setting given to `#rookery(display: ..)`. An idea states an
+    opinion only where it differs from the rest of the rookery.
+
+    ```typ
+    #idea(
+      display: (
+        // the idea's own minted page carries its title as an `<h1>`
+        title: true,
+        // the `created` date sits at the right-hand end of the hat
+        date: true,
+        // the tags are worn in the hat as pills, metadata tags excepted
+        tags: true,
+        // the idea is drawn as a card, with its left rule and indent
+        frame: false,
+        // the id is shown in the hat as a permalink
+        id: true,
+        // the minted page footer links back to the page written on
+        context: true,
+        // the minted page footer lists everything that links here
+        backlinks: true,
+      ),
+    )[..]
+    ```
+
+    Each key is also an argument in its own right, with the prefix restored —
+    `display-frame: false` — and an argument on the same call wins over the
+    dictionary's value for that key.
   ]
 
+  #reference(<ideate-reference>, title: [`#ideate`])[
+    The one place in rookery where an idea is _inferred_ rather than written.
+    `#ideate` takes a block of content and mints ideas from it, either as a
+    plain function on one block or as a document show rule — `#show: ideate`
+    at the top level hands it the rest of the document. It is opt-in either
+    way, and on a paged target it is a passthrough: a PDF of a block of prose
+    is that block of prose.
+
+    #table(
+      columns: (auto, auto, 1fr),
+      table.header([Argument], [Type], [Description]),
+      [`body`],
+      [#type-content],
+      [The content to mint ideas from. The sole positional argument, which is what lets the function double as a show rule.],
+
+      [`separator`],
+      [#type-function | #type-none],
+      [What starts a new idea: `par` (or `parbreak`) for one idea per paragraph, `heading.where(level: n)` for one per section, or `none` — the default — to mint the whole body as a single idea. A heading standing alone is passed through as structure rather than wrapped as an idea of its own.],
+
+      [`title`],
+      [#type-content | #type-function | #type-none],
+      [A title given to every idea minted, or a function `(content, labels) => content` called on each section's separating heading to compute its own. The function form is heading mode only, and the heading leaves the body when it is used, since the title is already rendered as the idea's heading.],
+
+      [`name`],
+      [#type-function | #type-auto],
+      [A function `(content, labels) => str` computing each idea's id from its separating heading — `slug` is exported for exactly this. Defaults to #type-auto, the package counter. A fixed value is refused, as it would mint every idea in the body under one id.],
+
+      [`tags`],
+      [#type-string | #type-array | #type-dict | #type-function],
+      [@idea:tags[Tags] put on every idea minted, in the same forms `#idea` accepts, or a function `(content, labels) => tags` computing each section's own. An `#ideate-tag(..)` beacon placed in a section's content adds to these, and wins on a conflicting key.],
+
+      [`display`],
+      [#type-dict],
+      [As on @idea:idea-reference[`#idea`], and read by every idea minted — see below.],
+    )
+
+    Two of the seven keys invert `#idea`'s own defaults, and are given here as
+    they are read when nothing is said:
+
+    ```typ
+    #show: ideate.with(
+      display: (
+        // an inferred idea is not one anybody named, and a frame around
+        // every paragraph is chrome nobody asked for
+        frame: false,
+        // with more force: an inferred idea's id is a sequence number,
+        // which tells a reader nothing
+        id: false,
+      ),
+    )
+    ```
+
+    The remaining five keys — `title`, `date`, `tags`, `context` and
+    `backlinks` — carry their `#idea` meanings and defaults. As there, each key
+    is also an argument in its own right, with the prefix restored, and an
+    argument on the same call wins over the dictionary's value for that key.
+
+    Every other `#idea` argument is forwarded to every idea minted. Note that
+    those ids are generated rather than authored, so an idea that has to be
+    linkable is written by hand.
+
+    // NESTED HERE, not out with the rest of the stubs. Both are beacons — a
+    // `#metadata` marker written INSIDE a section's content, which `#ideate`
+    // picks up as it splits the body — so neither is callable anywhere else,
+    // and neither means anything to a reader who is not already reading this.
+    // A nested idea registers and mints a page of its own exactly as a
+    // top-level one does, so nesting costs them no reachability.
+    #reference(<ideate-tag-reference>, title: [`#ideate-tag`])[]
+
+    #reference(<ideate-id-reference>, title: [`#ideate-id`])[]
+  ]
+
+  #reference(<window-reference>, title: [`#window`])[
+    A @idea:windows[window] shows an idea inside another page — its title, its
+    permalink and its body, as one foldable block. It is pure presentation: a
+    window registers nothing, mints no page and never re-registers the idea it
+    transcludes, so one idea can be windowed anywhere and as often as it earns.
+
+    The ideas shown are named, or selected by tag, or both. Selection is
+    rookery-wide, since the registry a window reads is the whole rookery's —
+    where the window sits makes no difference to what a tag pulls in.
+
+    #table(
+      columns: (auto, auto, 1fr),
+      table.header([Argument], [Type], [Description]),
+      [`names`],
+      [#type-string | #type-label | #type-array],
+      [The idea to show, or an array of them. A name is written bare (`"etal"`) or as the full id (`"idea:etal"`), as a string or a label, so `#window("etal")` and `#window(<etal>)` are the same call. Several are passed as one array — `#window(("a", "b"))` — and may be omitted entirely when `tags` does the selecting.],
+
+      [`tags`],
+      [#type-string | #type-array | #type-dict],
+      [The @idea:tags[tags] whose ideas to show, instead of naming them or alongside it. A window shows the union of the two, and an idea that is both named and tagged appears once, where it was named.],
+
+      [`match`],
+      [#type-string],
+      [Whether a tagged idea has to carry `"any"` of the tags — the default — or `"all"` of them.],
+
+      [`sort`],
+      [#type-string | #type-auto],
+      [The order the ideas are shown in. #type-auto, the default, keeps the named ideas in the order they were written and appends the tag matches by id; `"date"` and `"lexicographic"` order the whole selection instead.],
+
+      [`depth`],
+      [#type-int | #type-auto],
+      [How far transclusion nests. `0` renders the idea as a link to its own page and transcludes nothing, `1` renders it and collapses any window written inside it to a bare permalink, and `n` unfurls `n - 1` levels of those. Defaults to the rookery-wide `#rookery(window-depth: ..)`, itself `1`. Windows are all that count: an idea written inside a transcluded body is rebuilt in full whatever the budget.],
+
+      [`limit`],
+      [#type-int | #type-none],
+      [How many blocks of the body to show — a block being a paragraph or a list, the unit that can be cut without leaving half a sentence. The whole body by default.],
+
+      [`folded`],
+      [#type-bool],
+      [Whether the window starts closed, leaving its summary alone on the page until a reader opens it.],
+
+      [`foldable`],
+      [#type-bool],
+      [Whether there is a disclosure at all. `false` renders the body with nothing to click and nothing that can hide it — for a window that _is_ the thing being read rather than a reference to it, such as a slide, where a stray click folding it shut would be a bug. It makes `folded` inert.],
+
+      [`reserve-title`],
+      [#type-bool],
+      [Whether a titleless window keeps the blank line its summary reserves for the title it does not have. Dead space above a slide's body; no effect on a window whose idea has a title.],
+
+      [`backlink`],
+      [#type-bool],
+      [Whether the window counts as a link from the page it sits on to the idea it shows. True is right for a window written into an idea's prose; `false` is for a derived view — a deck, an index, a preview — which renders an idea rather than pointing at it, and should not fill that idea's backlinks with pages nobody wrote a link on.],
+
+      [`display`],
+      [#type-dict],
+      [What the window shows of itself, as a dictionary of six flags — see below.],
+    )
+
+    As on @idea:idea-reference[`#idea`], every `display` key takes a boolean and
+    defaults to #type-auto, the rookery-wide setting given to
+    `#rookery(display: ..)`.
+
+    ```typ
+    #window(
+      "etal",
+      display: (
+        // a titleless idea is named by the label derived from its first
+        // line; false names it only where it carries an authored title
+        label: true,
+        // the `created` date sits at the right-hand end of the summary
+        date: true,
+        // the tags are worn in the summary as pills, metadata tags excepted
+        tags: true,
+        // the window is drawn as a card, with its left rule and indent
+        frame: true,
+        // the id is shown in the summary as a permalink
+        id: true,
+        // the window takes a tint under the cursor
+        background: true,
+      ),
+    )
+    ```
+
+    Each key is also an argument in its own right, with the prefix restored —
+    `display-frame: false` — and an argument on the same call wins over the
+    dictionary's value for that key. `#idea`'s three remaining keys, `title`,
+    `context` and `backlinks`, describe an idea's own minted page rather than a
+    window onto it, and a window reads none of them.
+
+    One asymmetry is worth carrying: only a _named_ idea takes a backlink from
+    the window showing it. A tag selection is not known until the registry can
+    be read, and the backlink graph is built before that, so an idea pulled in
+    by `tags` lists the windowing page nowhere.
+  ]
+  // ONE IDEA, NOT TWO. `Rookeries are databases of ideas` and the `Ideas
+  // reference` nested inside it were a section and its table, which is one
+  // reference wearing two rows of the outline: the outer was prose about
+  // `#ideas`, the inner was the shape of what `#ideas` hands back.
+  //
+  // THE FIELD TABLE IS GONE FOR NOW, and its absence is a gap rather than a
+  // duplication — the record's shape (`id`, `name`, `title`/`text`, `tags`,
+  // `body`, `href`/`page`, `minted`/`updated`) is documented nowhere else on
+  // this page. It goes back when it has been read back off `data.typ` in
+  // `@rookery/core`.
+  //
+  // `note-href`, `note-path` and `idea-body` ride along in the sample below
+  // rather than carrying stubs of their own, which is the one place this
+  // section is not one-idea-per-export.
+  #reference(<ideas-reference>, title: [`#ideas`])[
+    Your rookeries' contents are always _also_ available in Typst through the `#ideas()` function.
+    This function returns all of your ideas as a data structure that you may then use to customize your rookery or power downstream applications.
+    `ideas` has to be called inside `#context`:
+
+    ```typ
+    #import "@rookery/core:0.1.0": ideas, note-href, note-path, idea-body
+    #context {
+      for e in ideas(tags: "concept") [- #link(e.href, e.text)]
+
+      note-href("ideas-reference")
+      // -> "../ideas/ideas-reference.html", relative to invocation
+
+      note-path("ideas-reference")
+      // -> "ideas/ideas-reference.html", path from site root
+
+      idea-body(
+        // idea ID
+        "ideas-reference",
+        // limit number of lines
+        limit: 15,
+        // how many layers of children ideas
+        depth: 2,
+      )
+      // -> full content (without chrome)
+    }
+    ```
+  ]
+
+  // TITLE-ONLY STUBS, the rest of the export list. An idea with no body is how
+  // this rookery files a reference nobody has written yet — see the `body` row
+  // in @idea:idea-reference — and it is not a placeholder in name only: the id
+  // is minted, the outline carries a row, and `@idea:hyperlink-reference`
+  // resolves from any page. So prose elsewhere can link a function before its
+  // reference exists, and writing one is adding a body here rather than hunting
+  // down the links that were waiting on it.
+  //
+  // THE EMPTY `[]` IS LOAD-BEARING. `#idea` takes an optional name and an
+  // optional body through one variadic sink, and a lone positional is the
+  // BODY — so `#reference(<slug-reference>, title: [`#slug`])` files an idea
+  // whose body is the label, under an id slugged from the title. The failure
+  // is not quiet but it is remote: `cannot add content and label`, pointing
+  // into `idea.typ`. Naming a stub therefore means two positionals, the second
+  // empty.
+  //
+  // WHAT BELONGS ON THIS LIST is every public name in `core`'s `src/lib.typ`
+  // re-export chain that is not already documented somewhere on this page:
+  // `rookery` is @idea:site-config[site-wide configuration], and `ideas`,
+  // `note-href`, `note-path` and `idea-body` are @idea:ideas-reference[the
+  // database surface]. The `IK`, `WK` and `FNK` marker constants are left off —
+  // they are element kinds a downstream package queries for, not functions
+  // anybody writes.
+  #reference(<hyperlink-reference>, title: [`#hyperlink`])[]
+
+  #reference(<footnote-reference>, title: [`#footnote`])[]
+
+  #reference(<ideas-outline-reference>, title: [`#ideas-outline`])[]
+
+  #reference(<idea-row-reference>, title: [`#idea-row`])[]
+
+  #reference(<idea-row-body-reference>, title: [`#idea-row-body`])[]
+
+  #reference(<slug-reference>, title: [`#slug`])[]
+
+
+
+  #reference(<tags-of-reference>, title: [`#tags-of`])[]
+
+  #reference(<tag-value-reference>, title: [`#tag-value`])[]
+
+  #reference(<tag-index-reference>, title: [`#tag-index`])[]
+
+  #reference(<tag-data-reference>, title: [`#tag-data`])[]
 ]

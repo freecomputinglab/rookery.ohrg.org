@@ -1,0 +1,8 @@
+schema = 1
+prefix = "rkdoc"
+backend = "auto"
+ideas = "auto"
+survey = true
+
+[markup]
+dialect = "md"

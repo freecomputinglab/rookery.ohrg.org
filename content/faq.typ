@@ -18,12 +18,13 @@
 
   More generally as a knowledge management tool, rookery takes its cue from the #link("https://zettelkasten.de/overview/")[Zettelkasten method], which was popularized in 2019 by #link("https://en.wikipedia.org/wiki/Roam_(software)")[Roam Research], and which has since influenced both #link("https://obsidian.md/")[Obsidian] and #link("https://www.notion.com/")[Notion], two popular knowledge management platforms.
 
-  Of these tools, rookery is closest in spirit to Obsidian in the sense that it allows you to create and manage a local-first knowledge base using up files on disk.
-  But you do not need to use a specific editor to write your rookeries; you can author the #link("https://typst.app/")[Typst] files in it however you prefer.
-  Another way of thinking about rookery is that it is _more_ opinionated than Obsidian and Notion in that it requires you to think with @idea:idea[ideas].
-  To some degree, it is also _less_ opinionated than Zettelkasten in that it doesn't enforce or require strictly atomic notes.
+  Of these tools, rookery is closest in spirit to Obsidian in the sense that it allows you to create and manage a local-first knowledge base using plain-text files on disk.
+  Unlike Obsidian, however, rookery is not an editor or IDE, which means you can author the #link("https://typst.app/")[Typst] files in it however you like.
 
-  Three ways of thinking about note systems have directly influenced rookery's design:
+  Another way of thinking about rookery is that it is a Zettelkasten framework build on Typst that is _more_ structured than Obsidian and Notion, but not so structured that you need to know anything in particular about Zettelkasten in order to use it.
+  Rookery allows you to organize your thinking using @idea:idea[ideas] and @idea:tags[tags] in a way that is compatible with Zettelkasten and Zettelkasten-inspired systems like Roam, without enforcing or requiring strictly atomic notes.
+
+  In addition to those mentioned above, three ways of thinking about note systems have concretely influenced rookery's design:
   + Andy Matsuchak's #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen notes].
   + Jon Sterling's #link("https://www.forester-notes.org/QHXS/index.xml")[intellectual junkyards].
   + #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Emacs' Org-mode].
