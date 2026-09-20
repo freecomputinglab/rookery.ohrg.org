@@ -7,7 +7,7 @@ labels:
 - document-css-levers
 deps:
 - blocked-by:rkdoc-fix-the-filter-cell-and-a-miscount-161ee471
-closed: false
+closed: true
 ---
 `content/reference.typ` carries two tables a reader consults when writing their
 own stylesheet over the package's: an HTML class reference and a CSS variable

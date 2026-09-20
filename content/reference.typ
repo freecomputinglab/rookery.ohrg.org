@@ -281,6 +281,9 @@
         [One row of an @idea:idea-row-reference[`#idea-row`] list: `.idea-row` the `<li>`, `-when` its date cell, `-title` the title, `-cell` each extra cell, `-badges` the chip strip at the end. `@rookery/search` and `@rookery/timeline` draw the same row, so a rule of yours here reaches all three.],
 
         [`.idea-index-count`], [The "*n* ideas" line on the minted index page.],
+
+        [`.idea-dup-warning`],
+        [The build-time notice shown when two ideas claim the same name.],
       )
 
       Every one of those elements also carries a `data-rookery` attribute
@@ -323,6 +326,26 @@
         [`--idea-external-color`],
         [`--idea-name-color`],
         [The underline an _outbound_ link takes on hover, in a references block or an idea page's footer---so a link that leaves your rookery reads differently from one that stays in it.],
+
+        [`--idea-heading-margin-top`],
+        [`0.75em`],
+        [The space above an idea's heading. Set this in your own stylesheet to return the heading to your site's own vertical scale.],
+
+        [`--idea-row-pad-block`],
+        [`0.45rem`],
+        [An @idea:idea-row-reference[`#idea-row`] row's vertical padding. Published on purpose, and it inherits, so a cell that paints a background can stretch past it rather than reading as a chip sitting in the row.],
+
+        [`--idea-row-gutter`],
+        [`7.5em`],
+        [The width of a row grid's first column.],
+
+        [`--idea-muted-color`],
+        [`gray`],
+        [The colour of a de-emphasised row cell, and of a row date marked `soft:`.],
+
+        [`--idea-row-rule-color`],
+        [unset],
+        [The colour of a row's vertical rule. Read and never set by this package's own stylesheet, precisely so a layered stylesheet can point it somewhere---a sibling package can run an urgency band down that bar.],
       )
     ]
   ]
