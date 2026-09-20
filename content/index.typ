@@ -18,7 +18,7 @@
   This is true also for _collections_ of ideas, ranging from a set of ideas with the same @idea:tags[tags] to your entire rookery.
 
   One use case for rookery is for searchable documentation sites, just like this site, which is (yep, you betcha!) #link("https://github.com/freecomputinglab/rookery.ohrg.org")[itself a rookery].
-  It can also be used as a Typst alternative to organize #link("https://maths.ohrg.org/")[an organization site], #link("https://www.ohrg.org/")[a blog], or a #link("https://weeknotes.ohrg.org/")[research journal].
+  It can also be used as a Typst alternative for #link("https://maths.ohrg.org/")[an organization site], #link("https://www.ohrg.org/")[a blog], or a #link("https://weeknotes.ohrg.org/")[research journal].
   More generally, rookery allows you to structure content in such a way that it is interlinked, easy to grow over time, and capable of being viewed in mutliple different orders.
   It thus also makes a good basis for context engineering workflows and LLM-assisted development.
 
