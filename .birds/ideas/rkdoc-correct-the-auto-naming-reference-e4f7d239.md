@@ -6,7 +6,7 @@ priority: 3
 labels:
 - fix-auto-naming-reference
 deps: []
-closed: false
+closed: true
 ---
 `content/reference.typ` describes how `@rookery/core` names an idea that was
 given no name, and describes it wrongly — as an ordinal counter. The package

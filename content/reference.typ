@@ -416,7 +416,7 @@
       table.header([Argument], [Type], [Description]),
       [`name`],
       [#type-label | #type-string],
-      [A unique name for the idea, allowing it to be referenced as `@idea:<name>` across the rookery. Positional, and written either as a label or as a string---`#idea(<etal>)` and `#idea("etal")` are the same call. In the absence of an explicit name, an idea with a `title` takes a slug of it; an idea with no usable title instead takes an ordinal scoped to its enclosing idea, or, at the top level, to the page.],
+      [A unique name for the idea, allowing it to be referenced as `@idea:<name>` across the rookery. Positional, and written either as a label or as a string---`#idea(<etal>)` and `#idea("etal")` are the same call. In the absence of an explicit name, an idea with a `title` takes a slug of it; an idea with no usable title instead takes a slug of its own body plus a content digest, as described under @idea:auto-naming[auto-naming].],
 
       [`title`],
       [#type-content],
@@ -777,7 +777,7 @@
 
       [`name`],
       [#type-function | #type-auto],
-      [A function `(content, labels) => str` computing each idea's name from its separating heading — `slug` is exported for exactly this. Defaults to #type-auto, which slugs the heading the same way an unnamed `#idea`'s title is slugged, falling back to a container-scoped ordinal when the heading yields no usable slug. A fixed value is refused, as it would mint every idea in the body under one name.],
+      [A function `(content, labels) => str` computing each idea's name from its separating heading — `slug` is exported for exactly this. Defaults to #type-auto, which slugs the heading the same way an unnamed `#idea`'s title is slugged, falling back to `#idea`'s own untitled-naming rule when the heading yields no usable slug. A fixed value is refused, as it would mint every idea in the body under one name.],
 
       [`tags`],
       [#type-string | #type-array | #type-dict | #type-function],
