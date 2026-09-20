@@ -6,7 +6,7 @@ priority: 3
 labels:
 - fix-concepts-claims
 deps: []
-closed: false
+closed: true
 ---
 Two claims on `content/concepts.typ` are wrong in ways a reader will act on:
 one gives a URL shape that does not exist, and one misdescribes what the window

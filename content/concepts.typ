@@ -164,7 +164,8 @@
       When you link to an idea using a @idea:hyperlinks[hyperlink], by default it will link that that idea's standalone page.
       (To link to the page in which the idea was actually declared, see @idea:hyperlink-reference.).
 
-      The slug for the standalone page will be `/ideas/<idea-name>`, where `<idea-name>` is the name you give or the @idea:auto-naming[one that is generated] for it.
+      The standalone page will be minted at `ideas/<idea-name>.html`, where `<idea-name>` is the name you give or the @idea:auto-naming[one that is generated] for it, and the path is relative to the site root rather than rooted at `/`.
+      The `ideas` directory itself is configurable: it follows the `prefix` setting documented in the site-configuration table on @idea:site-config[configuring rookery].
     ]
 
     ```typ
@@ -209,7 +210,7 @@
     - @idea:window-reference[Reference documentation for `#window`].
 
     #concept("window-depth", title: [Unfurling windows])[
-      Windows on ideas that are _parents_ in the idea hierarchy can infinitely recurse.
+      A window can cycle: an idea that windows onto itself, or two ideas that window onto each other, would otherwise unfurl forever.
       In order to prevent this, rookery has a notion of *window unfurl*, which is set to `1` by default.
 
       When a window is called at a level of recursion greater than the unfurl budget, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.
