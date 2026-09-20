@@ -7,7 +7,7 @@ labels:
 - drop-past-tense-comments
 deps:
 - blocked-by:rkdoc-document-the-missing-css-levers-893cba0b
-closed: false
+closed: true
 ---
 Four comments in this repository's Typst source describe the past rather than
 the present: two cite package or engine versions as the moment something became

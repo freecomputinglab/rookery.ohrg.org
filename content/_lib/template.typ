@@ -2,7 +2,7 @@
 #import "@rookery/search:0.1.0": search-modal
 
 // One colour per kind of idea this site hatches, for the tag pills in an
-// idea's hat — rookery 0.4.0's `theme.tags-color`, which only the pills use.
+// idea's hat — `theme.tags-color`, which only the pills use.
 //
 // CSS custom properties rather than hex literals: the hues themselves are
 // declared once, in `style.css`'s `:root` as `--tag-concept` and friends, where
@@ -67,8 +67,8 @@
 // from a root file); the SPINE path can, and it is the one this reads.
 //
 // THE STEM IS THE LABEL — the directory's name for a section — not
-// `spine-flat`'s `title`, which since rheo 0.6.0 is
-// purely path-derived anyway ("Faq" for `faq.typ`, not how the site spells it).
+// `spine-flat`'s `title`, which is purely path-derived anyway ("Faq" for
+// `faq.typ`, not how the site spells it).
 // `.site-nav a` is `text-transform: uppercase` in `style.css`, so the bar reads
 // CONCEPTS / FAQ either way and the cased spelling never had a job here.
 //
@@ -276,7 +276,7 @@
 // numbering in Typst is document-wide and cannot be reset.
 #let BIBLIOGRAPHY = arguments(bytes(read("/content/references.bib")))
 
-// NO VERTEBRA APPLIES THIS BY HAND any more. `[spine] prelude` in `rheo.toml`
+// NO VERTEBRA APPLIES THIS BY HAND. `[spine] prelude` in `rheo.toml`
 // splices `_lib/prelude.typ` into every vertebra, and it is the one
 // place that writes the `#show: template` — so a new page in `content/` is a
 // file with a `#set document(title: ...)` and prose, nothing else.

@@ -402,10 +402,9 @@
 // what the sections above answer. This is the exhaustive list you come back to
 // once you know what a rookery is, not the thing you meet first.
 //
-// The three written-out references lived on `content/packages/core.typ` until
-// the package shelf was cut back to the packages built ON TOP of the core.
-// They are not an optional add-on to be browsed alongside `search` and
-// `timeline` — they are the reference for the thing itself.
+// The three written-out references are not an optional add-on to be browsed
+// alongside `search` and `timeline` — they are the reference for the thing
+// itself.
 #reference(<api-surface>, title: [API surface])[
   Everything `@rookery/core` exports, one idea apiece. `#idea` hatches an idea
   by hand, `#ideate` infers them from prose already written, and `#window`
