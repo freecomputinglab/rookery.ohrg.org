@@ -4,38 +4,53 @@
 )
 
 #idea(<rookery-bibtex>, tag: "alpha-package", title: [`@rookery/bibtex`])[
-  Reads a `.bib` file and mints one idea per reference, keyed and titled from the entry itself, so a citation is an idea like any other in the rookery.
+  Reads a `.bib` file and mints one idea per reference, keyed and titled from the entry itself, so a work is a note like any other and anything that cites it says so with a backlink.
 
-  An `@article` keyed `okafor2019` becomes a note titled _Okafor, Latency Budgets for Interactive Systems (2019)_.
-  Any other note reaches it as `@idea:okafor2019`.
+  Write a citation by hand where you have something to say about the work, and sweep the rest of the bibliography with `all()`.
 
   ```typ
   #import "@rookery/core:0.1.0": rookery
   #import "@rookery/bibtex:0.1.0": bibtex
   #show: rookery
 
-  /* Export the .bib with macros expanded and accents as Unicode. The parser
-     resolves neither @string nor LaTeX escapes. */
+  /* Typst cannot call a dictionary key directly, so bind the factory's
+     functions once rather than writing #(refs.citation)(..) at every call. */
   #let refs = bibtex(read("references.bib"))
+  #let citation = refs.citation
+  #let citations-as-ideas = refs.all
 
-  /* One entry, with your own reading of it as the note's body. Typst cannot
-     call a dictionary key directly, so the parentheses are the form. */
-  #(refs.citation)("okafor2019")[
-    Cited directly, because its accounting of responsiveness as a budget spent
-    reframes what the rest of this bibliography treats as measured only after
-    the fact.
+  /* The BibTeX key names the note, written as a ref, a bare label or a string.
+     The title comes off the entry as "Badiou, Ethics (2002)", and the note is
+     tagged `citation` alongside whatever tags: you add. */
+  #citation(<badiou2002>, tags: "essay")[
+    Read against Handelman, since it treats the same refusal of mathematics as
+    a question of ethics rather than of method.
+
+    /* The entry's own fields, as a definition list. */
+    #refs.fields("badiou2002")
   ]
 
-  /* Every remaining entry, in key order. Call this once, from one page. A
-     hand-written citation always wins over it for the same key. */
-  #(refs.all)()
+  /* Every entry no hand-written citation has claimed, in key order. Call this
+     once, from one vertebra — a register page the bar never lists, which the
+     pages a reader browses transclude by tag. */
+  #citations-as-ideas()
   ```
 
-  == Showing the record
+  == Reading a reference manager's export
 
-  Where a note wants to print a reference rather than point at it, ask for its fields.
+  Zotero writes rows that belong to the library rather than to the work, and a library holds far more than a project cites.
+  Narrow and trim at the factory, once.
 
   ```typ
-  #(refs.fields)("okafor2019")
+  #let refs = bibtex(
+    read("references.bib"),
+    /* Parse these keys alone, so a fourteen-hundred-entry export costs what
+       the project actually cites and mints as many notes. */
+    only: ("badiou2002", "handelman2019"),
+    /* Turn Zotero's own keywords into rookery tags, then hide the raw row
+       they came from. */
+    keywords: "all",
+    show-fields: ("keywords": false, "urldate": false, "file": false),
+  )
   ```
 ]
