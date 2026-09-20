@@ -6,7 +6,7 @@ priority: 2
 labels:
 - fix-idea-name-terminology
 deps: []
-closed: false
+closed: true
 ---
 Touches: content/reference.typ, style.css
 

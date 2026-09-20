@@ -343,7 +343,7 @@
   /* The same fill the nav entries and note ids take, so a selected result
      reads as the same gesture as a hovered nav entry. */
   --rookery-search-hover: var(--hover-fill);
-  --rookery-search-id-color: var(--muted);
+  --rookery-search-name-color: var(--muted);
   /* Neutral, not the theme's amber: a backdrop dims the WHOLE page behind
      it, and an amber dim would tint every colour on the page including ones
      the theme never touches. No modal width/height override — the package's

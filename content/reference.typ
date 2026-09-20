@@ -192,7 +192,7 @@
         [`rgba(0, 100, 255, .05)`],
         [The hover background on a @idea:windows[window] block, unless that window sets `display-background: false`.],
 
-        [`id-color`], [`gray`], [The `[idea:etal]` name's own text.],
+        [`name-color`], [`gray`], [The `[idea:etal]` name's own text.],
 
         [`date-color`], [`gray`], [An idea's or a window's date, where it is @idea:hatching-ideas[shown].],
 
@@ -313,7 +313,7 @@
         [`--idea-tag-radius`], [`999px`], [A pill's corner radius.],
 
         [`--idea-tag-color`, `--idea-tag-bg`],
-        [`--idea-id-color`, `rgba(128, 128, 128, .18)`],
+        [`--idea-name-color`, `rgba(128, 128, 128, .18)`],
         [An untagged-by-`tags-color` pill's text and background. Setting `tags-color` writes these per tag for you.],
 
         [`--idea-tag-line`],
@@ -321,7 +321,7 @@
         [The tick an outline row draws off the outline's rule, where the row's idea carries a tag.],
 
         [`--idea-external-color`],
-        [`--idea-id-color`],
+        [`--idea-name-color`],
         [The underline an _outbound_ link takes on hover, in a references block or an idea page's footer---so a link that leaves your rookery reads differently from one that stays in it.],
       )
     ]
@@ -469,7 +469,7 @@
         // the idea is drawn as a card, with its left rule and indent
         frame: false,
         // the name is shown in the hat as a permalink
-        id: true,
+        name: true,
         // the minted page footer links back to the page written on
         context: true,
         // the minted page footer lists everything that links here
@@ -797,7 +797,7 @@
         frame: false,
         // with more force: an inferred idea's name is a sequence number,
         // which tells a reader nothing
-        id: false,
+        name: false,
       ),
     )
     ```
@@ -839,13 +839,13 @@
       renders nothing of itself.
     ]
 
-    #reference(<ideate-id-reference>, title: [`#ideate-id`])[
+    #reference(<ideate-name-reference>, title: [`#ideate-name`])[
       The same device for a name: a beacon naming the one idea minted around
       it, overriding whatever `name` would otherwise have derived.
 
       ```typ
       == A section
-      #ideate-id("the-name-i-want")
+      #ideate-name("the-name-i-want")
       Its prose, minted under `idea:the-name-i-want`.
       ```
 
@@ -955,7 +955,7 @@
         // the window is drawn as a card, with its left rule and indent
         frame: true,
         // the name is shown in the summary as a permalink
-        id: true,
+        name: true,
         // the window takes a tint under the cursor
         background: true,
       ),
