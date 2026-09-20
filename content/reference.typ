@@ -1028,6 +1028,10 @@
     Rookery's own `#footnote`, which shadows Typst's and scopes a note to the
     idea it is written in. Import it alongside `#idea` and write footnotes
     exactly as before — the single positional argument is the footnote's body.
+    That import is needed in every file that writes a footnote, since Typst's
+    imports are per file; an idea body that reaches Typst's own `#footnote`
+    instead of rookery's fails the build, with an error naming the import to
+    add.
 
     ```typ
     #import "@rookery/core:0.1.0": idea, footnote

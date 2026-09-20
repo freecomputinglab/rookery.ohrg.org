@@ -6,7 +6,7 @@ priority: 1
 labels:
 - fix-footnote-import-panic
 deps: []
-closed: false
+closed: true
 ---
 Writing a Typst `#footnote` inside an `#idea` without importing rookery's own
 `footnote` is a hard build error in `@rookery/core` — it panics with a message
