@@ -328,9 +328,10 @@
   ]
 
   #reference(<idea-template>, title: [Idea page template])[
-    Each @idea:idea[idea] in your rookery gets its own page.
-    By default, it shows the idea's title and name, its body, and the context and backlinks footer.
-    You can set a template for it---to add a site header and footer, for example---like so:
+    Every @idea:idea[idea] in your rookery gets its @idea:standalone-idea-pages[own standalone page].
+    By default, this page shows the idea's title and name, its body, and the context and backlinks footer.
+
+    You can customize the idea page's chrome when you first instantiate rookery, like so:
 
     ```typ
     #let idea-page-template(id: none, note: (:), doc) = {

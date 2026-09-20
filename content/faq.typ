@@ -61,7 +61,7 @@
       - Rookery can be incrementally adopted in an existing Rheo project---a 'normal' #link("https://rheo.ohrg.org/")[writing project or website] that isn't organized as atomic notes---by sprinkling `#idea` blocks in as they are concieved, whereas forester must be adopted wholesale.
       - In addition to HTML and PDF, rookery can export to EPUB.
       - Rookery allows you to give ideas human-readable, semantic names if you prefer not to accept the names it derives automatically.
-      - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is a pre-release software (version 0.`x`) that was announced in August 2026.
+      - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is a pre-release software (version 0.`x`) that was announced in September 2026.
     ]
 
     #faq(<kodama-rookery>, title: [Kodama | Rookery])[
@@ -82,7 +82,10 @@
 
   While we make a best-effort to keep the rookery package Typst-native, we can guarantee a better experience if you compile your rookeries with Rheo.
   A large part of this is because rookery's implementation depends heavily on #link("https://typst.app/docs/reference/bundle/")[Typst's experimental bundle export], which means that one needs various flags and specific configuration to compile a rookery with the Typst CLI.
-  Using Rheo, by contrast, rookery should work out of the box.
+
+  Using pure Typst, your rookeries will certainly not get standalone minted idea pages, rookery-wide outlines, and the ability to compile to EPUB, and @idea:idea-href-reference[idea-href] will always be `none`.
+  Other aspects of the rookery may also not work.
+  Using the latest release of Rheo, by contrast, rookery should work out of the box.
 ]
 
 

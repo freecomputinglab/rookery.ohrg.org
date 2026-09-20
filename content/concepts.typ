@@ -157,6 +157,14 @@
 
     The following three bullets all produce the same result: a hyperlink that reads 'My first idea' to the idea's standalone page.
 
+    #concept("standalone-idea-pages", title: [Standalone pages for ideas])[
+      When you compile a rookery with #link("https://rheo.ohrg.org")[Rheo], each idea that you declare will produce its own standalone page.
+      When you link to an idea using a @idea:hyperlinks[hyperlink], by default it will link that that idea's standalone page.
+      (To link to the page in which the idea was actually declared, see @idea:hyperlink-reference.).
+
+      The slug for the standalone page will be `/ideas/<idea-name>`, where `<idea-name>` is the name you give or the @idea:auto-naming[one that is generated] for it.
+    ]
+
     ```typ
     #import "@rookery/core:0.1.0": hyperlink
     - @idea:first-idea
@@ -236,6 +244,25 @@
     - @idea:outline-reference[Reference documentation for `#outline`].
 
     The ordering of ideas across site-wide outlines will hew to the #link("https://rheo.ohrg.org/spines")[Rheo spine's] order (which is lexicographic by filename by default), with `index.typ` first.
+
+  ]
+
+  #concept("auto-naming", title: [How are ideas auto-named?])[
+    When you declare an idea without a name, rookery will generate one for you.
+    Because a compiled rookery is a pure function of the files that are on disk, however, _auto-names may drift as you move and edit the idea_.
+
+    Rookery will make a best effort to give your idea a unique name through the following heuristic:
+    1. Use a kebab-case version of the idea's title.
+    2. For ideas without a title, construct a name from recombining and hashing the body content.
+
+    This heuristic is not guaranteed to produce unique names for all ideas.
+    When you have two ideas without a title and the same body content, for example, the auto-name for both ideas will be identical.
+    _When two or more ideas have the same name, your rookery's compilation will fail_.
+
+    Due to the lack of a uniqueness guarantee and the instability of auto-naming, *we recommend explicitly naming all ideas in your rookery*.
+    If you don't care about choosing your ideas' names, you can consider simply copying the auto-name from the browser and pasting it into Typst.
+    Auto-naming exists so that inventing a name for each idea does not gate its inclusion in the rookery, but it should be treated as a provisional band-aid rather than a load-bearing mechanism.
+
 
   ]
 ]
