@@ -402,7 +402,7 @@
   @idea:tag-data-reference[`#tag-data`] under
   @idea:ideas-reference[`#ideas`].
 
-  Two names are left off the list. `#rookery` is the show rule, documented
+  Two kinds of name are left off the list. `#rookery` is the show rule, documented
   above as @idea:site-config[site-wide configuration]; the `IK`, `WK` and `FNK`
   marker constants are element kinds a downstream package queries for, not
   functions anybody writes.
@@ -904,7 +904,7 @@
 
       [`filter`],
       [#type-function | #type-none],
-      [A predicate of your own over the idea's tag dictionary, ANDed with `tagged` and `match` rather than replacing them. It is what expresses a selection those two cannot: an exclusion, or an OR of ANDs. The same argument `#ideas` and `#outline` take. On `#window`, passing it also means no backlinks are registered, for the reason given below.],
+      [A predicate of your own over the idea's tag dictionary, ANDed with `tagged` and `match` rather than replacing them. It is what expresses a selection those two cannot: an exclusion, or an OR of ANDs. The same argument `#ideas` and `#outline` take. On `#window`, the ideas it selects also register no backlinks, for the reason given below.],
 
       [`sort`],
       [#type-string | #type-auto],

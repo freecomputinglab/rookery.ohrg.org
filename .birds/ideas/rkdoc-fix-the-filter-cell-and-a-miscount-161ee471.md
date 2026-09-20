@@ -7,7 +7,7 @@ labels:
 - fix-reference-smalls
 deps:
 - blocked-by:rkdoc-correct-the-auto-naming-reference-e4f7d239
-closed: false
+closed: true
 ---
 Two small errors in `content/reference.typ`: a table cell overstates what
 `filter:` does to backlinks, contradicting the fuller explanation a few
