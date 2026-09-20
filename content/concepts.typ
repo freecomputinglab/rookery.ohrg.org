@@ -28,7 +28,7 @@
     You can use the `#ideate` function in combination with a Typst `#show` rule to _implicitly_ parcel your writing into ideas:
 
     ```typ
-    #import "@rookery/core": ideate
+    #import "@rookery/core:0.1.0": ideate
     #show: ideate
 
     = Let's get rolling
