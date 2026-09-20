@@ -6,7 +6,7 @@ priority: 2
 labels:
 - fix-tag-window-backlinks
 deps: []
-closed: false
+closed: true
 ---
 `content/packages/index.typ` builds the alpha-package shelf with
 `#window(tagged: "alpha-package", limit: 1)`, and the comment above that call

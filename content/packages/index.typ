@@ -24,10 +24,7 @@
   // overview those pages are written to lead with.
   //
   // Tag selection sorts by id, so the shelf reads alphabetically rather than in
-  // whatever order the names were once typed here. It also means these windows
-  // do NOT show up in each package's Backlinks: `#window` announces only the
-  // ids it was NAMED, since a tag scan needs the registry that the backlink
-  // walk is still building (see `#window` in `@rookery/core`).
+  // whatever order the names were once typed here.
   #window(tagged: "alpha-package", limit: 1)
 ]
 
