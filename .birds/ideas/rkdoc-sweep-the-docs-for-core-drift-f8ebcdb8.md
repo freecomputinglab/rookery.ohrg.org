@@ -6,7 +6,7 @@ priority: 2
 labels:
 - fix-core-docs-drift
 deps: []
-closed: false
+closed: true
 ---
 This site documents `@rookery/core`'s author-facing surface, and that package
 has just had a batch of behaviour and naming changes land upstream. Read the
