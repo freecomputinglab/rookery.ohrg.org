@@ -4,15 +4,11 @@
    self-hosted below because it is licensed and not on any CDN. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ============================================
-   Berkeley Mono
-
-   Four faces, following cftw.ohrg.org. The urls are relative to this
-   stylesheet, which rheo emits at `build/html/style.css` — so the files have
-   to end up at `build/html/fonts/`. rheo copies no static directories (its
-   only asset key is `css_stylesheet`), so the Justfile does that copy after
-   compiling; see the note there.
-   ============================================ */
+/* Berkeley Mono: four faces, following cftw.ohrg.org. The urls are relative
+   to this stylesheet, which rheo emits at `build/html/style.css` — so the
+   files have to end up at `build/html/fonts/`. rheo copies no static
+   directories (its only asset key is `css_stylesheet`), so the Justfile does
+   that copy after compiling; see the note there. */
 @font-face {
   font-family: 'Berkeley Mono';
   src: url('./fonts/BerkeleyMono-Regular.ttf') format('truetype');
@@ -41,9 +37,6 @@
   font-style: oblique;
 }
 
-/* ============================================
-   CSS Variables
-   ============================================ */
 :root {
   --background-color: #fdfdfd;
   --text-color: #1a1a1a;
@@ -106,14 +99,11 @@
   --tag-alpha-package: #c2571a;
 }
 
-/* ============================================
-   Header / nav
-
-   Rendered by `site-header` in content/template.typ, which marks the current
-   page `.active`. The anchors are Typst's, wrapped in the class-carrying
-   element, so every selector here reaches through to `a` — see the note in
-   template.typ about why the hrefs cannot be written by hand.
-   ============================================ */
+/* Header / nav, rendered by `site-header` in content/template.typ, which
+   marks the current page `.active`. The anchors are Typst's, wrapped in the
+   class-carrying element, so every selector here reaches through to `a` —
+   see the note in template.typ about why the hrefs cannot be written by
+   hand. */
 /* Sticky, so the nav is reachable from anywhere in a long page — and these
    pages are long: an idea's own standalone page carries its whole body plus a
    footer, and `concepts` is one page of everything.
@@ -230,13 +220,11 @@
   font-weight: 600;
 }
 
-/* ============================================
-   Nav toggle (hamburger)
-
-   Hidden here — a bar three entries wide has no need of it above the
-   Responsive breakpoint. The Responsive section is what shows it and gives
-   `.site-nav` its collapsed, dropdown behaviour; the shape of the icon itself
-   lives here since it does not change with viewport width.
+/* Nav toggle (hamburger), hidden here — a bar three entries wide has no need
+   of it above the Responsive breakpoint. The Responsive section is what
+   shows it and gives `.site-nav` its collapsed, dropdown behaviour; the
+   shape of the icon itself lives here since it does not change with
+   viewport width.
 
    Three bars, each positioned by hand rather than stacked with `gap`: the
    middle one has to fade out in place while the outer two rotate to a cross,
@@ -305,12 +293,9 @@
   }
 }
 
-/* ============================================
-   Search
-
-   The trigger button and the modal come from `@rookery/search`, placed
-   in the header by `site-header` in content/template.typ. Nothing here
-   reimplements it: the matching, the two-pane layout and the keyboard
+/* Search: the trigger button and the modal come from `@rookery/search`,
+   placed in the header by `site-header` in content/template.typ. Nothing
+   here reimplements it: the matching, the two-pane layout and the keyboard
    handling all ship with the package, and this site only dresses them.
 
    Almost all of it is done by setting the package's `--rookery-search-*`
@@ -322,15 +307,13 @@
    Those rules DO win, even though the package's stylesheet is linked after this
    one: it wraps everything in `@layer rookery-search`, and unlayered CSS beats
    layered CSS whatever the order or specificity. So if an override here ever
-   stops taking, the layer is the thing to check — never reach for `!important`.
-   ============================================ */
+   stops taking, the layer is the thing to check — never reach for `!important`. */
 /* On `.site-header-inner`, not `.rookery-search-trigger`: the trigger button
    and the `<dialog>` are SIBLINGS (`#search-modal` emits them one after the
-   other, not one wrapping the other, unlike the old `#search-bar`'s single
-   `.rookery-search` span), so a property has to sit on an ancestor common to
-   both. The dialog rendering in the top layer only changes paint order, not
-   the DOM tree custom properties inherit through — a shared ancestor still
-   reaches it. */
+   other, not one wrapping the other), so a property has to sit on an ancestor
+   common to both. The dialog rendering in the top layer only changes paint
+   order, not the DOM tree custom properties inherit through — a shared
+   ancestor still reaches it. */
 .site-header-inner {
   --rookery-search-fg: var(--text-color);
   --rookery-search-bg: var(--background-color);
@@ -348,9 +331,7 @@
      it, and an amber dim would tint every colour on the page including ones
      the theme never touches. No modal width/height override — the package's
      own defaults (`min(56rem, 100vw - 2rem)` / `min(32rem, 100vh - 8rem)`)
-     already fit this site with no measurement pointing to a better number,
-     unlike the old dropdown's width cap below, which WAS measured against
-     this site's own longest title/id pair. */
+     already fit this site with no measurement pointing to a better number. */
   --rookery-search-backdrop: rgba(0, 0, 0, 0.4);
   /* The same fill the hover/selection states use, so a highlighted term reads
      as the same gesture as the rest of the theme's amber accent. */
@@ -391,9 +372,6 @@
   text-decoration: none;
 }
 
-/* ============================================
-   Landing page banner
-   ============================================ */
 .hero {
   margin: 0 0 1.5rem;
 }
@@ -407,9 +385,6 @@
   margin: 0;
 }
 
-/* ============================================
-   Base Layout
-   ============================================ */
 /* Every navigational affordance on this site lands on a fragment — an idea's
    `[idea:etal]` permalink, an outline row, a backlink, the Context link — and
    a sticky header would otherwise cover whatever each of them jumped to.
@@ -444,9 +419,6 @@ body {
   max-width: 50em;
 }
 
-/* ============================================
-   Typography
-   ============================================ */
 /* Site prose headings — small-caps, since these are section labels rather
    than an idea's own name. */
 h1, h2, h3, h4, h5, h6 {
@@ -500,10 +472,7 @@ h1, h2, h3, h4, h5, h6 {
   font-variant: normal;
 }
 
-/* ============================================
-   Tag colours
-
-   A tag is the only thing on this site that says what KIND of idea you are
+/* Tag colours. A tag is the only thing on this site that says what KIND of idea you are
    reading — a concept, a piece of reference, a setup step, a question — and
    until now it said it in words only, in one place, on the card. Every tag
    wears the class `idea-tag-<tag>` on all four surfaces rookery puts it on:
@@ -522,8 +491,7 @@ h1, h2, h3, h4, h5, h6 {
    the note's own title by kind would make the page's typography argue with
    its prose, and the pill already says it right beside them. The rules below
    are for the two places a reader is scanning MANY notes at once and the kind
-   is the thing being scanned for.
-   ============================================ */
+   is the thing being scanned for. */
 /* The tick on an outline row: the hairline rookery draws as
    `.idea-outline-row::before`, growing off the outline's left rule. Recolouring
    the marker rather than the row's text keeps a long index legible — 24 rows of
@@ -585,9 +553,6 @@ h1, h2, h3, h4, h5, h6 {
   background-color: color-mix(in oklab, var(--tag-alpha-package) 14%, transparent);
 }
 
-/* ============================================
-   Links
-   ============================================ */
 a {
   color: var(--link-color);
   text-decoration: underline;
@@ -616,9 +581,6 @@ a[href^="http"]:hover {
   text-underline-offset: 0.15em;
 }
 
-/* ============================================
-   Lists
-   ============================================ */
 ul, ol {
   padding-left: 2em;
   margin: 1em 0;
@@ -626,9 +588,6 @@ ul, ol {
 
 li {}
 
-/* ============================================
-   Tables
-   ============================================ */
 /* Typst's html export writes a bare `<table>` — a `#table`'s own column widths,
    insets and strokes do not survive it — so the whole look of a table on this
    site is here rather than in the content.
@@ -694,9 +653,6 @@ th:last-child, td:last-child {
   padding-right: 0;
 }
 
-/* ============================================
-   Media
-   ============================================ */
 img, video {
   max-width: 100%;
   height: auto;
@@ -704,9 +660,6 @@ img, video {
   margin: 1.5em 0;
 }
 
-/* ============================================
-   Code
-   ============================================ */
 code {
   font-family: 'Courier New', monospace;
   background-color: #f5f5f5;
@@ -733,9 +686,6 @@ pre code {
   font-size: 1em;
 }
 
-/* ============================================
-   Blockquotes
-   ============================================ */
 blockquote {
   margin: 1.5em 0;
   padding-left: 1em;
@@ -750,9 +700,6 @@ hr {
   border: none; /* removes default border */
 }
 
-/* ============================================
-   Endnotes
-   ============================================ */
 section[role="doc-endnotes"] {
   margin-top: 2em;
   padding-top: 1em;
@@ -763,9 +710,7 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
   padding-right: 0.2em;
 }
 
-/* ============================================
-   Responsive
-   ============================================ */
+/* Responsive */
 @media (max-width: 600px) {
   body {
     padding: 12px;

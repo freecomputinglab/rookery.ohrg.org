@@ -6,7 +6,7 @@ priority: 1
 labels:
 - strip-css-banners
 deps: []
-closed: false
+closed: true
 ---
 `style.css` is the file a reader of this repository is most likely to copy
 wholesale — it is the one place the site layers its own styling over the
