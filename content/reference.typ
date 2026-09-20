@@ -904,7 +904,7 @@
 
       [`filter`],
       [#type-function | #type-none],
-      [A predicate of your own over the idea's tag dictionary, ANDed with `tagged` and `match` rather than replacing them. It is what expresses a selection those two cannot: an exclusion, or an OR of ANDs. The same argument `#ideas` and `#outline` take.],
+      [A predicate of your own over the idea's tag dictionary, ANDed with `tagged` and `match` rather than replacing them. It is what expresses a selection those two cannot: an exclusion, or an OR of ANDs. The same argument `#ideas` and `#outline` take. On `#window`, passing it also means no backlinks are registered, for the reason given below.],
 
       [`sort`],
       [#type-string | #type-auto],
@@ -932,7 +932,7 @@
 
       [`backlink`],
       [#type-bool],
-      [Whether the window counts as a link from the page it sits on to the idea it shows. True is right for a window written into an idea's prose; `false` is for a derived view — a deck, an index, a preview — which renders an idea rather than pointing at it, and should not fill that idea's backlinks with pages nobody wrote a link on.],
+      [Whether the window counts as a link from the page it sits on to the idea it shows. True is right for a window written into an idea's prose; `false` is for a derived view — a deck, an index, a preview — which renders an idea rather than pointing at it, and should not fill that idea's backlinks with pages nobody wrote a link on. `true`, the default, means every idea the window shows gains a backlink from it, named or tagged alike.],
 
       [`display`], [#type-dict], [What the window shows of itself, as a dictionary of six flags — see below.],
     )
@@ -968,10 +968,12 @@
     `context` and `backlinks`, describe an idea's own minted page rather than a
     window onto it, and a window reads none of them.
 
-    One asymmetry is worth carrying: only a _named_ idea takes a backlink from
-    the window showing it. A tag selection is not known until the registry can
-    be read, and the backlink graph is built before that, so an idea pulled in
-    by `tags` lists the windowing page nowhere.
+    A tag selection backlinks exactly as a named one does: every idea a
+    `tagged` window matches takes a backlink, both from the page the window
+    sits on and from the idea whose prose it is written in. The one selection
+    that registers nothing is `filter`---a predicate cannot ride in the
+    metadata the backlink walk reads, and it is ANDed with `tagged` rather
+    than replacing it.
   ]
   #reference(<hyperlink-reference>, title: [`#hyperlink`])[
     A plain link to an idea, and the renderer behind every `@idea:etal` in your

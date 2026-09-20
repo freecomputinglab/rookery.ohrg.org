@@ -6,7 +6,7 @@ priority: 3
 labels:
 - fix-tag-window-backlinks
 deps: []
-closed: false
+closed: true
 ---
 `content/reference.typ` tells readers flatly that a tag-selected `#window`
 never gives the idea it shows a backlink. `@rookery/core` no longer behaves
