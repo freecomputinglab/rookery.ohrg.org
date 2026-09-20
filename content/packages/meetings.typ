@@ -15,7 +15,7 @@
 
   #idea("doshi-velez-finale", title: [Finale Doshi-Velez])[A person.]
 
-  /* The title is synthesised from the participants and the date, coming out as
+  /* The title is synthesized from the participants and the date, coming out as
      "Meeting with Finale Doshi-Velez on 10.9.26". A reference date has to come
      from somewhere, whether today: here, today: on the factory below, or the
      document's own #set document(date: ..). There is no wall-clock fallback. */

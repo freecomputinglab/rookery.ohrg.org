@@ -15,7 +15,7 @@
 
   #let NOW = datetime(year: 2027, month: 1, day: 5)
 
-  /* Three stage names are reserved, scheduled, deadline and closed. Every other
+  /* Three stage names are reserved: scheduled, deadline and closed. Every other
      rung is vocabulary you invent for the thing you are tracking. A stage may
      also be a dictionary rather than a bare date, needing a timestamp: and
      taking an optional note:. */

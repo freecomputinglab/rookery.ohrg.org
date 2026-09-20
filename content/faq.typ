@@ -21,11 +21,11 @@
   Of these tools, rookery is closest in spirit to Obsidian in the sense that it allows you to create and manage a local-first knowledge base using plain-text files on disk.
   Unlike Obsidian, however, rookery is not an editor or IDE, which means you can author the #link("https://typst.app/")[Typst] files in it however you like.
 
-  Another way of thinking about rookery is that it is a Zettelkasten framework build on Typst that is _more_ structured than Obsidian and Notion, but not so structured that you need to know anything in particular about Zettelkasten in order to use it.
+  Another way of thinking about rookery is that it is a Zettelkasten framework built on Typst that is _more_ structured than Obsidian and Notion, but not so structured that you need to know anything in particular about Zettelkasten in order to use it.
   Rookery allows you to organize your thinking using @idea:idea[ideas] and @idea:tags[tags] in a way that is compatible with Zettelkasten and Zettelkasten-inspired systems like Roam, without enforcing or requiring strictly atomic notes.
 
   In addition to those mentioned above, three ways of thinking about note systems have concretely influenced rookery's design:
-  + Andy Matsuchak's #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen notes].
+  + Andy Matuschak's #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen notes].
   + Jon Sterling's #link("https://www.forester-notes.org/QHXS/index.xml")[intellectual junkyards].
   + #link("https://orgmode.org/worg/org-tutorials/orgtutorial_dto.html")[Emacs' Org-mode].
 
@@ -55,13 +55,13 @@
       - Compilation to a standalone static site.
 
       The core differences between forester and rookery:
-      - Forester rolls its own #link("https://deepwiki.com/jonsterling/ocaml-forester/4-markup-language")[enchanced Markup language], whereas rookery uses Typst. This has consequences for how hyperlinks, mathematical markup, footnotes, citations, and inline code blocks are specified.
-      - Forester requires an Opam/Ocaml toolchain and has a #link("https://www.forester-notes.org/013A/index.xml")[datalog-based query engine], whereas rookery is written in pure Typst.#footnote[We recommend compiling rookeries with #link("https://rheo.ohrg.org/getting-started")[Rheo] for a better experience, but it is @idea:using-typst[not strictly required].] Both produce standalone static sites.
+      - Forester rolls its own #link("https://deepwiki.com/jonsterling/ocaml-forester/4-markup-language")[enhanced markup language], whereas rookery uses Typst. This has consequences for how hyperlinks, mathematical markup, footnotes, citations, and inline code blocks are specified.
+      - Forester requires an OPAM/OCaml toolchain and has a #link("https://www.forester-notes.org/013A/index.xml")[datalog-based query engine], whereas rookery is written in pure Typst.#footnote[We recommend compiling rookeries with #link("https://rheo.ohrg.org/getting-started")[Rheo] for a better experience, but it is @idea:using-typst[not strictly required].] Both produce standalone static sites.
       // - Forester has #link("https://www.forester-notes.org/013A/index.xml")[thoughtful mechanisms] for federating multiple forests by way of #link("https://www.forester-notes.org/30FN/index.xml")[selective tree publication], whereas rookeries are conceived as standalone collections. (Federating rookeries is intended future work.)
-      - Rookery can be incrementally adopted in an existing Rheo project---a 'normal' #link("https://rheo.ohrg.org/")[writing project or website] that isn't organized as atomic notes---by sprinkling `#idea` blocks in as they are concieved, whereas forester must be adopted wholesale.
+      - Rookery can be incrementally adopted in an existing Rheo project---a 'normal' #link("https://rheo.ohrg.org/")[writing project or website] that isn't organized as atomic notes---by sprinkling `#idea` blocks in as they are conceived, whereas forester must be adopted wholesale.
       - In addition to HTML and PDF, rookery can export to EPUB.
       - Rookery allows you to give ideas human-readable, semantic names if you prefer not to accept the names it derives automatically.
-      - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is a pre-release software (version 0.`x`) that was announced in September 2026.
+      - Forester was first released in 2023 and its latest major version, 5.0, was released in July 2025. Rookery is pre-release software (version 0.`x`) that was announced in September 2026.
     ]
 
     #faq(<kodama-rookery>, title: [Kodama | Rookery])[
@@ -69,7 +69,7 @@
       #link("https://kodama-community.github.io/")[Kodama] is another forester-inspired tool for authoring #link("https://www.forester-notes.org/QHXS/index.xml")[intellectual junkyards] in Typst.
 
       - Rookery produces HTML, PDF, and/or EPUB, whereas Kodama renders only HTML.
-      - Kodama does not explictly support transclusion with @idea:windows[windows], idea-scoped @idea:footnotes[footnotes] or @idea:citations[citations], @idea:hatching-ideas[tags to organize ideas], mobile viewing, or standalone pages for each idea.
+      - Kodama does not explicitly support transclusion with @idea:windows[windows], idea-scoped @idea:footnotes[footnotes] or @idea:citations[citations], @idea:hatching-ideas[tags to organize ideas], mobile viewing, or standalone pages for each idea.
       - Kodama requires a separate binary to compile in addition to Typst, whereas rookery needs only the Typst toolchain (or @idea:using-typst[Rheo as the preferred interface to it]).
       - Kodama allows you to write your notes in either Markdown or Typst, whereas rookery is pure Typst.
     ]
@@ -80,7 +80,7 @@
   #link("https://rheo.ohrg.org/")[Rheo] is a typesetting engine based on Typst that is also maintained at the #link("https://freecomputinglab.ohrg.org/")[Free Computing Lab].
   In addition to providing an EPUB export option, Rheo can also #link("https://rheo.ohrg.org/packages")[register custom JavaScript and CSS from a package] such as rookery.
 
-  While we make a best-effort to keep the rookery package Typst-native, we can guarantee a better experience if you compile your rookeries with Rheo.
+  While we make a best effort to keep the rookery package Typst-native, we can guarantee a better experience if you compile your rookeries with Rheo.
   A large part of this is because rookery's implementation depends heavily on #link("https://typst.app/docs/reference/bundle/")[Typst's experimental bundle export], which means that one needs various flags and specific configuration to compile a rookery with the Typst CLI.
 
   Using pure Typst, your rookeries will certainly not get standalone minted idea pages, rookery-wide outlines, and the ability to compile to EPUB, and @idea:idea-href-reference[idea-href] will always be `none`.

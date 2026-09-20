@@ -15,10 +15,10 @@
   #idea[Hatch a new idea.]
   ```
 
-  You can think of an idea as an #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen note], an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic unit of thought], as a generalization of the #link("https://orgmode.org/manual/TODO-Basics.html")[Orgmode TODO], or simply as a referenceable and taggable block of content.
+  You can think of an idea as an #link("https://notes.andymatuschak.org/z5E5QawiXCMbtNtupvxeoEX")[evergreen note], as an #link("https://www.forester-notes.org/tfmt-0007/index.xml")[atomic unit of thought], as a generalization of the #link("https://orgmode.org/manual/TODO-Basics.html")[Orgmode TODO], or simply as a referenceable and taggable block of content.
   All ideas in your rookery are conceptually networked together so that you can treat a rookery as an #link("https://www.ohrg.org/devonthink-part-i.html")[associative archive].
 
-  An idea might be a short note you want to jot down, a record relating to person or a place, a blog post, an academic paper, a @idea:rookery-todos[todo item], a @idea:rookery-meetings[meeting note], a note associated to a @idea:rookery-bibtex[citation], a tracking issue for a @idea:rookery-cfps[call for proposals], or any other kind of structured content fragment you can imagine.
+  An idea might be a short note you want to jot down, a record relating to a person or a place, a blog post, an academic paper, a @idea:rookery-todos[todo item], a @idea:rookery-meetings[meeting note], a note associated to a @idea:rookery-bibtex[citation], a tracking issue for a @idea:rookery-cfps[call for proposals], or any other kind of structured content fragment you can imagine.
   You can specify custom metadata structures for certain types of ideas using @idea:tags[tags].
 
   - @idea:idea-reference[Reference documentation for `#idea`].
@@ -48,8 +48,8 @@
     The body of my second idea.
     ```
 
-    This is useful when you want to take writing in Typst that isn't structured as ideas and import them into a rookery, as you don't have to retrofit `#idea` blocks throughout: you just need to design the right `#ideate` show rule.
-    Ideation also works nicely with #link("https://rheo.ohrg.org/spines")[Rheo spines], as it means that you organize your ideas using files and folders and still have them appear in the flat idea space so that they can be further organized using @idea:tags[tags].
+    This is useful when you want to take writing in Typst that isn't structured as ideas and import it into a rookery, as you don't have to retrofit `#idea` blocks throughout: you just need to design the right `#ideate` show rule.
+    Ideation also works nicely with #link("https://rheo.ohrg.org/spines")[Rheo spines], as it means that you can organize your ideas using files and folders and still have them appear in the flat idea space so that they can be further organized using @idea:tags[tags].
 
     - @idea:ideate-reference[Reference documentation for `#ideate`].
   ]
@@ -86,7 +86,7 @@
   ]
 
   #concept("footnotes", title: [Footnotes])[
-    A footnote belongs to the idea in which you write it in, just as @idea:citations[citations] do.
+    A footnote belongs to the idea in which you write it, just as @idea:citations[citations] do.
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function.
     (Using Typst's own `#footnote` will cause a compilation error.)
 
@@ -100,7 +100,7 @@
     Footnote numbering is idea-local.
     This means that there may be two footnotes labeled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
 
-    Footnote listings occur at the end of each idea.#footnote[Ideas carry their footnotes everywhere they appear in the rookery--- their hatching context, their @idea:standalone-idea-pages[standalone page], and their @idea:windows[windows].
+    Footnote listings occur at the end of each idea.#footnote[Ideas carry their footnotes everywhere they appear in the rookery---their hatching context, their @idea:standalone-idea-pages[standalone page], and their @idea:windows[windows].
       The only exception to this is where a window on an idea carries a `limit` which truncates the content.]
     On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
 
@@ -130,7 +130,7 @@
 
     Citation numbering is rookery-wide, which means that numeric styles will not be scoped to each idea.
     (An idea with one citation may show it as `[7]`, for example, if it is the 7#super[th] citation in the rookery.)
-    For this reason we recommend using #link("https://typst.app/docs/reference/model/bibliography/#parameters-style")[citation styles] that don't employ numbers such as `"author-date"`.
+    For this reason we recommend using #link("https://typst.app/docs/reference/model/bibliography/#parameters-style")[citation styles] that don't employ numbers, such as `"author-date"`.
   ]
 ]
 
@@ -154,8 +154,8 @@
 
     #concept("standalone-idea-pages", title: [Standalone pages for ideas])[
       When you compile a rookery with #link("https://rheo.ohrg.org")[Rheo], each idea that you declare will produce its own standalone page.
-      When you link to an idea using a @idea:hyperlinks[hyperlink], by default it will link that that idea's standalone page.
-      (To link to the page in which the idea was actually declared, see @idea:hyperlink-reference.).
+      When you link to an idea using a @idea:hyperlinks[hyperlink], by default it will link to that idea's standalone page.
+      (To link to the page in which the idea was actually declared, see @idea:hyperlink-reference.)
 
       The standalone page will be minted at `ideas/<idea-name>.html`, where `<idea-name>` is the name you give explicitly or the @idea:auto-naming[one that is implicitly generated].
       The `ideas` directory is configurable through the `prefix` setting (see the @idea:site-config[site-config reference]).
@@ -181,7 +181,7 @@
     They are useful in home pages or other sections that aggregate content.
 
     Fundamentally, windows are a form of augmented hyperlink.
-    They take their name from Ted Nelson's notion of the #link("https://www.xanadu.com.au/ted/TN/PARALUNE/paraviz.html")[transpointing window] as they allow you to see the content either side of the link (like a window).
+    They take their name from Ted Nelson's notion of the #link("https://www.xanadu.com.au/ted/TN/PARALUNE/paraviz.html")[transpointing window] as they allow you to see the content on either side of the link (like a window).
 
     Say you have an idea:
     ```typ
@@ -196,7 +196,7 @@
     ```
 
     Note that we do not need the `idea:` prefix.
-    Like `#hyperlink`,`#window` is a function imported from rookery that already knows which namespace to look in.
+    Like `#hyperlink`, `#window` is a function imported from rookery that already knows which namespace to look in.
 
     By default, this window will be unfolded, showing the full content of the idea.
 
@@ -235,7 +235,7 @@
     `target: idea` outlines your ideas; every other target---the default `heading`, a figure kind, anything else---passes straight through to Typst's `#outline` unchanged.
 
     This outline is derived from how you nest `#idea` hatchings, and lists every idea in the rookery by default---pass `scope: "page"` to narrow it to only the ideas written on this page.
-    As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are also not included.
+    As @idea:windows[windows] are only echoes of ideas that live elsewhere, they are not included.
 
     - @idea:outline-reference[Reference documentation for `#outline`].
 

@@ -94,11 +94,11 @@
 
       [`note-dir`],
       [`none`],
-      [The directory the minted idea pages are written to. Left unset it is `ideas` under the default prefix, and the prefix itself under any other — `prefix: "maths"` mints `maths/`, not `mathss/`. Names one directory: no `/` and no `:`.],
+      [The directory the minted idea pages are written to. Left unset, it is `ideas` under the default prefix, and the prefix itself under any other — `prefix: "maths"` mints `maths/`, not `mathss/`. Names one directory: no `/` and no `:`.],
 
       [`css-prefix`],
       [`none`],
-      [The stem every class this package emits is built from. Left unset it follows `prefix`, so renaming the name namespace renames `.idea-box` to `.note-box` along with it; set it to hold the classes still while the names move. See @idea:class-reference[HTML class reference].],
+      [The stem every class this package emits is built from. Left unset, it follows `prefix`, so renaming the name namespace renames `.idea-box` to `.note-box` along with it; set it to hold the classes still while the names move. See @idea:class-reference[HTML class reference].],
 
       [`window-unfurl`],
       [`1`],
@@ -126,7 +126,7 @@
 
       [`refs`],
       [`true`],
-      [Whether rookery installs the `show ref:` rule that renders `@idea:etal` as the idea rather than a figure number. Set it to `false` to keep Typst's own behaviour, or to install a rule of your own. See @idea:hyperlinks[hyperlinks].],
+      [Whether rookery installs the `show ref:` rule that renders `@idea:etal` as the idea rather than a figure number. Set it to `false` to keep Typst's own behavior, or to install a rule of your own. See @idea:hyperlinks[hyperlinks].],
 
       [`hyperlink-target-minted`],
       [`true`],
@@ -175,7 +175,7 @@
     `tags-color` has no such parameter: it is a dictionary of its own, keyed by tag, and lives only inside `theme`.
 
     The five colors each take a Typst color or a raw CSS string.
-    Rookery allows a string so that you can specify `rgba(...)`, `color-mix(...)`, `var(--your-own)` and anything else CSS accepts valid.
+    Rookery allows a string so that you can specify `rgba(...)`, `color-mix(...)`, `var(--your-own)` and anything else CSS accepts.
     The three lengths — `rule-width`, `pad` and `label-size` — take a Typst length or a CSS length string, the string being how you reach the units Typst has no literal for: `px` for a hairline, and the `rem` `label-size` wants.
     `label-font` is a CSS font stack rather than either, passed through unvalidated, and an array of family names is joined for you: `("Berkeley Mono", "monospace")` and `"Berkeley Mono, monospace"` are the same thing.
 
@@ -341,11 +341,11 @@
 
         [`--idea-muted-color`],
         [`gray`],
-        [The colour of a de-emphasised row cell, and of a row date marked `soft:`.],
+        [The color of a de-emphasized row cell, and of a row date marked `soft:`.],
 
         [`--idea-row-rule-color`],
         [unset],
-        [The colour of a row's vertical rule. Read and never set by this package's own stylesheet, precisely so a layered stylesheet can point it somewhere---a sibling package can run an urgency band down that bar.],
+        [The color of a row's vertical rule. Read and never set by this package's own stylesheet, precisely so a layered stylesheet can point it somewhere---a sibling package can run an urgency band down that bar.],
       )
     ]
   ]
@@ -1077,7 +1077,7 @@
   // `<outline-reference>` IS THE SURVIVING NAME, and `<ideas-outline-reference>`
   // is gone rather than kept as an alias: a rookery name is a Typst label, so a
   // retired one is not a dangling link but a compile error at every inbound
-  // `@idea:` — which is the behaviour that makes retiring one safe.
+  // `@idea:` — which is the behavior that makes retiring one safe.
   #reference(<outline-reference>, title: [`#outline`])[
     A contents list over the ideas in your rookery, derived from how you nest
     them. See @idea:outlines[outlining ideas] for what it lists and what it
@@ -1171,7 +1171,7 @@
   // partner for the rows this function returns. A reader who has not just read
   // the row table has nothing to hang either on.
   #reference(<ideas-reference>, title: [`#ideas`])[
-    Your rookeries' contents are always _also_ available in Typst through the `#ideas()` function.
+    Your rookery's contents are always _also_ available in Typst through the `#ideas()` function.
     This function returns all of your ideas as a data structure that you may then use to customize your rookery or power downstream applications.
     `ideas` has to be called inside `#context`, since it reads the rookery's registry:
 

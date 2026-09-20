@@ -32,7 +32,7 @@ repository and branch.
 | `style.css` | site styling; the package's own CSS is injected by rheo |
 | `nav.js` | toggles the mobile nav's expanded state |
 | `tables.js` | mirrors each table's headers onto its cells, for the card layout below 600px |
-| `fonts/` | Berkeley Mono, four faces (self-hosted, gitignored.) |
+| `fonts/` | Berkeley Mono, four faces (self-hosted, gitignored). |
 | `Justfile` | the `watch` / `build` / `fonts` recipes above |
 | `build.sh` | the CI build: fetches Rheo and the fonts, then runs `rheo compile` |
 | `netlify.toml` | points Netlify at `build.sh` and `build/html` |

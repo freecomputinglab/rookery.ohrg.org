@@ -189,7 +189,7 @@
       ),
     )
 
-    // The hamburger, hidden on desktop and below the responsive breakpoint what
+    // The hamburger, hidden on desktop and below the responsive breakpoint that
     // collapses `#site-nav` into a dropdown. It comes after `search-modal` in
     // document order because the two are flex siblings with no `order`
     // override, and the search trigger has to stay left of the toggle rather

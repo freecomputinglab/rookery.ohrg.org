@@ -23,7 +23,7 @@
 
   == Scoping searches
 
-  You can specify `tags:` when using the UX elements to narrow the search space at compile-time:
+  You can specify `tags:` when using the UX elements to narrow the search space at compile time:
 
   ```typ
   #search-bar(tags: "phd", elem-id: "phd-index", placeholder: "phd notes")
