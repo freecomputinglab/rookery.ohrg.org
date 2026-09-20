@@ -262,8 +262,6 @@
     Due to the lack of a uniqueness guarantee and the instability of auto-naming, *we recommend explicitly naming all ideas in your rookery*.
     If you don't care about choosing your ideas' names, you can consider simply copying the auto-name from the browser and pasting it into Typst.
     Auto-naming exists so that inventing a name for each idea does not gate its inclusion in the rookery, but it should be treated as a provisional band-aid rather than a load-bearing mechanism.
-
-
   ]
 ]
 
