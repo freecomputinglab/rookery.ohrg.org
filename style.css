@@ -167,6 +167,26 @@
   font-weight: 600;
 }
 
+/* The GitHub mark, rendered by `site-header` as an inline `svg` inheriting
+   `currentColor`, so only the anchor's colour has to change on hover. Muted at
+   rest like a nav entry, and given the same 2px/3px hover pill. `display:
+   flex` rather than `inline` so the box is the icon's own height and the bar
+   does not grow a line-height's worth of slack around it. */
+.source-link {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  padding: 2px;
+  border-radius: 3px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.source-link:hover {
+  background-color: var(--hover-fill);
+  color: var(--text-color);
+}
+
 /* Nav toggle (hamburger), hidden until the Responsive section shows it; the
    icon's own shape lives here since it does not change with viewport width.
 
