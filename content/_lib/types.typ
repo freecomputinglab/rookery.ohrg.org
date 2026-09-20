@@ -1,11 +1,6 @@
 // The Typst type names an argument table cites, each linked to its own page in
-// the Typst docs. Here rather than at the top of `content/reference.typ`, which
-// is the page that cites them today, because any page documenting an argument
-// list of its own wants the same twelve links, and a second copy of this list
-// would drift from the first.
-//
-// `_lib/` is excluded from the spine (`rheo.toml`), so this file is machinery
-// rather than a page: it is imported, never compiled as a vertebra.
+// the Typst docs. Any page documenting an argument list wants the same links,
+// so they live here rather than in `content/reference.typ`.
 #let type-string = link("https://typst.app/docs/reference/foundations/str/")[str]
 #let type-label = link("https://typst.app/docs/reference/foundations/label/")[label]
 #let type-content = link("https://typst.app/docs/reference/foundations/content/")[content]

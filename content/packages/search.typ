@@ -3,14 +3,6 @@
   date: datetime(year: 2026, month: 9, day: 19),
 )
 
-// THE FIRST BLOCK IS THE OVERVIEW, and that is a structural fact rather than a
-// stylistic one: `content/packages/index.typ` windows this note with `limit: 1`,
-// so whatever is written above the first blank line is what the shelf reads out.
-// Everything below it belongs to this page and to a fully unfurled window.
-//
-// `tag: "alpha-package"` IS WHAT PUTS IT ON THAT SHELF: the index windows the
-// tag rather than naming each package one by one, so a new stub joins the shelf
-// by carrying the tag and nothing else has to be edited.
 #idea(<rookery-search>, tag: "alpha-package", title: [`@rookery/search`])[
   The `search` package ranks the ideas in a rookery by name, by title and by full text, and puts that ranking behind an inline search bar, a site-wide overlay and a faceted filter panel.
 

@@ -1,11 +1,6 @@
 default:
     @echo "rookery.ohrg.org: 'just watch' to live-rebuild, 'just build' for a one-shot"
 
-# Neither `build` nor `watch` depends on `fonts`. Berkeley Mono is licensed and
-# its TTFs are gitignored, so a fresh clone has no `fonts/` at all — a build
-# that required one would fail on the only command the readme tells a reader to
-# run. Without the faces the wordmark, the nav and an idea's name fall back to
-# the generic `monospace`, which is a cosmetic difference and not a broken site.
 watch:
     rheo watch . --open --html
 

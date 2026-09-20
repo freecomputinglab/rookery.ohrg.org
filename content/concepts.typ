@@ -1,11 +1,4 @@
-// `display-tags: true` by default, so every card on the page wears its kind as a
-// coloured pill in the hat — the hue comes from `TAG-COLORS` in `_lib/template.typ`.
-// Named rather than hardcoded so a call site can still turn it off.
-#let concept(tags: (), display-tags: true, ..args) = idea(
-  tags: (("concept",) + tags),
-  display-tags: display-tags,
-  ..args,
-)
+#let concept = idea.with(display-tags: true)
 
 #set document(
   title: "Rookery - Concepts",
@@ -164,8 +157,8 @@
       When you link to an idea using a @idea:hyperlinks[hyperlink], by default it will link that that idea's standalone page.
       (To link to the page in which the idea was actually declared, see @idea:hyperlink-reference.).
 
-      The standalone page will be minted at `ideas/<idea-name>.html`, where `<idea-name>` is the name you give or the @idea:auto-naming[one that is generated] for it, and the path is relative to the site root rather than rooted at `/`.
-      The `ideas` directory itself is configurable: it follows the `prefix` setting documented in the site-configuration table on @idea:site-config[configuring rookery].
+      The standalone page will be minted at `ideas/<idea-name>.html`, where `<idea-name>` is the name you give explicitly or the @idea:auto-naming[one that is implicitly generated].
+      The `ideas` directory is configurable through the `prefix` setting (see the @idea:site-config[site-config reference]).
     ]
 
     ```typ
@@ -210,7 +203,7 @@
     - @idea:window-reference[Reference documentation for `#window`].
 
     #concept("window-depth", title: [Unfurling windows])[
-      A window can cycle: an idea that windows onto itself, or two ideas that window onto each other, would otherwise unfurl forever.
+      An idea that windows onto itself, or two ideas that window onto each other, can constitute an infinite loop that could therefore unfurl forever.
       In order to prevent this, rookery has a notion of *window unfurl*, which is set to `1` by default.
 
       When a window is called at a level of recursion greater than the unfurl budget, rookery renders a call to `#window` as a link to the idea's standalone page rather than as transcluded content.

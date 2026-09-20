@@ -3,14 +3,6 @@
   date: datetime(year: 2026, month: 9, day: 19),
 )
 
-// THE FIRST BLOCK IS THE OVERVIEW, and that is a structural fact rather than a
-// stylistic one: `content/packages/index.typ` windows this note with `limit: 1`,
-// so whatever is written above the first blank line is what the shelf reads out.
-// Everything below it belongs to this page and to a fully unfurled window.
-//
-// `tag: "alpha-package"` IS WHAT PUTS IT ON THAT SHELF: the index windows the
-// tag rather than naming each package one by one, so a new stub joins the shelf
-// by carrying the tag and nothing else has to be edited.
 #idea(<rookery-todos>, tag: "alpha-package", title: [`@rookery/todos`])[
   The `todos` package writes todos and epics as ideas with a dependency graph over them, so that a rookery can say for itself what is ready to work, what is blocked, and what has gone stale.
 

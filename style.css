@@ -1,14 +1,10 @@
-/* Inter, for note titles. `@import` has to be the FIRST rule in the file —
-   before the `@font-face` blocks below — or browsers drop it. Fetched rather
-   than self-hosted, matching rheo.ohrg.org and ohrg.org; Berkeley Mono is
-   self-hosted below because it is licensed and not on any CDN. */
+/* Inter, for note titles. `@import` has to be the first rule in the file or
+   browsers drop it. */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* Berkeley Mono: four faces, following cftw.ohrg.org. The urls are relative
-   to this stylesheet, which rheo emits at `build/html/style.css` — so the
-   files have to end up at `build/html/fonts/`. rheo copies no static
-   directories (its only asset key is `css_stylesheet`), so the Justfile does
-   that copy after compiling; see the note there. */
+/* Berkeley Mono, self-hosted because it is licensed. The urls are relative to
+   `build/html/style.css`, so the files have to land at `build/html/fonts/` —
+   rheo copies no static directories, so the Justfile does that copy. */
 @font-face {
   font-family: 'Berkeley Mono';
   src: url('./fonts/BerkeleyMono-Regular.ttf') format('truetype');
@@ -46,81 +42,44 @@
   --muted: #6b6b6b;
   --accent: #b4791a;
   --rule: #e6e6e6;
-  /* Two families, split by what a thing IS rather than by where it sits.
-     Declared once each because both are wanted in places that share no
-     selector, and repeating a stack is how the nav came to be left out of one.
-
-     Berkeley Mono is for site furniture and identifiers — the wordmark, the
-     nav, and a note's `[idea:etal]` id. It marks the parts of the page that
-     are machinery rather than writing.
-
-     Inter is for everything that is writing: every heading, and a note's own
-     title, which is its name. */
+  /* Mono for site furniture and identifiers (wordmark, nav, `[idea:etal]`),
+     Inter for everything that is writing — split by what a thing is, not by
+     where it sits. */
   --mono-font: 'Berkeley Mono', monospace;
   --heading-font: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  /* Nav entries and note ids are the same kind of thing — small mono labels —
-     so they are the same size, declared once. In `rem`, not `em`: an id sits
-     inside headings of several sizes and inside a `#window` summary the footer
-     has already scaled down, and only a root-relative unit comes out the same
-     in all of them. */
+  /* Nav entries and note ids are the same kind of small mono label. In `rem`,
+     not `em`: an id sits inside headings of several sizes. */
   --label-size: 0.85rem;
-  /* The hover fill a note id takes, so the nav can take the same one. The
-     package injects this value as `--idea-link-color` on its OWN elements,
-     from `THEME.link-color` in content/template.typ — but the nav has no
-     `.idea-*` ancestor to inherit it from, so it is written once more here.
-     Keep the two in step. */
+  /* The hover fill a note id takes. The package injects the same value as
+     `--idea-link-color` on its own elements, but the nav has no `.idea-*`
+     ancestor to inherit it from — keep the two in step. */
   --hover-fill: rgba(230, 140, 0, 0.16);
-  /* What an OUTBOUND link's underline takes on hover, where an internal one
-     takes `--hover-fill` behind it. Read by rookery's own stylesheet for links
-     inside an idea, and by the `a[href^="http"]` rule below for the prose
-     outside one, so both halves of the site agree. The accent rather than the
-     fill: the fill is translucent, and a 2px line drawn in it barely shows. */
+  /* What an outbound link's underline takes on hover; the accent rather than
+     the translucent fill, which barely shows as a 2px line. */
   --idea-external-color: var(--accent);
-  /* ONE HUE PER KIND OF IDEA this site hatches — the tags in its whole
-     vocabulary, and the only place any of their colours is written down.
-     `TAG-COLORS` in content/template.typ paints the hat pills by naming these
-     properties rather than repeating their values, so a hue changed here
-     changes the pill, the outline tick and the search chip together.
-
-     Matched lightness, low saturation, and the amber one first because it is
-     the site's own accent: the colour has to say WHICH KIND at a glance
-     without any of them shouting over the prose it sits beside. */
+  /* One hue per kind of idea, and the only place any of them is written down:
+     `TAG-COLORS` in content/template.typ names these properties rather than
+     repeating their values, so a hue changed here changes the pill, the
+     outline tick and the search chip together. Matched lightness and low
+     saturation, so the colour says which kind without shouting. */
   --tag-concept: #b4791a;
   --tag-reference: #3f6790;
   --tag-setup: #3f7a52;
   --tag-faq: #7a4d84;
-  /* `alpha-package` IS NOT A KIND, IT IS A WARNING — the tag every alpha
-     package stub carries, which `content/packages/index.typ` windows to build
-     its shelf. Hence orange rather than another hue on the matched-lightness
-     ramp above: it is the one tag that should read as caution, and it is
-     deliberately the most saturated of the set. Redder and darker than
-     `--tag-concept`'s amber so the two do not read as the same tag at a
-     glance, since both can appear in the same search panel. */
+  /* Not a kind but a warning — the tag every alpha package stub carries.
+     Deliberately the most saturated of the set, and redder than
+     `--tag-concept` so the two never read as the same tag. */
   --tag-alpha-package: #c2571a;
 }
 
-/* Header / nav, rendered by `site-header` in content/template.typ, which
-   marks the current page `.active`. The anchors are Typst's, wrapped in the
-   class-carrying element, so every selector here reaches through to `a` —
-   see the note in template.typ about why the hrefs cannot be written by
-   hand. */
-/* Sticky, so the nav is reachable from anywhere in a long page — and these
-   pages are long: an idea's own standalone page carries its whole body plus a
-   footer, and `concepts` is one page of everything.
+/* Header / nav, rendered by `site-header` in content/template.typ, which marks
+   the current page `.active`. The anchors are Typst's, wrapped in the
+   class-carrying element, so every selector here reaches through to `a`.
 
-   It needs an opaque `background-color` of its own to sit on: `body`'s
-   background paints the canvas, not this box, so without one the text
-   scrolling underneath would read straight through the bar.
-
-   `padding-top` is what keeps the wordmark off the viewport edge once the bar
-   is stuck at `top: 0` — unstuck, it simply adds to `body`'s own top padding.
-
-   The rule under it is the SAME colour as the left rule on an idea and on a
-   window, so the site's one horizontal hairline and its many vertical ones
-   read as one system. `--hover-fill` is the site-level name for that colour
-   (see `:root`); the package injects the identical value as
-   `--idea-link-color` on its own elements, and the two are kept in step by
-   hand because a package's inline custom properties cannot reach the nav. */
+   Sticky, since these pages are long, which means it needs an opaque
+   background of its own — `body`'s paints the canvas, not this box. The rule
+   under it is the same colour as the left rule on an idea and on a window, so
+   the site's hairlines read as one system. */
 .site-header {
   position: sticky;
   top: 0;
@@ -139,22 +98,15 @@
   padding-bottom: 0.6rem;
 }
 
-/* Typst's HTML export wraps a loose run of inline content in an anonymous
-   `<p>` wherever it isn't already inside a block element — the wordmark, the
-   search trigger and the nav toggle all get this treatment, so THEY, not the
-   elements inside them, are `.site-header-inner`'s actual flex items. Left
-   alone they carry the UA default `<p>` margin (1em top/bottom), which
-   `align-items: center` centers in full — every one of these `<p>`s, not just
-   the tallest, so the bar's height is set by that margin rather than by the
-   wordmark/icon content actually filling it. */
+/* Typst wraps a loose run of inline content in an anonymous `<p>`, so those
+   `<p>`s — not the elements inside them — are the actual flex items here, and
+   their default 1em margin would set the bar's height. */
 .site-header-inner > p {
   margin: 0;
 }
 
-/* Uppercase, not small-caps. Berkeley Mono is a monospace face: small-caps in
-   it are synthesised by the browser, which scales the capitals down and leaves
-   them sitting at the wrong weight for the rest of the face. Setting the text
-   upper outright gets the real glyphs at their designed proportions. */
+/* Uppercase, not small-caps: Berkeley Mono has no small-caps, so the browser
+   would synthesise them at the wrong weight. */
 .wordmark a {
   font-family: var(--mono-font);
   font-size: 1rem;
@@ -169,10 +121,8 @@
   color: var(--accent);
 }
 
-/* Pushed to the far end of the bar. Above the Responsive breakpoint this is
-   the whole story — three entries fit inline beside the wordmark and search
-   trigger. Below it, the Responsive section turns this into a dropdown
-   toggled by `.nav-toggle`, so the bar itself never wraps at any width. */
+/* Pushed to the far end of the bar. Below the Responsive breakpoint this
+   becomes a dropdown toggled by `.nav-toggle`. */
 .site-nav {
   margin-left: auto;
 }
@@ -194,11 +144,8 @@
 
 }
 
-/* Padding and radius on the link itself, not on `:hover` — a padding that
-   appeared only on hover would shift the whole bar every time the pointer
-   crossed an entry. Only the background changes. Same 2px/3px the package
-   gives a note id, so the two fills are the same shape as well as the same
-   colour. */
+/* Padding on the link itself, not on `:hover`, so the bar does not shift when
+   the pointer crosses an entry. Same 2px/3px the package gives a note id. */
 .site-nav a {
   font-family: var(--mono-font);
   font-size: var(--label-size);
@@ -220,21 +167,13 @@
   font-weight: 600;
 }
 
-/* Nav toggle (hamburger), hidden here — a bar three entries wide has no need
-   of it above the Responsive breakpoint. The Responsive section is what
-   shows it and gives `.site-nav` its collapsed, dropdown behaviour; the
-   shape of the icon itself lives here since it does not change with
-   viewport width.
+/* Nav toggle (hamburger), hidden until the Responsive section shows it; the
+   icon's own shape lives here since it does not change with viewport width.
 
-   Three bars, each positioned by hand rather than stacked with `gap`: the
-   middle one has to fade out in place while the outer two rotate to a cross,
-   and a gap-based stack cannot hold a bar at an angle without it also sliding
-   along the axis the stack lays out on.
-
-   Driven by `aria-expanded` alone — `nav.js` only ever toggles that one
-   attribute, and every visual change, here and in Responsive, reads it via
-   `:has()` or a descendant selector rather than a second `.open` class the
-   two could drift out of step with. */
+   Three bars positioned by hand rather than stacked with `gap`, because a
+   gap-based stack cannot hold a bar at an angle without it also sliding.
+   Driven by `aria-expanded` alone — `nav.js` toggles only that attribute, so
+   there is no second `.open` class to drift out of step with. */
 .nav-toggle {
   display: none;
   position: relative;
@@ -293,54 +232,32 @@
   }
 }
 
-/* Search: the trigger button and the modal come from `@rookery/search`,
-   placed in the header by `site-header` in content/template.typ. Nothing
-   here reimplements it: the matching, the two-pane layout and the keyboard
-   handling all ship with the package, and this site only dresses them.
+/* Search: the trigger and modal come from `@rookery/search`; this site only
+   dresses them, mostly by setting the package's `--rookery-search-*`
+   properties. The few plain rules below do win despite the package's
+   stylesheet loading later, because it wraps everything in
+   `@layer rookery-search` and unlayered CSS beats layered CSS. Check the layer
+   before ever reaching for `!important`.
 
-   Almost all of it is done by setting the package's `--rookery-search-*`
-   properties from this site's own, which is the route to prefer — a property
-   is a value the package asked for, where a rule is a value it did not. Only
-   the things it has no property for (the label typography, and the title
-   line) are written as rules.
-
-   Those rules DO win, even though the package's stylesheet is linked after this
-   one: it wraps everything in `@layer rookery-search`, and unlayered CSS beats
-   layered CSS whatever the order or specificity. So if an override here ever
-   stops taking, the layer is the thing to check — never reach for `!important`. */
-/* On `.site-header-inner`, not `.rookery-search-trigger`: the trigger button
-   and the `<dialog>` are SIBLINGS (`#search-modal` emits them one after the
-   other, not one wrapping the other), so a property has to sit on an ancestor
-   common to both. The dialog rendering in the top layer only changes paint
-   order, not the DOM tree custom properties inherit through — a shared
-   ancestor still reaches it. */
+   The properties sit on `.site-header-inner` because the trigger and the
+   `<dialog>` are siblings, so they need a common ancestor. */
 .site-header-inner {
   --rookery-search-fg: var(--text-color);
   --rookery-search-bg: var(--background-color);
-  /* The same line an idea draws down its left edge and an outline draws down
-     its rows — `--idea-border-color` falls through to the theme's link colour,
-     which is this. The header has no `.idea-*` ancestor to inherit that from,
-     so it is named here rather than left to the fallback. */
+  /* The same line an idea draws down its left edge. */
   --rookery-search-border: var(--hover-fill);
   --rookery-search-radius: 3px;
-  /* The same fill the nav entries and note ids take, so a selected result
-     reads as the same gesture as a hovered nav entry. */
+  /* The same fill nav entries and note ids take. */
   --rookery-search-hover: var(--hover-fill);
   --rookery-search-name-color: var(--muted);
-  /* Neutral, not the theme's amber: a backdrop dims the WHOLE page behind
-     it, and an amber dim would tint every colour on the page including ones
-     the theme never touches. No modal width/height override — the package's
-     own defaults (`min(56rem, 100vw - 2rem)` / `min(32rem, 100vh - 8rem)`)
-     already fit this site with no measurement pointing to a better number. */
+  /* Neutral, not amber: a backdrop dims the whole page, and an amber dim would
+     tint colours the theme never touches. */
   --rookery-search-backdrop: rgba(0, 0, 0, 0.4);
-  /* The same fill the hover/selection states use, so a highlighted term reads
-     as the same gesture as the rest of the theme's amber accent. */
   --rookery-search-mark: var(--hover-fill);
 }
 
-/* Mono and small, like the nav beside it: the search input is site furniture,
-   not writing, whether it is the trigger's own placeholder text or the
-   modal's. */
+/* Mono and small, like the nav beside it — the search input is furniture, not
+   writing. */
 .rookery-search-input {
   font-family: var(--mono-font);
   font-size: var(--label-size);
@@ -350,9 +267,7 @@
   color: var(--muted);
 }
 
-/* A result is a note's name, so it takes Inter like every other note title,
-   with the id beside it in mono — the same division of labour the rest of the
-   site uses. */
+/* A result is a note's name, so Inter, with the id beside it in mono. */
 .rookery-search-title {
   font-family: var(--heading-font);
 }
@@ -361,13 +276,9 @@
   font-family: var(--mono-font);
 }
 
-/* The package already asks for an undecorated row, but it asks from inside
-   `@layer rookery-search`, and this stylesheet's own `a { text-decoration:
-   underline }` is unlayered — unlayered beats layered whatever the order, so
-   the site is the only place that can take the underline back off. A result
-   should read as a note's title followed by its id, the way it reads inline,
-   and an underline under the whole row makes it read as a link to somewhere
-   else. */
+/* The package asks for an undecorated row from inside its layer, so this
+   file's unlayered `a { text-decoration: underline }` overrides it; only the
+   site can take the underline back off. */
 .rookery-search-row {
   text-decoration: none;
 }
@@ -376,28 +287,20 @@
   margin: 0 0 1.5rem;
 }
 
-/* The image element already gets `max-width: 100%` from the Media rules below;
-   this makes it fill the measure rather than sit at its intrinsic size, and
-   drops the block margin those rules add, since `.hero` owns the spacing. */
+/* Fill the measure rather than sit at intrinsic size, and drop the block
+   margin the Media rules add, since `.hero` owns the spacing. */
 .hero img {
   width: 100%;
   border-radius: 3px;
   margin: 0;
 }
 
-/* Every navigational affordance on this site lands on a fragment — an idea's
-   `[idea:etal]` permalink, an outline row, a backlink, the Context link — and
-   a sticky header would otherwise cover whatever each of them jumped to.
-   Clears the bar plus a little air. */
 html {
+  /* Every navigational affordance here lands on a fragment, which the sticky
+     header would otherwise cover. Clears the bar plus a little air. */
   scroll-padding-top: 4rem;
-  /* Belt-and-suspenders against a horizontal scrollbar: nothing on this site
-     is meant to exceed the viewport's width, but a `min()`/`calc(100vw - …)`
-     miscalculation in a package this site does not control (the search
-     dialog's own width, the mobile nav dropdown) is exactly the kind of thing
-     that only shows up on a real narrow device, not at any width tested by
-     hand. Clipping here is silent insurance, not a fix for a known overflow —
-     if one is ever found, fix its source and leave this in place regardless. */
+  /* Silent insurance against a `min()`/`calc(100vw - …)` miscalculation in a
+     package this site does not control, not a fix for a known overflow. */
   overflow-x: hidden;
 }
 
@@ -409,18 +312,14 @@ body {
   line-height: 1.3;
   margin: 0 auto;
   padding: 50px;
-  /* 50em ≈ 800px at the default root size. Wider than a pure prose measure
-     wants, because this site is not pure prose: a reference row is a name, a
-     default and a sentence side by side, and a ```typ block is as wide as the
-     longest line an author would actually type. Both were being squeezed at
-     36em — the tables into three cramped columns, the code blocks into their
-     own horizontal scroll. `em`, so the measure follows the text if the reader
-     scales it. */
+  /* Wider than a prose measure wants, because this is not pure prose: at 36em
+     the reference tables cramped into three columns and the ```typ blocks grew
+     their own scrollbar. `em`, so the measure follows the reader's text size. */
   max-width: 50em;
 }
 
-/* Site prose headings — small-caps, since these are section labels rather
-   than an idea's own name. */
+/* Site prose headings — small-caps, since these are section labels rather than
+   an idea's own name. */
 h1, h2, h3, h4, h5, h6 {
   color: var(--text-color);
   font-family: var(--heading-font);
@@ -430,74 +329,47 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 0.5em;
 }
 
-/* An idea's own title — in the heading font, but set as written, NOT forced
-   into small-caps: a title is the note's NAME, and small-caps would relabel
-   it rather than just style it. `.idea-title` (inside `#idea`'s own heading)
-   and `.idea-window-title` (the same title in a `#window`'s summary, a span only
-   because a fold control cannot contain an `<h2>`) show the same title in two
-   shapes, so both get it. Declared on the span itself rather than left to
-   inherit from the ancestor `h2` above, matching how `.idea-label` already
-   overrides its own font rather than relying on inheritance. */
+/* An idea's own title, set as written and never small-capped: a title is the
+   note's name, and small-caps would relabel it. Both classes show the same
+   title, on the note's heading and in a `#window` summary. */
 .idea-title,
 .idea-window-title {
   font-family: var(--heading-font);
   font-variant: normal;
 }
 
-/* A span, not a block: the summary lays its parts out on one line and these
-   margins would break that. */
+/* A span, not a block: the summary lays its parts out on one line. */
 .idea-window-title {
   margin: 0;
 }
 
-/* The id, in the family the site keeps for machinery. It names the font itself
-   rather than inheriting it: on the tab above `#idea`'s heading it would
-   otherwise take that context's Inter, and in a `#window`'s summary — no
-   heading at all — the body's sans.
+/* The id, in the family the site keeps for machinery, named rather than
+   inherited since its two contexts would otherwise give it Inter and the
+   body's sans. Left as written, since `[idea:rookery]` is an identifier to be
+   copied verbatim.
 
-   The SIZE is not ours to set here. `core.css` carries its own
-   `.idea-label { font-size: var(--idea-label-size, 0.57rem) }` at the same
-   specificity and loads after this file, so it wins on source order and a
-   `font-size` in this rule would be dead. The package's own arithmetic — the
-   tab's lift, a window's summary, the footer's padding — measures against that
-   variable, so moving the size anywhere else would open the card's corner. To
-   change it, pass `label-size` in the theme (template.typ), or set
-   `--idea-label-size` on `:root`.
-
-   Left as written, neither small-caps nor uppercased: `[idea:rookery]` is an
-   identifier to be copied verbatim into `#window("...")`, and a reader who
-   retyped what an uppercased id appeared to say would get it wrong. */
+   The size is not ours to set: `core.css` carries `.idea-label { font-size:
+   var(--idea-label-size, 0.57rem) }` at the same specificity and loads later,
+   and the package's own arithmetic measures against that variable. To change
+   it, pass `label-size` in the theme or set `--idea-label-size` on `:root`. */
 .idea-label {
   font-family: var(--mono-font);
   font-variant: normal;
 }
 
-/* Tag colours. A tag is the only thing on this site that says what KIND of idea you are
-   reading — a concept, a piece of reference, a setup step, a question — and
-   until now it said it in words only, in one place, on the card. Every tag
-   wears the class `idea-tag-<tag>` on all four surfaces rookery puts it on:
-   the card, the note's heading, an outline row, and (with `show-tags: true`)
-   the pill in the hat. `@rookery/search` puts the same class on its
-   result chips. So one hue per tag, applied through that shared class, colours
-   the kind everywhere it appears.
+/* Tag colours. Every tag wears `idea-tag-<tag>` on the card, the heading, an
+   outline row and the hat pill, and `@rookery/search` puts the same class on
+   its result chips — so one hue per tag colours the kind everywhere.
 
-   The pills are NOT here: rookery 0.4.0 colours those from the `tags-color`
-   theme key, set in content/template.typ, because a per-tag pill colour is
-   something the package now asks for and a property beats a rule. It names
-   the same `--tag-*` custom properties declared in `:root` above, so the two
-   mechanisms cannot drift.
-
-   ONE SURFACE IS LEFT ALONE ON PURPOSE — the card and the heading. Colouring
-   the note's own title by kind would make the page's typography argue with
-   its prose, and the pill already says it right beside them. The rules below
-   are for the two places a reader is scanning MANY notes at once and the kind
-   is the thing being scanned for. */
-/* The tick on an outline row: the hairline rookery draws as
-   `.idea-outline-row::before`, growing off the outline's left rule. Recolouring
-   the marker rather than the row's text keeps a long index legible — 24 rows of
-   coloured link text would read as 24 different link states — while still
-   letting the eye group the kinds down the column. Only `border-top-color`,
-   so the marker's measured width and 2px weight stay the package's. */
+   The pills are not here: rookery 0.4.0 colours those from the `tags-color`
+   theme key in content/template.typ, which names the same `--tag-*` properties.
+   The card and the heading are left alone on purpose — the pill already says
+   the kind beside them, and colouring the title would make the typography
+   argue with the prose. What follows covers the two places a reader is
+   scanning many notes at once. */
+/* The tick on an outline row. Recolouring the marker rather than the row's
+   text keeps a long index legible while still letting the eye group kinds down
+   the column; only the colour, so the package keeps the marker's dimensions. */
 .idea-outline-row.idea-tag-concept::before {
   border-top-color: var(--tag-concept);
 }
@@ -518,16 +390,11 @@ h1, h2, h3, h4, h5, h6 {
   border-top-color: var(--tag-alpha-package);
 }
 
-/* A search result's chips, which the package renders in the browser and which
-   `tags-color` therefore does not reach (it emits an inline style at compile
-   time; these elements do not exist then). Written as rules for that reason
-   rather than by preference.
-
-   `color-mix` with no rgba fallback, deliberately: where it is unsupported the
-   whole declaration is dropped and the chip keeps the package's own neutral
-   fill, which is a fine answer. The alternative is writing each hue a second
-   time as a literal, and a second copy is the thing this section exists to
-   avoid. The 14% mix is the package's own default strength. */
+/* A search result's chips, rendered in the browser and so out of reach of
+   `tags-color`, which emits its inline style at compile time. `color-mix` with
+   no fallback deliberately: where it is unsupported the chip keeps the
+   package's neutral fill, which beats writing every hue out a second time. 14%
+   is the package's own default strength. */
 .rookery-search-tag.idea-tag-concept {
   color: var(--tag-concept);
   background-color: color-mix(in oklab, var(--tag-concept) 14%, transparent);
@@ -558,19 +425,11 @@ a {
   text-decoration: underline;
 }
 
-/* Two kinds of link, two weights of response. Staying inside the rookery is
-   the ordinary case and keeps the ordinary hover — the whole link dims, the
-   same gesture the nav and the note ids make. Leaving is the exceptional one,
-   and gets the quieter signal: the underline takes the accent and thickens,
-   the text itself untouched. The difference should be felt rather than read,
-   which is why it is a change of channel and not a louder version of the same
-   change.
-
-   `[href^="http"]` is the test, and it holds because rheo emits every
-   in-project link as a depth-relative path — nothing internal carries a
-   scheme. Inside an idea, rookery's own stylesheet draws the same distinction
-   with the same colours (see `--idea-external-color` below); these rules are
-   for the prose that sits outside one. */
+/* Two kinds of link, two weights of response: staying inside the rookery dims
+   the whole link, leaving thickens the underline in the accent and leaves the
+   text alone. The `[href^="http"]` test holds because rheo emits every
+   in-project link as a depth-relative path. Inside an idea, rookery's own
+   stylesheet draws the same distinction. */
 a:not([href^="http"]):hover {
   opacity: 0.7;
 }
@@ -588,13 +447,10 @@ ul, ol {
 
 li {}
 
-/* Typst's html export writes a bare `<table>` — a `#table`'s own column widths,
-   insets and strokes do not survive it — so the whole look of a table on this
-   site is here rather than in the content.
-
-   Horizontal rules only, and none down the sides: these tables enumerate a
-   package's parameters, so a row is a name and a sentence about it, and a full
-   grid would box each sentence rather than separate the rows. */
+/* Typst's html export writes a bare `<table>` — a `#table`'s widths, insets and
+   strokes do not survive — so the whole look of a table lives here. Horizontal
+   rules only: a row is a name and a sentence about it, and a full grid would
+   box each sentence rather than separate the rows. */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -610,8 +466,7 @@ th, td {
   border-bottom: 1px solid var(--rule);
 }
 
-/* Column labels are section labels, not content — same small-caps treatment the
-   prose headings get, in the muted colour, since the row below is the substance. */
+/* Column labels are section labels, not content. */
 th {
   color: var(--muted);
   font-family: var(--heading-font);
@@ -619,32 +474,23 @@ th {
   font-weight: normal;
 }
 
-/* A row's first cell names the parameter or the rule. It stays on one line and
-   the description column absorbs the wrapping. */
+/* A row's first cell names the parameter; it stays on one line and the
+   description column absorbs the wrapping. */
 tbody td:first-child {
   white-space: nowrap;
 }
 
-/* An identifier written as `code` has no spaces in it — `--idea-tag-color`,
-   `idea-page-template` — so nothing in it is a break opportunity, and a cell
-   holding one is as wide as the whole token whatever the column is worth. The
-   measure here is finite (the body's own max-width minus the page padding,
-   minus an `.idea-box`'s own padding at each level of nesting), so that is how
-   a table comes to be wider than the prose around it. Let the token break
-   rather than
-   push the row sideways.
-
-   `break-word` rather than `anywhere`: only the latter feeds a break
-   opportunity into intrinsic sizing, which lets auto table layout squeeze a
-   column down to a single character and split `"idea"` across two lines in a
-   column that had room for it. `break-word` breaks a token only once it would
-   actually overflow the line it is on. */
+/* An identifier written as `code` has no break opportunity in it, so a cell
+   holding one is as wide as the whole token — which is how a table comes to be
+   wider than the prose around it. `break-word` rather than `anywhere`: only
+   the latter feeds the break into intrinsic sizing, letting auto table layout
+   squeeze a column down to a single character. */
 td code {
   overflow-wrap: break-word;
 }
 
-/* Flush with the surrounding prose at both edges: the table has no side rules,
-   so the leading inset would read as an indent. */
+/* Flush with the surrounding prose: with no side rules, the leading inset
+   would read as an indent. */
 th:first-child, td:first-child {
   padding-left: 0;
 }
@@ -668,10 +514,8 @@ code {
   font-size: 0.9em;
 }
 
-/* Fenced ```typ blocks: `pre` gets the uniform block background, since an
-   inline `code` background only fills each line's glyph box, not a full
-   rectangle. `pre code` drops the inline padding/background/radius it would
-   otherwise inherit from the rule above. */
+/* Fenced blocks: `pre` carries the background, since an inline `code` one only
+   fills each line's glyph box rather than a full rectangle. */
 pre {
   background-color: #f5f5f5;
   padding: 1em;
@@ -717,29 +561,19 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     font-size: 0.9em;
   }
 
-  /* The modal itself still needs no narrow-viewport treatment of its own —
-     it hides its preview pane and its `<kbd>` hint below the PACKAGE's own
-     breakpoint (40em ≈ 640px, at the default root font size) — wider than
-     this site's 600px, so it already covers this range and the site should
-     not duplicate it. The trigger BUTTON's own bar position does need a rule
-     here now: see the `:has()` selector below. */
+  /* The search modal needs nothing here: it hides its preview pane and `<kbd>`
+     hint below the package's own 40em breakpoint, which already covers this
+     range. The trigger button does — see the `:has()` selector below. */
 
-  /* Below this width, `.site-nav` no longer fits beside the wordmark and the
-     search trigger without wrapping the bar onto a second line — so instead
-     it comes out of the inline flow entirely and the toggle takes over.
-     `nowrap` is what makes "always one line" true: without it, a flex item
-     that no longer fits would still wrap even with `.site-nav` gone from the
-     row (e.g. a very long future nav label), where the intent here is that
-     the wordmark, search trigger and hamburger themselves never wrap into a
-     second line at any width. */
+  /* Below this width the nav no longer fits beside the wordmark and search
+     trigger, so it leaves the inline flow and the toggle takes over. `nowrap`
+     is what makes "always one line" true for what remains. */
   .site-header-inner {
     flex-wrap: nowrap;
     padding-bottom: 0.4rem;
   }
 
-  /* Thinner bar on a phone screen, where the vertical space this bar's own
-     padding costs is a bigger fraction of what's visible above the fold than
-     it is on desktop — the desktop value stays put in the base rule above. */
+  /* Thinner bar, where vertical space above the fold is scarcer. */
   .site-header {
     padding-top: 0.4rem;
   }
@@ -748,38 +582,20 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     display: inline-block;
   }
 
-  /* `.site-nav`'s own `margin-left: auto` (the thing that pushes it, and
-     everything after it, to the far end of the bar on desktop) stops working
-     once it's taken out of flow below — an absolutely-positioned box's
-     margin cannot push its still-in-flow siblings. The search trigger takes
-     over that job here, but NOT via a rule on `.rookery-search-trigger`
-     itself: Typst's HTML export wraps a loose run of inline content in an
-     anonymous `<p>` wherever it isn't already inside a block element, and the
-     trigger button — emitted bare by `@rookery/search` — gets exactly
-     this treatment. That `<p>`, not the button inside it, is the actual flex
-     child of `.site-header-inner`, so it is the `<p>` that needs the margin:
-     `margin-left: auto` on the button itself would sit on a non-flex-item box
-     and do nothing, which is what shipped here the first time. Eating all the
-     free space to its left pushes this `<p>` and `.nav-toggle`'s own `<p>`
-     after it to the right edge as a pair — trigger, then toggle, exactly the
-     order they're already in in the markup. */
+  /* `.site-nav`'s `margin-left: auto` stops pushing its siblings once it goes
+     out of flow below, so the search trigger takes that job over — but on its
+     wrapping `<p>`, which is the actual flex item, not on the button, which is
+     not. Eating the free space to its left pushes the trigger and the toggle
+     to the right edge as a pair. */
   .site-header-inner > p:has(> .rookery-search-trigger) {
     margin-left: auto;
   }
 
-  /* Taken out of flow (position: absolute) so it does not force the bar
-     above onto a second line, and positioned against `.site-header` — the
-     nearest positioned ancestor, since sticky counts as positioned — rather
-     than `.site-header-inner`, so the dropdown spans the FULL bar rather than
-     stopping at whatever padding-bottom `.site-header-inner` carries.
-
-     Hidden with `visibility`/`opacity`, not `display`: `display: none` cannot
-     be transitioned, and this is the animation the toggle opens with — a
-     short slide-and-fade down from under the bar. `margin-left: 0` cancels
-     the auto margin above (which is what pushes the same element to the far
-     end of the bar's flex row) — irrelevant with `left`/`right` both set, but
-     an absolutely-positioned box with a non-zero auto margin and no
-     intrinsic width is an edge case not worth relying on. */
+  /* Absolute so it does not force the bar onto a second line, positioned
+     against `.site-header` (sticky counts as positioned) so the dropdown spans
+     the full bar. Hidden with `visibility`/`opacity` rather than `display`,
+     which cannot be transitioned. `margin-left: 0` cancels the auto margin
+     above. */
   .site-nav {
     display: block;
     position: absolute;
@@ -808,29 +624,19 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     padding: 0.4rem 0;
   }
 
-  /* No left padding: the dropdown's left edge is the same x as the wordmark's
-     (`.site-nav` is `left: 0` against `.site-header`, which carries no
-     padding of its own), so a nonzero left inset here would be the only thing
-     breaking that alignment. Right padding stays, for breathing room on a
-     row that otherwise runs edge-to-edge. */
+  /* No left padding, so the dropdown's rows line up with the wordmark; right
+     padding stays for breathing room. */
   .site-nav li {
     justify-content: flex-start;
     padding: 0.5rem 1.2rem 0.5rem 0;
   }
 
-  /* Tables stop being grids here and become one card per row.
-
-     A reference row is a name, sometimes a default, and a sentence about it.
-     Three columns need a measure to share; a phone has none to spare, and the
-     reference page's tables sit two or three `.idea-box`es deep, each of which
-     takes more of it. Auto table layout has nowhere left to put the sentence,
-     so the row grows past its container and the page scrolls sideways.
-
-     Stacked, every cell gets the full width in turn: the name reads as the
-     card's title, the default and the sentence follow under it. The `<thead>`
-     goes with the grid, since a column label has no column to head — it moves
-     into the cells instead, via the `data-label` `tables.js` copies onto each
-     one from its `<th>`. */
+  /* Tables stop being grids here and become one card per row. Three columns
+     need a measure to share, and a phone — with the reference page's tables
+     two or three `.idea-box`es deep — has none to spare, so the row grows past
+     its container and the page scrolls sideways. Stacked, each cell gets the
+     full width in turn. The `<thead>` goes with the grid; its labels move into
+     the cells via the `data-label` `tables.js` copies from each `<th>`. */
   table {
     display: block;
     margin: 1em 0;
@@ -846,8 +652,8 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     display: block;
   }
 
-  /* The row is the card, so it takes over the rule and the vertical rhythm
-     that the cells carried while they were a grid. */
+  /* The row is the card, so it takes over the rule and the vertical rhythm the
+     cells carried as a grid. */
   tbody tr {
     padding: 0.7em 0;
     border-bottom: 1px solid var(--rule);
@@ -858,9 +664,8 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     padding: 0;
   }
 
-  /* The base rule keeps this cell on one line so the description column can
-     absorb the wrapping — with the columns gone there is no other column to
-     absorb anything, and the name is free to wrap like everything else. */
+  /* With the columns gone there is nothing left to absorb the wrapping, so the
+     name is free to wrap like everything else. */
   tbody td:first-child {
     white-space: normal;
   }
@@ -869,13 +674,9 @@ section[role="doc-endnotes"] ol li a[role="doc-backlink"] {
     margin-top: 0.2em;
   }
 
-  /* Only the middle columns are labelled. The first cell is the row's title
-     and the last is prose that already says what it is, so both would read
-     worse with a word in front of them; a bare default value in between is
-     the one thing that needs saying (a column of identifiers under a title
-     that is also an identifier otherwise reads as a second name). Attribute
-     present only where `tables.js` ran, and it labels every cell — the
-     selector, not the script, is what keeps the ends clean. */
+  /* Only the middle columns are labelled: the first cell is the row's title
+     and the last is prose that already says what it is, so a bare default
+     value in between is the one thing that needs saying. */
   tbody td:not(:first-child):not(:last-child)[data-label]::before {
     content: attr(data-label);
     margin-right: 0.4em;
