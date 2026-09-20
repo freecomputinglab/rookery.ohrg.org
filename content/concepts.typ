@@ -95,7 +95,8 @@
   #concept("footnotes", title: [Footnotes])[
     A footnote belongs to the idea in which you write it in, just as @idea:citations[citations] do.
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function.
-    Leaving it out isn't a smaller footnote: an idea body that reaches Typst's own `#footnote` fails the build, with an error naming the import to add, and because Typst's imports are per file, that import has to be repeated in every file that writes a footnote.
+    Omitting it is not a soft failure: an idea body that reaches Typst's own `#footnote` fails the build, with an error naming the import to add.
+    Typst's imports are per file, so that import has to be repeated in every file that writes a footnote.
 
     ```typ
     #import "@rookery/core:0.1.0": idea, footnote
