@@ -7,7 +7,7 @@ labels:
 - rewrite-site-readme
 deps:
 - blocked-by:rkdoc-delete-dead-scaffolding-a6f04734
-closed: false
+closed: true
 ---
 This repository is about to be made public and pointed to as the reference
 example of how to build a real writing project with `@rookery/core` and Rheo.
