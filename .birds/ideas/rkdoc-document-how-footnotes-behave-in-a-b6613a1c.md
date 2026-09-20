@@ -6,7 +6,7 @@ priority: 2
 labels:
 - fix-footnote-number-at-construction
 deps: []
-closed: false
+closed: true
 ---
 `@rookery/core` now numbers a note's footnotes while its body is being built
 rather than while the page is laid out, and that makes a `#window` carrying

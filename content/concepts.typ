@@ -106,7 +106,7 @@
     Footnote numbering is idea-local.
     This means that there may be two footnotes labeled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
 
-    Footnote listings occur at the end of each idea.#footnote[Ideas will show footnotes everywhere their content appears: in their hatching context, their standalone page, and their @idea:windows[windows].]
+    Footnote listings occur at the end of each idea.#footnote[Ideas carry their footnotes to every surface they appear on --- their hatching context, their standalone page, and their @idea:windows[windows] --- with one exception: a window carrying `limit:` under a paged target only lists the footnotes whose marks survive the truncation.]
     On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
 
     A footnote written outside an idea's context proxies the #link("https://typst.app/docs/reference/model/footnote/")[native Typst function] so that it behaves normally.

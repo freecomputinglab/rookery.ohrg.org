@@ -916,7 +916,7 @@
 
       [`limit`],
       [#type-int | #type-none],
-      [How many blocks of the body to show — a block being a paragraph or a list, the unit that can be cut without leaving half a sentence. The whole body by default.],
+      [How many blocks of the body to show — a block being a paragraph or a list, the unit that can be cut without leaving half a sentence. The whole body by default; in HTML and EPUB every footnote in the note is listed regardless, since the tail sits collapsed rather than dropped, and one written in the shown blocks renders twice — under a paged target, where the tail is truly dropped, only the footnotes that survive the cut are listed.],
 
       [`folded`],
       [#type-bool],
