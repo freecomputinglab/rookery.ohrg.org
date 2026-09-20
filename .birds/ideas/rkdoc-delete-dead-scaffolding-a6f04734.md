@@ -6,7 +6,7 @@ priority: 2
 labels:
 - delete-dead-scaffolding
 deps: []
-closed: false
+closed: true
 ---
 Two pieces of scaffolding sit in this repository that a reader would reasonably
 assume are load-bearing, and neither is. This repository is about to be made
