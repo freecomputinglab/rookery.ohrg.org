@@ -95,8 +95,7 @@
   #concept("footnotes", title: [Footnotes])[
     A footnote belongs to the idea in which you write it in, just as @idea:citations[citations] do.
     So that rookery can track them correctly, you need to use the `footnote` function imported from rookery in ideas, rather than the Typst native function.
-    Omitting it is not a soft failure: an idea body that reaches Typst's own `#footnote` fails the build, with an error naming the import to add.
-    Typst's imports are per file, so that import has to be repeated in every file that writes a footnote.
+    (Using Typst's own `#footnote` will cause a compilation error.)
 
     ```typ
     #import "@rookery/core:0.1.0": idea, footnote
@@ -108,7 +107,8 @@
     Footnote numbering is idea-local.
     This means that there may be two footnotes labeled `1` on the same page, if two ideas with footnotes are hatched in that context.#footnote[This idea's own first footnote. The idea below has one too, also numbered 1.]
 
-    Footnote listings occur at the end of each idea.#footnote[Ideas carry their footnotes to every surface they appear on --- their hatching context, their standalone page, and their @idea:windows[windows] --- with one exception: a window carrying `limit:` under a paged target only lists the footnotes whose marks survive the truncation.]
+    Footnote listings occur at the end of each idea.#footnote[Ideas carry their footnotes everywhere they appear in the rookery--- their hatching context, their @idea:standalone-idea-pages[standalone page], and their @idea:windows[windows].
+      The only exception to this is where a window on an idea carries a `limit` which truncates the content.]
     On a standalone page, footnotes appear before the @idea:idea[context and backlinks listings].
 
     A footnote written outside an idea's context proxies the #link("https://typst.app/docs/reference/model/footnote/")[native Typst function] so that it behaves normally.

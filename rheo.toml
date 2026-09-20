@@ -1,14 +1,8 @@
-version = "0.6.3"
+version = "0.6.4"
 content_dir = "content"
 
 [spine]
-# `content/_lib/` is the site's own machinery, not pages of it: the template and
-# the prelude live there so that everything else under `content/` is a vertebra.
-# Globs here resolve against `content_dir`, not the project root.
 exclude = ["_lib/**"]
-# Spliced into every vertebra, so a page in `content/` writes prose and a title
-# and nothing else — the imports and `#show: template` live once, in here. rheo
-# keeps the named file out of the spine itself.
 prelude = "_lib/prelude.typ"
 
 [[html.assets]]
