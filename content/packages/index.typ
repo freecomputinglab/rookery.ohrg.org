@@ -1,6 +1,6 @@
 #set document(
   title: "Rookery - Packages",
-  date: datetime(year: 2026, month: 9, day: 19),
+  date: datetime(year: 2026, month: 8, day: 20),
 )
 
 #idea(<alpha-packages>)[

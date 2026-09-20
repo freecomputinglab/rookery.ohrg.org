@@ -1,6 +1,6 @@
 #set document(
   title: "Rookery - @rookery/pinboard",
-  date: datetime(year: 2026, month: 9, day: 19),
+  date: datetime(year: 2026, month: 8, day: 20),
 )
 
 #idea(<rookery-pinboard>, tag: "alpha-package", title: [`@rookery/pinboard`])[
