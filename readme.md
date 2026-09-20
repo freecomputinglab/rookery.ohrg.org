@@ -12,7 +12,13 @@ just watch   # live-rebuild and open
 just build   # one-shot HTML into build/html/
 ```
 
-`rheo.toml`'s `[packages.rookery]` table pins `@rookery/core` to a remote
+Note that `rheo.toml`'s `[packages.rookery]` table pins `@rookery/core` to a remote
 repository and branch.
+So as not to be affected by breakages in development, set it to releases:
+
+```toml
+[packages.rookery]
+releases = "freecomputinglab/rookery"
+```
 
 
